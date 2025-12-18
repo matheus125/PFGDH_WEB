@@ -263,33 +263,45 @@ class Funcionarios extends Model
 	}
 
 
-	public function update()
+	public function update(int $id_usuario, array $data)
 	{
+		$sql = new \Hcode\DB\Sql();
 
-		$sql = new Sql();
-
-		$results = $sql->select("CALL sp_users_update(:id_usuario, :nome_funcionario, :cpf, :senha, :email, :nrphone, :inadmin)", array(
-			":id_usuario" => $this->getid_usuario(),
-			":nome_funcionario" => utf8_decode($this->getnome_funcionario()),
-			":cpf" => $this->getcpf(),
-			":senha" => Funcionarios::getPasswordHash($this->getsenha()),
-			":email" => $this->getemail(),
-			":nrphone" => $this->getnrphone(),
-			":inadmin" => $this->getinadmin()
-		));
-
-		$this->setData($results[0]);
+		$sql->query("CALL sp_funcionario_usuario_update(
+        :id_usuario,
+        :nome_funcionario,
+        :email,
+        :nrphone,
+        :cpf,
+        :senha,
+        :perfil
+    )", [
+			':id_usuario'       => $id_usuario,
+			':nome_funcionario' => $data['nome_funcionario'],
+			':email'            => $data['email'],
+			':nrphone'          => $data['nrphone'],
+			':cpf'              => $data['cpf'],
+			':senha'            => $data['senha'] ?? null,
+			':perfil'           => $data['perfil']
+		]);
 	}
 
 	public function delete()
 	{
-
 		$sql = new Sql();
 
-		$sql->query("CALL sp_users_delete(:id_usuario)", array(
-			":id_usuario" => $this->getid_usuario()
-		));
+		if ((int)$this->getid_usuario() <= 0) {
+			throw new \Exception("ID do usuário inválido para exclusão.");
+		}
+
+		$sql->query(
+			"CALL sp_funcionario_usuario_delete(:id_usuario)",
+			[
+				":id_usuario" => $this->getid_usuario()
+			]
+		);
 	}
+
 
 	public function setPassword($senha)
 	{
@@ -309,7 +321,7 @@ class Funcionarios extends Model
 			'cost' => 12
 		]);
 	}
-public static function setError($msg)
+	public static function setError($msg)
 	{
 
 		$_SESSION[Funcionarios::ERROR] = $msg;
@@ -416,7 +428,4 @@ public static function setError($msg)
 		]);
 		return (count($results) > 0);
 	}
-
 }
-
-

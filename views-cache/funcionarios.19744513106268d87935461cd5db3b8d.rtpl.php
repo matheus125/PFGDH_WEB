@@ -1,4 +1,4 @@
-<div class="card mb-4">
+<?php if(!class_exists('Rain\Tpl')){exit;}?><div class="card mb-4">
   <div class="card-header">
     <h3 class="card-title">USUÁRIOS</h3>
     <div class="card-tools">
@@ -24,23 +24,23 @@
         </tr>
       </thead>
       <tbody>
-        {loop="$funcionarios"}
+        <?php $counter1=-1;  if( isset($funcionarios) && ( is_array($funcionarios) || $funcionarios instanceof Traversable ) && sizeof($funcionarios) ) foreach( $funcionarios as $key1 => $value1 ){ $counter1++; ?>
         <tr>
-          <td>{$value.id_usuario}</td>
-          <td>{$value.nome_funcionario}</td>
-          <td>{$value.email}</td>
-          <td>{$value.cpf}</td>
+          <td><?php echo htmlspecialchars( $value1["id_usuario"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+          <td><?php echo htmlspecialchars( $value1["nome_funcionario"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+          <td><?php echo htmlspecialchars( $value1["email"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+          <td><?php echo htmlspecialchars( $value1["cpf"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
           <td>
-            <a href="/admin/funcionarios/{$value.id_usuario}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i>
+            <a href="/admin/funcionarios/<?php echo htmlspecialchars( $value1["id_usuario"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i>
               Editar</a>
-            <a href="/admin/funcionarios/{$value.id_usuario}/password" class="btn btn-secondary btn-xs"><i
+            <a href="/admin/funcionarios/<?php echo htmlspecialchars( $value1["id_usuario"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/password" class="btn btn-secondary btn-xs"><i
                 class="fa fa-unlock"></i> Alterar Senha</a>
-            <a href="/admin/funcionarios/{$value.id_usuario}/delete"
+            <a href="/admin/funcionarios/<?php echo htmlspecialchars( $value1["id_usuario"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/delete"
               onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i
                 class="fa fa-trash"></i> Excluir</a>
           </td>
         </tr>
-        {/loop}
+        <?php } ?>
       </tbody>
     </table>
   </div>

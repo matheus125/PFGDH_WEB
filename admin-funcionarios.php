@@ -95,19 +95,33 @@ $app->get("/admin/funcionarios/create", function () {
 	$page->setTpl("funcionarios-create");
 });
 
-$app->get("/admin/funcionarios/:idperson/delete", function ($idperson) {
+$app->get('/admin/funcionarios/:id_usuario/delete', function ($id_usuario) {
 
-	Funcionarios::verifyLogin();
+	Funcionarios::verifyLogin('ADMIN');
 
-	$funcionarios = new Funcionarios();
+	$funcionario = new Funcionarios();
+	$funcionario->get((int)$id_usuario);
+	$funcionario->delete();
 
-	$funcionarios->get((int)$idperson);
-
-	$funcionarios->delete();
+	Funcionarios::setSuccess("Funcionário excluído com sucesso.");
 
 	header("Location: /admin/funcionarios");
 	exit;
 });
+
+$app->get('/acesso-negado', function () {
+
+	Funcionarios::verifyLogin(); // apenas garante que está logado
+
+	$page = new PageAdmin();
+	
+	$func = Funcionarios::getFromSession();
+	Funcionarios::registerAccess($func, 'ACESSO_NEGADO');
+
+	$page->setTpl("acesso-negado");
+});
+
+
 
 $app->get("/admin/funcionarios/:id_usuario", function ($id_usuario) {
 
@@ -178,7 +192,7 @@ $app->post("/admin/funcionarios/:id_usuario", function ($id_usuario) {
 
 	$funcionarios->setData($_POST);
 
-	$funcionarios->update();
+	$funcionarios->update((int)$id_usuario, $_POST);
 
 	header("Location: /admin/funcionarios");
 	exit;
