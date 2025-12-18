@@ -24,69 +24,73 @@
     <!--begin::Container-->
     <div class="container-fluid">
       <!-- Info boxes -->
-      <div class="row">
-        <div class="col-12 col-sm-6 col-md-3">
-          <div class="info-box">
-            <span class="info-box-icon text-bg-primary shadow-sm">
-              <i class="bi bi-cart-fill"></i>
-            </span>
-            <div class="info-box-content">
-              <span class="info-box-text">TITULARES</span>
-              
+      <div class="row justify-content-center gy-3">
+        <div class="col-lg-3 col-6">
+          <!--begin::Small Box Widget 2-->
+          <div class="small-box text-bg-success">
+            <div class="inner">
+              <h3 id="totalUsuarios">...</h3>
+              <p>Titulares</p>
             </div>
-            <!-- /.info-box-content -->
+            <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z">
+              </path>
+            </svg>
+
           </div>
-          <!-- /.info-box -->
+          <!--end::Small Box Widget 2-->
         </div>
 
 
         <!-- /.col -->
-        <div class="col-12 col-sm-6 col-md-3">
-          <div class="info-box">
-            <span class="info-box-icon text-bg-success shadow-sm">
-
-              <i class="bi bi-people-fill"></i>
-            </span>
-
-            <!-- plate-->
-            <div class="info-box-content">
-              <span class="info-box-text">DEPENDENTES</span>
-              <span class="info-box-number">400</span>
+        <div class="col-lg-3 col-6">
+          <!--begin::Small Box Widget 3-->
+          <div class="small-box text-bg-warning">
+            <div class="inner">
+              <h3 id="totalDependentes">...</h3>
+              <p>Dependentes</p>
             </div>
-            <!-- /.info-box-content -->
+            <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z">
+              </path>
+            </svg>
+
           </div>
-          <!-- /.info-box -->
+
+          <!--end::Small Box Widget 3-->
+        </div>
+        <!--end::Col-->
+        <div class="col-lg-3 col-6">
+          <div class="small-box text-bg-danger">
+            <div class="inner">
+              <h3 id="totalGeral">...</h3>
+              <p>Total Geral (Titulares + Dependentes)</p>
+            </div>
+            <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24">
+              <path clip-rule="evenodd" fill-rule="evenodd"
+                d="M12 2.25a9.75 9.75 0 110 19.5 9.75 9.75 0 010-19.5zM11.25 7.5a.75.75 0 011.5 0V12a.75.75 0 01-.75.75H9a.75.75 0 010-1.5h2.25V7.5z">
+              </path>
+            </svg>
+          </div>
         </div>
         <!-- /.col -->
-        <!-- fix for small devices only -->
-        <!-- <div class="clearfix hidden-md-up"></div> -->
-        <div class="col-12 col-sm-6 col-md-3">
-          <div class="info-box">
-            <span class="info-box-icon text-bg-danger shadow-sm">
-              <i class="bi bi-trash3"></i>
-            </span>
-            <div class="info-box-content">
-              <span class="info-box-text">FAMILIAS</span>
-              <span class="info-box-number">760</span>
+       
+        <div class="col-lg-3 col-6">
+          <div class="small-box text-bg-primary">
+            <div class="inner">
+              <h3 id="totalFamilias">...</h3>
+              <p>Famílias</p>
             </div>
-            <!-- /.info-box-content -->
+            <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24">
+              <path clip-rule="evenodd" fill-rule="evenodd"
+                d="M12 2.25a9.75 9.75 0 110 19.5 9.75 9.75 0 010-19.5zM11.25 7.5a.75.75 0 011.5 0V12a.75.75 0 01-.75.75H9a.75.75 0 010-1.5h2.25V7.5z">
+              </path>
+            </svg>
           </div>
-          <!-- /.info-box -->
         </div>
-        <!-- /.col -->
-        <div class="col-12 col-sm-6 col-md-3">
-          <div class="info-box">
-            <span class="info-box-icon text-bg-warning shadow-sm">
-              <i class="bi bi-people-fill"></i>
-            </span>
-            <div class="info-box-content">
-              <span class="info-box-text">TOTAL CADASTRADOS</span>
-              <span class="info-box-number">2,000</span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
+
         <!-- /.col -->
       </div>
       <!-- /.row -->
@@ -256,45 +260,25 @@
                 </button>
               </div>
             </div>
+
             <!-- /.card-header -->
             <div class="card-body">
               <!--begin::Row-->
               <div class="row">
                 <div class="col-12">
-                  <div id="pie-chart"></div>
+                  <!-- gráfico: apenas um elemento com este id -->
+                  <div id="pie-chart" style="width:100%; height:350px;"></div>
                 </div>
                 <!-- /.col -->
               </div>
               <!--end::Row-->
             </div>
             <!-- /.card-body -->
+
+            <!-- footer preenchido dinamicamente -->
             <div class="card-footer p-0">
-              <ul class="nav nav-pills flex-column">
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    3 ATÉ 17 ANOS MASCULINO
-                    <span class="float-end text-danger">
-                      <i class="bi bi-arrow-down fs-7"></i>
-                      12%
-                    </span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    3 ATÉ 17 ANOS MASCULINO(PCD)
-                    <span class="float-end text-success">
-                      <i class="bi bi-arrow-up fs-7"></i> 4%
-                    </span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    3 ATÉ 17 ANOS FEMININO
-                    <span class="float-end text-info">
-                      <i class="bi bi-arrow-left fs-7"></i> 0%
-                    </span>
-                  </a>
-                </li>
+              <ul id="pie-legend" class="nav nav-pills flex-column">
+                <!-- itens serão inseridos via JS -->
               </ul>
             </div>
             <!-- /.footer -->

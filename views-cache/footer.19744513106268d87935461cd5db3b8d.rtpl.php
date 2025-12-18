@@ -59,96 +59,197 @@
 <!-- apexcharts -->
 <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"
   integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8=" crossorigin="anonymous"></script>
-
 <script>
+  //-------------
+  // - PIE CHART -
+  //-------------
+
+
   document.addEventListener('DOMContentLoaded', function () {
-    // Gráfico de vendas mensais (área)
-    const sales_chart_el = document.querySelector('#sales-chart');
-    if (sales_chart_el) {
-      const sales_chart_options = {
-        series: [
-          {
-            name: 'Digital Goods',
-            data: [28, 48, 40, 19, 86, 27, 90],
+    const el = document.querySelector('#pie-chart');
+    if (!el) return;
+
+    fetch('/api/grafico-titulares')
+      .then(response => {
+        if (!response.ok) throw new Error('Resposta da API não OK: ' + response.status);
+        return response.json();
+      })
+      .then(data => {
+        // labels e valores do retorno
+        const labels = Object.keys(data);
+        const valores = Object.values(data).map(v => Number(v) || 0);
+
+        // opções do gráfico
+        const graficoOptions = {
+          series: valores,
+          chart: {
+            type: 'donut',
+            height: 350
           },
-          {
-            name: 'Electronics',
-            data: [65, 59, 80, 81, 56, 55, 40],
-          },
-        ],
-        chart: {
-          height: 180,
-          type: 'area',
-          toolbar: { show: false },
-        },
-        legend: { show: false },
-        colors: ['#0d6efd', '#20c997'],
-        dataLabels: { enabled: false },
-        stroke: { curve: 'smooth' },
-        xaxis: {
-          type: 'datetime',
-          categories: [
-            '2023-01-01',
-            '2023-02-01',
-            '2023-03-01',
-            '2023-04-01',
-            '2023-05-01',
-            '2023-06-01',
-            '2023-07-01',
-          ],
-        },
-        tooltip: {
-          x: { format: 'MMMM yyyy' },
-        },
-      };
+          labels: labels,
+          legend: { position: 'bottom' },
+          colors: ['#0d6efd', '#20c997', '#ffc107'], // ajuste se quiser mais cores
+          tooltip: {
+            y: {
+              formatter: function (val) { return val + ' pessoas'; }
+            }
+          }
+        };
 
-      const sales_chart = new ApexCharts(sales_chart_el, sales_chart_options);
-      sales_chart.render();
-    } else {
-      console.warn('#sales-chart não encontrado no DOM');
-    }
+        // renderiza gráfico (se já existir um gráfico, destrói antes)
+        if (window._pieChartInstance instanceof ApexCharts) {
+          window._pieChartInstance.destroy();
+        }
+        window._pieChartInstance = new ApexCharts(el, graficoOptions);
+        window._pieChartInstance.render();
 
-    // Gráfico de pizza (faixa etária)
-    const pie_chart_el = document.querySelector('#pie-chart');
-    if (pie_chart_el) {
-      const pie_chart_options = {
-        series: [20, 20, 100, 900, 20, 100, 123, 123, 123, 123, 123, 123],
-        chart: { type: 'donut' },
-        labels: [
-          '3 ATÉ 17 ANOS MASCULINO',
-          '3 ATÉ 17 ANOS MASCULINO(PCD)',
-          '3 ATÉ 17 ANOS FEMININO',
-          '3 ATÉ 17 ANOS FEMININO(PCD)',
-          '18 ATÉ 59 ANOS MASCULINO',
-          '18 ATÉ 59 ANOS MASCULINO(PCD)',
-          '18 ATÉ 59 ANOS FEMININO',
-          '18 ATÉ 59 ANOS FEMININO(PCD)',
-          '60 ANOS MASCULINO',
-          '60 ANOS MASCULINO(PCD)',
-          '60 ANOS FEMININO',
-          '60 ANOS FEMININO(PCD)',
-        ],
-        dataLabels: { enabled: false },
-        colors: ['#0d6efd', '#20c997', '#ffc107', '#d63384', '#6f42c1', '#adb5bd'],
-      };
+        // monta o rodapé/legenda com valores e percentuais
+        const legend = document.querySelector('#pie-legend');
+        legend.innerHTML = ''; // limpa
 
-      const pie_chart = new ApexCharts(pie_chart_el, pie_chart_options);
-      pie_chart.render();
-    } else {
-      console.warn('#pie-chart não encontrado no DOM');
-    }
+        const total = valores.reduce((a, b) => a + b, 0) || 1;
+        labels.forEach((label, i) => {
+          const value = valores[i] || 0;
+          const percent = ((value / total) * 100).toFixed(1);
+
+          const li = document.createElement('li');
+          li.className = 'nav-item';
+          li.innerHTML = `
+          <a href="#" class="nav-link d-flex justify-content-between align-items-center">
+            <span>${label}</span>
+            <span class="float-end">
+              <strong>${value}</strong>
+              <small class="text-muted"> &nbsp;(${percent}%)</small>
+            </span>
+          </a>
+        `;
+          legend.appendChild(li);
+        });
+      })
+      .catch(err => {
+        console.error('Erro ao buscar API:', err);
+        // opcional: mostrar mensagem amigável no card
+        const legend = document.querySelector('#pie-legend');
+        if (legend) legend.innerHTML = '<li class="nav-item"><a class="nav-link text-danger">Erro ao carregar dados</a></li>';
+      });
   });
 
 
+  function atualizarUsuarios() {
+    fetch("/api/total-usuarios")
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById("totalUsuarios").textContent = d.total;
+      });
+  }
+
+  atualizarUsuarios();
+  setInterval(atualizarUsuarios, 10000); // 10 segundos
 
   
+ function atualizarFamilia() {
+    fetch("/api/total-familias")
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById("totalFamilias").textContent = d.total;
+      });
+  }
+
+  atualizarFamilia();
+  setInterval(atualizarFamilia, 10000); // 10 segundos
+
+  let usuarios = [];
+  let pagina = 1;
+  const itensPorPagina = 8;
+  let ordemColuna = "";
+  let ordemAsc = true;
+
+  // ---- CARREGAMENTO DOS DADOS ----
+  function carregarUsuarios(animacao = false) {
+    document.getElementById("loader").style.display = "inline";
+
+    fetch("/api/usuarios-titulares")
+      .then(res => res.json())
+      .then(data => {
+        usuarios = data;
+        pagina = 1;
+        atualizarTabela(animacao);
+        document.getElementById("totalRegistros").innerText = usuarios.length;
+      })
+      .finally(() => {
+        document.getElementById("loader").style.display = "none";
+      });
+  }
+
+ 
+
+  // ---- INICIA ----
+  carregarUsuarios();
+
+  function atualizarDependentes() {
+    fetch("/api/total-dependentes")
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById("totalDependentes").textContent = d.total;
+      })
+      .catch(err => console.error("Erro ao carregar total de dependentes:", err));
+  }
+
+  atualizarDependentes();
+  setInterval(atualizarDependentes, 10000); // a cada 10 segundos
+
+  function atualizarTotalGeral() {
+    Promise.all([
+      fetch("/api/total-usuarios").then(r => r.json()),
+      fetch("/api/total-dependentes").then(r => r.json())
+    ])
+      .then(([tit, dep]) => {
+        const total = (tit.total ?? 0) + (dep.total ?? 0);
+        document.getElementById("totalGeral").textContent = total;
+      });
+  }
+
+  atualizarTotalGeral();
+  setInterval(atualizarTotalGeral, 10000);
+
+
 
 </script>
-
-
-
-
 <!--end::Script-->
+<style>
+  .table-modern thead th {
+    background: #0d6efd;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .table-modern tbody tr:hover {
+    background: rgba(13, 110, 253, .09);
+    transition: 0.2s;
+  }
+
+  .table-modern td,
+  .table-modern th {
+    vertical-align: middle;
+  }
+
+  .nova-linha {
+    animation: pulseNew 1.5s ease-out;
+  }
+
+  @keyframes pulseNew {
+    0% {
+      background: #ffe066;
+    }
+
+    100% {
+      background: transparent;
+    }
+  }
+</style>
+
 </body>
 <!--end::Body-->
 

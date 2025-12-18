@@ -242,13 +242,18 @@ class Clientes extends Model
         $_SESSION[Clientes::ERROR_REGISTER] = NULL;
     }
 
-    public static function getTotalTitulares()
+    public static function total_usuarios()
     {
         $sql = new Sql();
-
         $result = $sql->select("SELECT COUNT(*) AS total FROM tb_titular");
-
-        // se vier vazio, retorna 0
-        return (count($result) > 0) ? (int)$result[0]['total'] : 0;
+        return $result[0]['total'];
     }
+
+     public static function total_familias()
+    {
+        $sql = new Sql();
+        $result = $sql->select("SELECT COUNT(*) AS total FROM tb_familia");
+        return $result[0]['total'];
+    }
+    
 }
