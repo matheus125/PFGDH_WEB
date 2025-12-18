@@ -1,0 +1,964 @@
+<div class="card mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h3 class="card-title mb-0">Lista de Usuários - CENAF</h3>
+
+    <!-- Barra de Pesquisa -->
+    <div class="input-group" style="width: 300px;">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar usuário...">
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-striped align-middle" id="usuariosTable">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Email</th>
+            <th>RG</th>
+            <th>CPF</th>
+            <th>Data Nascimento</th>
+            <th>Estado Civil</th>
+            <th>Escolaridade</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {loop="$usuarios"}
+          <tr>
+            <td>{$value.nome}</td>
+            <td>{$value.telefone}</td>
+            <td>{$value.email}</td>
+            <td>{$value.rg}</td>
+            <td>{$value.cpf}</td>
+            <td>{$value.data_nascimento}</td>
+            <td>{$value.estado_civil}</td>
+            <td>{$value.grau_escolaridade}</td>
+            <td class="text-center">
+              <button class="btn btn-outline-info btn-sm rounded-circle" onclick="abrirModal({$value.id})"
+                title="Ver detalhes">
+                <i class="bi bi-info-circle-fill"></i>
+              </button>
+            </td>
+          </tr>
+          {/loop}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card-footer clearfix">
+    <a href="/admin/usuarios/create" class="btn btn-sm btn-primary float-start">
+      NOVO CADASTRO
+    </a>
+  </div>
+</div>
+
+
+<!-- Modal com animação -->
+<!-- Modal com abas -->
+<div class="modal fade" id="meuModal" tabindex="-1" aria-labelledby="modalTitulo" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content rounded-4 shadow border-0 animate-modal">
+      <div class="modal-header bg-info text-white rounded-top-4">
+        <h5 class="modal-title d-flex align-items-center gap-2">
+          <i class="bi bi-person-circle fs-4"></i> Detalhes do Usuário
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+
+      <div class="modal-body px-4 py-3">
+
+        <!-- ID OCULTO DO USUÁRIO (ADICIONADO AQUI) -->
+        <input type="hidden" id="modalUsuarioID">
+
+        <!-- Abas -->
+        <ul class="nav nav-tabs mb-3" id="userTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-dados" data-bs-toggle="tab" data-bs-target="#dados" type="button"
+              role="tab">Dados Pessoais</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-dependentes" data-bs-toggle="tab" data-bs-target="#dependentes"
+              type="button" role="tab">Dependentes</button>
+          </li>
+
+        </ul>
+
+        <!-- Conteúdo das abas -->
+        <div class="tab-content" id="userTabsContent">
+          <!-- Aba 1 - Dados pessoais -->
+          <div class="tab-pane fade show active" id="dados" role="tabpanel">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <p><strong>Nome:</strong> <span id="modalNome"></span></p>
+                <p><strong>Telefone:</strong> <span id="modalTelefone"></span></p>
+                <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+                <p><strong>RG:</strong> <span id="modalRg"></span></p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>CPF:</strong> <span id="modalCpf"></span></p>
+                <p><strong>Data de Nascimento:</strong> <span id="modalNascimento"></span></p>
+                <p><strong>Estado Civil:</strong> <span id="modalEstadoCivil"></span></p>
+                <p><strong>Escolaridade:</strong> <span id="modalEscolaridade"></span></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Aba 2 - Dependentes -->
+          <div class="tab-pane fade" id="dependentes" role="tabpanel">
+            <div id="listaDependentes"></div>
+          </div>
+
+          <!-- Aba 3 - Moradores -->
+          <div class="tab-pane fade" id="moradores" role="tabpanel">
+            <div id="listaMoradores"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer bg-light border-0 rounded-bottom-4 d-flex justify-content-between">
+        <div>
+          <button type="button" class="btn btn-outline-danger rounded-pill" onclick="excluirUsuario()">
+            <i class="bi bi-trash3-fill"></i> Excluir
+          </button>
+
+          <button type="button" class="btn btn-outline-primary rounded-pill" onclick="editarUsuario()">
+            <i class="bi bi-pencil-square"></i> Editar
+          </button>
+
+          <!-- BOTÃO CORRIGIDO -->
+          <button type="button" class="btn btn-outline-primary rounded-pill"
+            onclick="abrirModalDocumentos(document.getElementById('modalUsuarioID').value)">
+            <i class="fas fa-paperclip"></i> Anexar Documentos
+          </button>
+
+          <button type="button" class="btn btn-outline-success rounded-pill"
+            onclick="abrirModalVisualizarDocs(document.getElementById('modalUsuarioID').value)">
+            <i class="fas fa-folder-open"></i> Ver Documentos
+          </button>
+
+        </div>
+
+        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle"></i> Fechar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="modalAnexarDocs" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content shadow-lg rounded-4">
+
+      <div class="modal-header bg-primary text-white rounded-top-4">
+        <h5 class="modal-title"><i class="fas fa-paperclip me-2"></i> Anexar Documentos</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <input type="hidden" id="id_titular_docs">
+
+        <!-- Input com preview -->
+        <label class="form-label fw-bold">Selecione seus arquivos</label>
+        <input type="file" id="inputDocumentos" class="form-control" multiple>
+
+        <!-- Lista estilizada -->
+        <ul id="listaArquivos" class="list-group mt-3"></ul>
+
+        <!-- Barra de Progresso -->
+        <div class="progress mt-3 d-none" id="barraProgressoContainer">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" id="barraProgresso" style="width: 0%">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="cancelarDocumentos()">
+          <i class="fas fa-times"></i> Cancelar
+        </button>
+
+
+        <button class="btn btn-danger" onclick="limparCamposDocumentos()">
+          <i class="fas fa-trash"></i> Limpar Tudo
+        </button>
+
+        <button class="btn btn-success" onclick="enviarDocumentos()">
+          <i class="fas fa-upload"></i> Enviar
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Visualizar Documentos -->
+<div class="modal fade" id="modalVisualizarDocs" tabindex="-1" aria-hidden="true">
+
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow">
+
+      <div class="modal-header bg-dark text-white rounded-top-4">
+        <h5 class="modal-title">
+          <i class="fas fa-folder-open me-2"></i> Documentos do Titular
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <input type="hidden" id="id_titular_visualizar">
+
+        <!-- Lista dos arquivos -->
+        <div id="listaDocumentos" class="row g-3"></div>
+
+      </div>
+
+      <div class="modal-footer bg-light rounded-bottom-4">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times"></i> Fechar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarTitulo" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content rounded-4 shadow border-0 animate-modal">
+
+      <!-- Cabeçalho -->
+      <div class="modal-header bg-primary text-white rounded-top-4">
+        <h5 class="modal-title d-flex align-items-center gap-2">
+          <i class="bi bi-pencil-square fs-4"></i> Editar Usuário
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+
+      <!-- Corpo -->
+      <div class="modal-body px-4 py-3">
+        <input type="hidden" id="editIdUsuario">
+
+        <!-- Abas -->
+        <ul class="nav nav-tabs mb-3" id="editUserTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="edit-tab-dados" data-bs-toggle="tab" data-bs-target="#edit-dados"
+              type="button">Dados Pessoais</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="edit-tab-dependentes" data-bs-toggle="tab" data-bs-target="#edit-dependentes"
+              type="button">Dependentes</button>
+          </li>
+        </ul>
+
+        <!-- Conteúdo das abas -->
+        <div class="tab-content" id="editUserTabsContent">
+          <!-- Aba 1 - Dados pessoais -->
+          <div class="tab-pane fade show active" id="edit-dados" role="tabpanel">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="mb-2"><label>Nome</label><input type="text" id="editNome" class="form-control"></div>
+                <div class="mb-2"><label>Telefone</label><input type="text" id="editTelefone" class="form-control">
+                </div>
+                <div class="mb-2"><label>Email</label><input type="email" id="editEmail" class="form-control"></div>
+                <div class="mb-2"><label>RG</label><input type="text" id="editRg" class="form-control"></div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-2"><label>CPF</label><input type="text" id="editCpf" class="form-control"></div>
+                <div class="mb-2"><label>Data de Nascimento</label><input type="date" id="editNascimento"
+                    class="form-control"></div>
+                <div class="mb-2"><label>Estado Civil</label><input type="text" id="editEstadoCivil"
+                    class="form-control"></div>
+                <div class="mb-2"><label>Escolaridade</label><input type="text" id="editEscolaridade"
+                    class="form-control"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Aba 2 - Dependentes (opcional, pode carregar com AJAX) -->
+          <div class="tab-pane fade" id="edit-dependentes" role="tabpanel">
+            <div id="editListaDependentes">
+              <!-- Aqui você pode carregar dependentes via fetch, se quiser -->
+              <p class="text-muted">Dependentes do usuário serão listados aqui.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rodapé -->
+      <div class="modal-footer bg-light border-0 rounded-bottom-4 d-flex justify-content-between">
+        <div>
+          <button type="button" class="btn btn-outline-danger rounded-pill" onclick="excluirUsuario()">
+            <i class="bi bi-trash3-fill"></i> Excluir
+          </button>
+
+          <button type="button" class="btn btn-primary rounded-pill" onclick="salvarEdicao()">
+            <i class="bi bi-check-lg"></i> Salvar Alterações
+          </button>
+        </div>
+
+        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle"></i> Fechar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- jQuery (carregar primeiro!) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<!-- DataTables Buttons -->
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+
+<!-- Script para abrir o modal -->
+<script>
+  function abrirModal(id) {
+    document.getElementById("modalUsuarioID").value = id;
+
+    // 🚫 Impede erros ao clicar em "NOVO CADASTRO" ou algum clique propagado
+    if (!id || id === 'undefined' || id === 'null') {
+      console.warn("abrirModal foi chamado SEM ID válido:", id);
+      console.trace();
+      return;
+    }
+
+    console.log("🔎 Buscando dados do usuário ID:", id);
+
+    fetch(`/admin/usuarios/${id}`)
+      .then(async (response) => {
+        const text = await response.text();
+
+        // ⚠ Se a resposta começar com "<", significa erro HTML (404, login expirado etc.)
+        if (text.trim().startsWith("<")) {
+          console.error("Resposta inesperada (HTML). Provável 404 ou sessão expirada.");
+          throw new Error("Resposta HTML inesperada ao buscar o usuário.");
+        }
+
+        return JSON.parse(text);
+      })
+      .then(data => {
+
+        if (!data || data.error) {
+          console.error("Erro retornado da API:", data);
+          alert("Usuário não encontrado.");
+          return;
+        }
+
+        // ------------------
+        // POPULA DADOS
+        // ------------------
+        document.getElementById('modalNome').textContent = data.nome || '—';
+        document.getElementById('modalTelefone').textContent = data.telefone || '—';
+        document.getElementById('modalEmail').textContent = data.email || '—';
+        document.getElementById('modalRg').textContent = data.rg || '—';
+        document.getElementById('modalCpf').textContent = data.cpf || '—';
+        document.getElementById('modalNascimento').textContent = data.data_nascimento || '—';
+        document.getElementById('modalEstadoCivil').textContent = data.estado_civil || '—';
+
+        // Escolaridade
+        let escolaridade = data.grau_escolaridade || '—';
+        if (typeof escolaridade === 'string') {
+          escolaridade = escolaridade.replace(/[\[\]"]+/g, '');
+        } else if (Array.isArray(escolaridade)) {
+          escolaridade = escolaridade.join(', ');
+        }
+        document.getElementById('modalEscolaridade').textContent = escolaridade;
+
+        // Dependentes
+        const dependentes = data.dependentes || [];
+        const dependentesHTML = dependentes.length
+          ? `
+        <table class="table table-sm table-striped">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Idade</th>
+              <th>Parentesco</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${dependentes.map(dep => `
+              <tr>
+                <td>${dep.nome_dependente || '—'}</td>
+                <td>${dep.idade || '—'}</td>
+                <td>${dep.parentesco || '—'}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>`
+          : `<p class="text-muted">Nenhum dependente cadastrado.</p>`;
+        document.getElementById('listaDependentes').innerHTML = dependentesHTML;
+
+        // Moradores
+        const moradores = data.moradores || [];
+        const moradoresHTML = moradores.length
+          ? `
+        <table class="table table-sm table-striped">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Idade</th>
+              <th>Parentesco</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${moradores.map(m => `
+              <tr>
+                <td>${m.nome || '—'}</td>
+                <td>${m.idade || '—'}</td>
+                <td>${m.parentesco || '—'}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>`
+          : `<p class="text-muted">Nenhum morador cadastrado.</p>`;
+        document.getElementById('listaMoradores').innerHTML = moradoresHTML;
+
+        // ------------------
+        // EXIBE MODAL
+        // ------------------
+        const modal = new bootstrap.Modal(document.getElementById('meuModal'));
+        modal.show();
+      })
+      .catch(error => {
+        console.error('❌ Erro ao carregar dados do usuário:', error);
+        alert('Não foi possível carregar os dados do usuário.');
+      });
+  }
+
+
+  document.getElementById("searchInput").addEventListener("keyup", function () {
+    let filtro = this.value.toLowerCase();
+    let linhas = document.querySelectorAll("#usuariosTable tbody tr");
+
+    linhas.forEach(linha => {
+      let texto = linha.textContent.toLowerCase();
+      linha.style.display = texto.includes(filtro) ? "" : "none";
+    });
+  });
+
+
+  $(document).ready(function () {
+
+    const tabela = $('#usuariosTable').DataTable({
+      responsive: true,
+
+      dom: "<'row mb-3'<'col-12'B>>" +
+        "<'row'<'col-sm-12 col-md-6'f><'col-sm-12 col-md-6'l>>" +
+        "rt" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+
+      buttons: [
+        { extend: 'copy', text: 'Copiar', className: 'btn btn-primary btn-sm' },
+        { extend: 'csvHtml5', text: 'CSV', className: 'btn btn-secondary btn-sm' },
+        { extend: 'excelHtml5', text: 'Excel', className: 'btn btn-success btn-sm' },
+        { extend: 'pdfHtml5', text: 'PDF', className: 'btn btn-danger btn-sm' },
+        { extend: 'print', text: 'Imprimir', className: 'btn btn-dark btn-sm' }
+      ],
+
+      language: {
+        url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json'
+      },
+
+      pageLength: 10,
+      lengthMenu: [
+        [10, 25, 50, 100],
+        ['10 registros', '25 registros', '50 registros', '100 registros']
+      ]
+    });
+
+    // Pesquisa personalizada
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+      tabela.search(this.value).draw();
+    });
+
+  });
+
+
+
+  // LISTAR ARQUIVOS SELECIONADOS
+  // Atualiza lista de arquivos selecionados
+  // ===============================================
+  //   FUNÇÃO PARA DEFINIR ÍCONE PELO TIPO DO ARQUIVO
+  // ===============================================
+  function iconePorExtensao(ext) {
+    const mapa = {
+      pdf: "fa-file-pdf text-danger",
+      doc: "fa-file-word text-primary",
+      docx: "fa-file-word text-primary",
+      xls: "fa-file-excel text-success",
+      xlsx: "fa-file-excel text-success",
+      txt: "fa-file-lines text-secondary",
+      zip: "fa-file-zipper text-warning",
+      rar: "fa-file-zipper text-warning",
+      jpg: "fa-file-image text-info",
+      jpeg: "fa-file-image text-info",
+      png: "fa-file-image text-info",
+    };
+
+    return mapa[ext] || "fa-file text-dark";
+  }
+
+
+  // ===============================================
+  //     LISTAR ARQUIVOS COM ÍCONE + TAMANHO + REMOVER
+  // ===============================================
+  document.getElementById('inputDocumentos').addEventListener('change', function () {
+    const lista = document.getElementById("listaArquivos");
+    lista.innerHTML = "";
+
+    [...this.files].forEach((file, index) => {
+      const ext = file.name.split(".").pop().toLowerCase();
+      const icone = iconePorExtensao(ext);
+
+      const previewImg =
+        ["jpg", "jpeg", "png"].includes(ext)
+          ? `<img src="${URL.createObjectURL(file)}" class="rounded" style="height:45px;width:auto;margin-right:8px;">`
+          : "";
+
+      lista.innerHTML += `
+      <li class="list-group-item animate__animated animate__fadeIn d-flex justify-content-between align-items-center shadow-sm rounded mb-2">
+        <div class="d-flex align-items-center">
+          ${previewImg}
+          <i class="fas ${icone} fs-5 me-2"></i>
+          <span class="text-secondary fw-bold">${file.name}</span>
+        </div>
+
+        <div>
+          <span class="badge bg-primary me-2">${(file.size / 1024).toFixed(1)} KB</span>
+          <button class="btn btn-sm btn-outline-danger" onclick="removerArquivo(${index})">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </li>
+    `;
+    });
+  });
+
+
+  // Lista temporária para poder remover arquivos
+  let arquivosTemp = [];
+
+  document.getElementById("inputDocumentos").addEventListener("change", function () {
+    arquivosTemp = [...this.files];
+  });
+
+
+  // ===============================================
+  //        REMOVER ARQUIVO INDIVIDUAL
+  // ===============================================
+  function removerArquivo(index) {
+    arquivosTemp.splice(index, 1);
+
+    const dt = new DataTransfer();
+    arquivosTemp.forEach(f => dt.items.add(f));
+    document.getElementById("inputDocumentos").files = dt.files;
+
+    document.getElementById("inputDocumentos").dispatchEvent(new Event("change"));
+  }
+
+
+  // ===============================================
+  //     ABRIR MODAL E RESETAR CAMPOS
+  // ===============================================
+  function abrirModalDocumentos(idTitular) {
+    limparCamposDocumentos();
+    document.getElementById("id_titular_docs").value = idTitular;
+    $("#modalAnexarDocs").modal("show");
+  }
+
+
+  // ===============================================
+  //     ENVIAR DOCUMENTOS COM BARRA DE PROGRESSO
+  // ===============================================
+  function enviarDocumentos() {
+
+    const input = document.getElementById("inputDocumentos");
+    const arquivos = input.files;
+    const id = document.getElementById("id_titular_docs").value;
+    const barraContainer = document.getElementById("barraProgressoContainer");
+    const barra = document.getElementById("barraProgresso");
+
+    if (arquivos.length === 0) {
+      alert("Selecione pelo menos um arquivo!");
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append("id_titular", id);
+
+    [...arquivos].forEach(arq => formData.append("documentos[]", arq));
+
+    barraContainer.classList.remove("d-none");
+    barra.style.width = "0%";
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/admin/documentos/upload", true);
+
+    xhr.upload.onprogress = e => {
+      if (e.lengthComputable) {
+        const percent = (e.loaded / e.total) * 100;
+        barra.style.width = percent.toFixed(0) + "%";
+      }
+    };
+
+    xhr.onload = () => {
+      const resp = JSON.parse(xhr.responseText);
+
+      if (resp.status === "success") {
+        alert("Documentos enviados com sucesso!");
+        limparCamposDocumentos();
+        $("#modalAnexarDocs").modal("hide");
+      } else {
+        alert("Erro ao enviar: " + resp.message);
+      }
+
+      barraContainer.classList.add("d-none");
+    };
+
+    xhr.send(formData);
+  }
+
+
+  // ===============================================
+  //          LIMPAR CAMPOS
+  // ===============================================
+  function limparCamposDocumentos() {
+    document.getElementById("inputDocumentos").value = "";
+    document.getElementById("listaArquivos").innerHTML = "";
+    arquivosTemp = [];
+
+    document.getElementById("barraProgresso").style.width = "0%";
+    document.getElementById("barraProgressoContainer").classList.add("d-none");
+  }
+
+  function cancelarDocumentos() {
+    // Limpa campos
+    limparCamposDocumentos();
+
+    // Fecha modal (compatível com Bootstrap 4 e 5)
+    const modal = $("#modalAnexarDocs");
+    if (modal.length) {
+      modal.modal("hide"); // Fecha no Bootstrap 4 e no jQuery
+    } else {
+      // Caso esteja no Bootstrap 5 sem jQuery
+      const modalEl = document.getElementById("modalAnexarDocs");
+      const instance = bootstrap.Modal.getInstance(modalEl);
+      if (instance) instance.hide();
+    }
+  }
+
+
+  function editarUsuario() {
+    const usuarioID = document.getElementById('modalUsuarioID')?.value;
+    console.log("Buscando dados do usuário ID:", usuarioID);
+
+    if (!usuarioID) {
+      alert("Nenhum usuário selecionado!");
+      return;
+    }
+
+    fetch(`/admin/usuarios/${usuarioID}`)
+      .then(res => res.text()) // pegar texto para debug
+      .then(text => {
+        try {
+          const data = JSON.parse(text);
+
+          if (data.error) {
+            alert(data.error);
+            return;
+          }
+
+          // Preencher formulário do modal
+          document.getElementById('editIdUsuario').value = data.id || "";
+          document.getElementById('editNome').value = data.nome || "";
+          document.getElementById('editTelefone').value = data.telefone || "";
+          document.getElementById('editEmail').value = data.email || "";
+          document.getElementById('editRg').value = data.rg || "";
+          document.getElementById('editCpf').value = data.cpf || "";
+          document.getElementById('editNascimento').value = data.data_nascimento || "";
+          document.getElementById('editEstadoCivil').value = data.estado_civil || "";
+          document.getElementById('editEscolaridade').value = data.grau_escolaridade || "";
+
+          // Abre o modal
+          const editModal = new bootstrap.Modal(document.getElementById('modalEditarUsuario'));
+          editModal.show();
+
+        } catch (e) {
+          console.error("Resposta inválida do servidor:", text);
+          alert("Erro ao buscar dados do usuário. Verifique o console.");
+        }
+      })
+      .catch(err => {
+        console.error("Erro na requisição fetch:", err);
+        alert("Erro na requisição ao servidor.");
+      });
+  }
+
+
+
+  function salvarEdicao() {
+    const id = document.getElementById('editIdUsuario')?.value;
+    console.log("ID do usuário que será salvo:", id);
+
+    if (!id) {
+      alert("ID do usuário não definido!");
+      return;
+    }
+
+    const data = {
+      nome: document.getElementById('editNome').value || "",
+      telefone: document.getElementById('editTelefone').value || "",
+      email: document.getElementById('editEmail').value || "",
+      rg: document.getElementById('editRg').value || "",
+      cpf: document.getElementById('editCpf').value || "",
+      data_nascimento: document.getElementById('editNascimento').value || "",
+      estado_civil: document.getElementById('editEstadoCivil').value || "",
+      grau_escolaridade: document.getElementById('editEscolaridade').value || ""
+    };
+
+    fetch(`/admin/usuarios/${id}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.text()) // pega texto para debug
+      .then(text => {
+        try {
+          const json = JSON.parse(text);
+          alert(json.message || json.error);
+          if (json.message) {
+            location.reload(); // atualiza tabela ou página
+          }
+        } catch (e) {
+          console.error("Resposta inválida do servidor:", text);
+          alert("Erro no servidor. Verifique o console.");
+        }
+      })
+      .catch(err => {
+        console.error("Erro na requisição fetch:", err);
+        alert("Erro na requisição ao servidor.");
+      });
+  }
+
+  function abrirModalVisualizarDocs(idTitular) {
+    document.getElementById("id_titular_visualizar").value = idTitular;
+
+    const lista = document.getElementById("listaDocumentos");
+    lista.innerHTML = `
+    <div class="col-12 text-center py-3">
+      <i class="fas fa-spinner fa-spin fa-2x"></i>
+      <p>Carregando documentos...</p>
+    </div>
+  `;
+
+    fetch(`/admin/documentos/listar/${idTitular}`)
+      .then(res => res.json())
+      .then(docs => {
+
+        if (!docs.length) {
+          lista.innerHTML = `
+          <div class="col-12 text-center text-muted py-3">
+            <i class="fas fa-folder-open fa-2x"></i>
+            <p>Nenhum documento enviado.</p>
+          </div>
+        `;
+          return;
+        }
+
+        lista.innerHTML = docs.map(doc => `
+        <div class="col-md-4">
+          <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body">
+
+              <h6 class="text-dark fw-bold">
+                <i class="fas fa-file-alt me-1"></i>
+                ${doc.nome_arquivo}
+              </h6>
+
+              <p class="text-muted small mb-2">
+                Enviado em: ${doc.data_upload}
+              </p>
+
+              <div class="d-flex justify-content-between mt-3">
+
+                <a href="/${doc.caminho_arquivo}" target="_blank"
+                  class="btn btn-sm btn-primary rounded-pill">
+                  <i class="fas fa-eye"></i>
+                </a>
+
+                <a href="/${doc.caminho_arquivo}" download
+                  class="btn btn-sm btn-success rounded-pill">
+                  <i class="fas fa-download"></i>
+                </a>
+
+                <button onclick="excluirDocumento(${doc.id})"
+                  class="btn btn-sm btn-danger rounded-pill">
+                  <i class="fas fa-trash"></i>
+                </button>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      `).join('');
+      });
+
+    const modal = new bootstrap.Modal(document.getElementById("modalVisualizarDocs"));
+    modal.show();
+  }
+
+  function excluirDocumento(idDoc) {
+    if (!confirm("Tem certeza que deseja excluir este documento?")) return;
+
+    fetch(`/admin/documentos/excluir/${idDoc}`, {
+      method: "DELETE"
+    })
+      .then(res => res.json())
+      .then(r => {
+        if (r.success) {
+          abrirModalVisualizarDocs(document.getElementById("id_titular_visualizar").value);
+        } else {
+          alert("Erro ao excluir documento!");
+        }
+      });
+  }
+
+
+</script>
+
+
+<!-- Estilo e animação -->
+<style>
+  @keyframes modalZoomFade {
+    from {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-modal {
+    animation: modalZoomFade 0.25s ease-out;
+  }
+
+  .modal-body p {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    color: #333;
+  }
+
+  .modal-body i {
+    font-size: 1rem;
+  }
+
+  .modal-content {
+    transition: all 0.3s ease;
+  }
+
+  .modal-content:hover {
+    transform: scale(1.01);
+  }
+
+  .btn-outline-info,
+  .btn-outline-primary,
+  .btn-outline-danger {
+    border: none;
+    transition: 0.2s ease;
+  }
+
+  .btn-outline-info:hover,
+  .btn-outline-primary:hover,
+  .btn-outline-danger:hover {
+    color: #fff;
+    opacity: 0.9;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: #0d6efd;
+  }
+
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+  }
+
+  .nav-tabs .nav-link.active {
+    background-color: #0dcaf0;
+    color: #fff !important;
+    border: none;
+    font-weight: 600;
+  }
+
+  .nav-tabs .nav-link {
+    color: #0dcaf0;
+    border: none;
+  }
+
+  .nav-tabs .nav-link:hover {
+    background-color: rgba(13, 202, 240, 0.1);
+  }
+
+  #listaArquivos li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border: none;
+    border-bottom: 1px solid #eee;
+    background: #fafafa;
+    transition: 0.2s;
+  }
+
+  #listaArquivos li:hover {
+    background: #f0f7ff;
+    transform: translateX(3px);
+  }
+
+  #listaArquivos li .badge {
+    font-size: 0.8rem;
+  }
+
+  #listaArquivos li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #listaArquivos li .remove-arquivo {
+    cursor: pointer;
+    color: #dc3545;
+    font-size: 1.2rem;
+  }
+</style>

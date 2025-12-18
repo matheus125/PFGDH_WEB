@@ -1,0 +1,61 @@
+<?php
+
+use \Hcode\PageAdmin;
+use \Hcode\Model\Clientes;
+
+$app->get("/admin/clientes", function () {
+
+	Clientes::verifyLogin();
+
+	$lista_titulares = Clientes::lista_titulares();
+
+	$page = new PageAdmin();
+
+	$page->setTpl("clientes", array(
+		"lista_titulares" => $lista_titulares,
+		"msgError" => Clientes::getError(),
+		"msgSuccess" => Clientes::getSuccess()
+	));
+});
+
+$app->get("/admin/clientes/create", function () {
+
+	Clientes::verifyLogin();
+
+	$page = new PageAdmin();
+
+	$page->setTpl("clientes-create");
+});
+
+$app->post("/admin/clientes/create", function () {
+
+	Clientes::verifyLogin();
+
+	$clientes = new Clientes();
+
+	$clientes->setData($_POST);
+
+	$clientes->salvar_cliente_titular();
+
+	header("Location: /admin/clientes");
+	exit;
+});
+
+$app->get("/admin/index", function () {
+
+	Clientes::verifyLogin();
+
+	// pega lista e total
+	$lista_titulares = Clientes::lista_titulares();
+	$total_titulares = Clientes::getTotalTitulares(); // <<< aqui
+	
+
+	$page = new PageAdmin();
+
+	$page->setTpl("index", [
+		"lista_titulares" => $lista_titulares,
+		"total_titulares" => $total_titulares,
+		"msgError" => Clientes::getError(),
+		"msgSuccess" => Clientes::getSuccess()
+	]);
+});

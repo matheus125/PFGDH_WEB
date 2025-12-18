@@ -1,0 +1,160 @@
+<div class="card card-info card-outline mb-4">
+  <div class="card-header">
+    <h3 class="card-title">EDITAR PASSAGEIRO</h3>
+  </div>
+
+  <form id="form" method="post" action="/admin/orcamentos/{$orcamentos.id}" novalidate>
+    <div class="card-body">
+      <input type="hidden" name="id" id="id" value="{$orcamentos.id ?? ''}">
+
+      <div class="row">
+        <div class="col-md-3 mb-2">
+          <input class="form-control" name="localizador" placeholder="Localizador" required
+            value="{$orcamentos.localizador ?? ''}">
+        </div>
+        <div class="col-md-3 mb-2">
+          <input class="form-control" name="status" placeholder="Status" value="{$orcamentos.status ?? 'Pendente'}"
+            required>
+        </div>
+        <div class="col-md-3 mb-2">
+          <input class="form-control" type="datetime-local" name="data_emissao" required
+            value="{$orcamentos.data_emissao ?? ''}">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 mb-2">
+          <input class="form-control" name="origem" placeholder="Origem" required value="{$orcamentos.origem ?? ''}">
+        </div>
+        <div class="col-md-4 mb-2">
+          <input class="form-control" name="destino" placeholder="Destino" required value="{$orcamentos.destino ?? ''}">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2 mb-2">
+          <input class="form-control" name="duracao" placeholder="Duração (HH:MM:SS)"
+            value="{$orcamentos.duracao ?? ''}">
+        </div>
+        <div class="col-md-2 mb-2">
+          <input class="form-control" type="number" name="escalas" placeholder="Escalas" min="0"
+            value="{$orcamentos.escalas ?? ''}">
+        </div>
+        <div class="col-md-2 mb-2">
+          <input class="form-control" name="bagagem" placeholder="Bagagem" value="{$orcamentos.bagagem ?? ''}">
+        </div>
+        <div class="col-md-2 mb-2">
+          <input class="form-control" name="classe" placeholder="Classe" value="{$orcamentos.classe ?? ''}">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2 mb-2">
+          <input class="form-control" name="tarifa" placeholder="Tarifa" required value="{$orcamentos.tarifa ?? ''}">
+        </div>
+        <div class="col-md-2 mb-2">
+          <input class="form-control" name="taxa" placeholder="Taxa" required value="{$orcamentos.taxa ?? ''}">
+        </div>
+        <div class="col-md-2 mb-2">
+          <input class="form-control" name="tx_embarque" placeholder="Tx Embarque" required
+            value="{$orcamentos.tx_embarque ?? ''}">
+        </div>
+      </div>
+
+      <div id="errorDiv" class="alert alert-danger d-none" role="alert"></div>
+      <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+  </form>
+
+  <div class="toast bg-success text-white position-fixed bottom-0 end-0 m-3" id="toast-success" role="alert"
+    aria-live="assertive" aria-atomic="true" data-delay="4000">
+    <div class="toast-header bg-success text-white">
+      <strong class="me-auto">Sucesso</strong>
+      <small>agora</small>
+      <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast">&times;</button>
+    </div>
+    <div class="toast-body">Orçamento salvo com sucesso!</div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.8/jquery.inputmask.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("form");
+    const toastElement = document.getElementById("toast-success");
+    const toast = new bootstrap.Toast(toastElement);
+    const errorDiv = document.getElementById("errorDiv");
+
+    $("[name='tarifa'], [name='taxa'], [name='tx_embarque']").inputmask("currency", {
+      prefix: "R$ ",
+      radixPoint: ",",
+      groupSeparator: ".",
+      digits: 2,
+      autoUnmask: true,
+      removeMaskOnSubmit: true
+    });
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      errorDiv.classList.add("d-none");
+      errorDiv.textContent = "";
+
+      if (!form.checkValidity()) {
+        form.classList.add("was-validated");
+        return;
+      }
+
+      const data = {
+        id: form.id.value || null,
+        localizador: form.localizador.value.trim(),
+        status: form.status.value.trim(),
+        data_emissao: form.data_emissao.value,
+        origem: form.origem.value.trim(),
+        destino: form.destino.value.trim(),
+        duracao: form.duracao.value.trim() || null,
+        escalas: form.escalas.value ? parseInt(form.escalas.value) : null,
+        bagagem: form.bagagem.value.trim() || null,
+        classe: form.classe.value.trim() || null,
+        tarifa: parseFloat(form.tarifa.value.replace(/\./g, '').replace(',', '.')) || 0,
+        taxa: parseFloat(form.taxa.value.replace(/\./g, '').replace(',', '.')) || 0,
+        tx_embarque: parseFloat(form.tx_embarque.value.replace(/\./g, '').replace(',', '.')) || 0
+      };
+
+      try {
+        console.log("Dados enviados:", data); // ✅ ADICIONE AQUI
+
+        const url = data.id ? `/admin/orcamentos/${data.id}` : "/admin/orcamentos/update";
+        const response = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Erro no servidor: ${response.status}\n${errorText}`);
+        }
+
+        const result = await response.json();
+
+        if (result.status === "success") {
+          toast.show();
+          form.reset();
+          form.classList.remove("was-validated");
+        } else {
+          errorDiv.textContent = result.message || "Erro ao salvar os dados.";
+          errorDiv.classList.remove("d-none");
+        }
+
+      } catch (error) {
+        errorDiv.textContent = error.message || "Erro de conexão ou resposta inválida.";
+        errorDiv.classList.remove("d-none");
+        console.error("Erro ao enviar:", error);
+      }
+
+    });
+  });
+</script>

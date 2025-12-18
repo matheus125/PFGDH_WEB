@@ -1,0 +1,155 @@
+<?php if(!class_exists('Rain\Tpl')){exit;}?><footer class="app-footer">
+  <!--begin::To the end-->
+
+  <!--end::To the end-->
+  <!--begin::Copyright-->
+  <strong>
+    Copyright &copy; 2024 - <span id="current-year"></span>&nbsp;
+    <a href="" class="text-decoration-none">MS-SOLUÇÕES EM TECNOLOGIA</a>.
+  </strong>
+  All rights reserved.
+
+  <script>
+    // Obtém o ano atual
+    var currentYear = new Date().getFullYear();
+
+    // Coloca o ano no elemento com o ID 'current-year'
+    document.getElementById("current-year").textContent = currentYear;
+  </script>
+  <!--end::Copyright-->
+</footer>
+<!--end::Footer-->
+</div>
+<!--end::App Wrapper-->
+<!--begin::Script-->
+<!--begin::Third Party Plugin(OverlayScrollbars)-->
+<script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/browser/overlayscrollbars.browser.es6.min.js"
+  integrity="sha256-dghWARbRe2eLlIJ56wNB+b760ywulqK3DzZYEpsg2fQ=" crossorigin="anonymous"></script>
+<!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+  integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+  integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+<!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
+<script src="/res/admin/dist/js/adminlte.js"></script>
+<!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+<script>
+  const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
+  const Default = {
+    scrollbarTheme: 'os-theme-light',
+    scrollbarAutoHide: 'leave',
+    scrollbarClickScroll: true,
+  };
+  document.addEventListener('DOMContentLoaded', function () {
+    const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+    if (sidebarWrapper && typeof OverlayScrollbarsGlobal?.OverlayScrollbars !== 'undefined') {
+      OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
+        scrollbars: {
+          theme: Default.scrollbarTheme,
+          autoHide: Default.scrollbarAutoHide,
+          clickScroll: Default.scrollbarClickScroll,
+        },
+      });
+    }
+  });
+</script>
+<!--end::OverlayScrollbars Configure-->
+<!-- OPTIONAL SCRIPTS -->
+<!-- apexcharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"
+  integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8=" crossorigin="anonymous"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Gráfico de vendas mensais (área)
+    const sales_chart_el = document.querySelector('#sales-chart');
+    if (sales_chart_el) {
+      const sales_chart_options = {
+        series: [
+          {
+            name: 'Digital Goods',
+            data: [28, 48, 40, 19, 86, 27, 90],
+          },
+          {
+            name: 'Electronics',
+            data: [65, 59, 80, 81, 56, 55, 40],
+          },
+        ],
+        chart: {
+          height: 180,
+          type: 'area',
+          toolbar: { show: false },
+        },
+        legend: { show: false },
+        colors: ['#0d6efd', '#20c997'],
+        dataLabels: { enabled: false },
+        stroke: { curve: 'smooth' },
+        xaxis: {
+          type: 'datetime',
+          categories: [
+            '2023-01-01',
+            '2023-02-01',
+            '2023-03-01',
+            '2023-04-01',
+            '2023-05-01',
+            '2023-06-01',
+            '2023-07-01',
+          ],
+        },
+        tooltip: {
+          x: { format: 'MMMM yyyy' },
+        },
+      };
+
+      const sales_chart = new ApexCharts(sales_chart_el, sales_chart_options);
+      sales_chart.render();
+    } else {
+      console.warn('#sales-chart não encontrado no DOM');
+    }
+
+    // Gráfico de pizza (faixa etária)
+    const pie_chart_el = document.querySelector('#pie-chart');
+    if (pie_chart_el) {
+      const pie_chart_options = {
+        series: [20, 20, 100, 900, 20, 100, 123, 123, 123, 123, 123, 123],
+        chart: { type: 'donut' },
+        labels: [
+          '3 ATÉ 17 ANOS MASCULINO',
+          '3 ATÉ 17 ANOS MASCULINO(PCD)',
+          '3 ATÉ 17 ANOS FEMININO',
+          '3 ATÉ 17 ANOS FEMININO(PCD)',
+          '18 ATÉ 59 ANOS MASCULINO',
+          '18 ATÉ 59 ANOS MASCULINO(PCD)',
+          '18 ATÉ 59 ANOS FEMININO',
+          '18 ATÉ 59 ANOS FEMININO(PCD)',
+          '60 ANOS MASCULINO',
+          '60 ANOS MASCULINO(PCD)',
+          '60 ANOS FEMININO',
+          '60 ANOS FEMININO(PCD)',
+        ],
+        dataLabels: { enabled: false },
+        colors: ['#0d6efd', '#20c997', '#ffc107', '#d63384', '#6f42c1', '#adb5bd'],
+      };
+
+      const pie_chart = new ApexCharts(pie_chart_el, pie_chart_options);
+      pie_chart.render();
+    } else {
+      console.warn('#pie-chart não encontrado no DOM');
+    }
+  });
+
+
+
+  
+
+</script>
+
+
+
+
+<!--end::Script-->
+</body>
+<!--end::Body-->
+
+</html>

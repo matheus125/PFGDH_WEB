@@ -1,0 +1,1769 @@
+<div class="card card-info card-outline mb-4">
+  <div class="card-header">
+    <h3 class="card-title">Ficha Social - CENAF</h3>
+  </div>
+
+  <div class="card-body">
+
+    <!-- NAV TABS -->
+    <ul class="nav nav-tabs" id="fichaTabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="tab-titular" data-bs-toggle="tab" href="#titular" role="tab">Titular</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="tab-dependentes" data-bs-toggle="tab" href="#dependentes" role="tab">Dependentes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="tab-socio_economico" data-bs-toggle="tab" href="#socio_economico" role="tab">Socio
+          Econômico</a>
+      </li>
+    </ul>
+
+    <!-- TAB CONTENT -->
+    <div class="tab-content mt-3" id="fichaTabsContent">
+
+      <!-- 🧍 TITULAR -->
+      <div class="tab-pane fade show active" id="titular" role="tabpanel">
+        <form id="formTitular" action="/admin/titulares/create" method="post">
+
+          <div class="row g-3">
+
+            <!-- Identificação -->
+            <div class="col-md-6">
+              <label class="form-label">Nome</label>
+              <input type="text" class="form-control" name="nome" required>
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">CEP</label>
+              <div class="input-group">
+                <input type="text" class="form-control" name="cep" id="cep" placeholder="00000-000">
+                <button type="button" class="btn btn-primary" id="btnBuscarCep">Buscar</button>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Endereço</label>
+              <input type="text" class="form-control" name="endereco">
+            </div>
+
+            <div class="col-md-1">
+              <label class="form-label">Nº</label>
+              <input type="text" class="form-control" name="numero">
+            </div>
+
+            <div class="col-md-2">
+              <label class="form-label">Complemento</label>
+              <input type="text" class="form-control" name="complemento">
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Bairro</label>
+              <input type="text" class="form-control" name="bairro">
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Cidade</label>
+              <input type="text" class="form-control" name="cidade">
+            </div>
+
+            <div class="col-md-1">
+              <label class="form-label">UF</label>
+              <input type="text" class="form-control" name="uf" maxlength="2">
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Telefone</label>
+              <input type="text" class="form-control" name="telefone">
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" name="email">
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">RG</label>
+              <input type="text" class="form-control" name="rg">
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">CPF</label>
+              <input type="text" class="form-control" name="cpf">
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Data de Nascimento</label>
+              <input type="date" class="form-control" name="data_nascimento">
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Estado Civil</label>
+              <select class="form-select" name="estado_civil">
+                <option value="">Selecione...</option>
+                <option>Solteiro</option>
+                <option>Casado</option>
+                <option>Viúvo</option>
+                <option>Separado</option>
+                <option>Outros</option>
+              </select>
+            </div>
+
+            <!-- Escolaridade -->
+            <div class="col-md-6 mt-3">
+              <label class="form-label fw-bold">Grau de Escolaridade</label>
+              <select class="form-select" name="grau_escolaridade" required>
+                <option value="">Selecione...</option>
+                <option value="Não Alfabetizado">Não Alfabetizado</option>
+                <option value="Alfabetizado">Alfabetizado</option>
+                <option value="Ensino Fundamental Incompleto">Ensino Fundamental Incompleto</option>
+                <option value="Ensino Fundamental Completo">Ensino Fundamental Completo</option>
+                <option value="Ensino Médio Incompleto">Ensino Médio Incompleto</option>
+                <option value="Ensino Médio Completo">Ensino Médio Completo</option>
+                <option value="Ensino Técnico">Ensino Técnico</option>
+                <option value="Ensino Superior Incompleto">Ensino Superior Incompleto</option>
+                <option value="Ensino Superior Completo">Ensino Superior Completo</option>
+                <option value="Pós-graduação">Pós-graduação</option>
+                <option value="Mestrado">Mestrado</option>
+                <option value="Doutorado">Doutorado</option>
+              </select>
+            </div>
+
+            <!-- Profissão -->
+            <div class="col-md-6 mt-3">
+              <label class="form-label">Profissão</label>
+              <input type="text" class="form-control" name="profissao">
+            </div>
+
+            <!-- Trabalho -->
+            <div class="col-md-6 mt-3">
+              <label class="form-label">Trabalha atualmente?</label><br>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="trabalha" value="Sim"> Sim
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="trabalha" value="Não"> Não
+              </div>
+            </div>
+
+            <!-- Benefícios -->
+            <div class="col-md-12 mt-3">
+              <label class="form-label">Recebe benefício do governo?</label><br>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="beneficio" value="Sim"> Sim
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="beneficio" value="Não"> Não
+              </div>
+            </div>
+
+            <div class="col-md-12 mt-2">
+              <label class="form-label">Tipo de Benefício</label><br>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="tipo_beneficio[]" value="Aposentadoria">
+                Aposentadoria
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="tipo_beneficio[]" value="Pensão"> Pensão
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="tipo_beneficio[]" value="Bolsa Família"> Bolsa
+                Família
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="tipo_beneficio[]" value="BPC"> BPC
+              </div>
+            </div>
+
+          </div>
+
+          <div class="card-footer mt-3 text-end">
+            <button type="button" class="btn btn-info" onclick="abrirLgpdTitular()">💾 Salvar Titular</button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Modal LGPD -->
+      <div class="modal fade" id="modalLGPD_Titular" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content rounded-4 shadow">
+
+            <div class="modal-header bg-info text-white rounded-top-4">
+              <h5 class="modal-title">
+                <i class="bi bi-shield-lock-fill"></i> Política de Privacidade e LGPD
+              </h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+              <p><strong>Controlador dos Dados:</strong> CENAF - Centro de Apoio à Família.</p>
+
+              <p><strong>Finalidade:</strong> Coleta dos dados pessoais para fins de cadastro, análise socioeconômica,
+                geração de relatórios institucionais e demais atividades administrativas internas.</p>
+
+              <p><strong>Base Legal (LGPD):</strong> Art. 7º, incisos II, V e IX da Lei 13.709/2018.</p>
+
+              <p><strong>Compartilhamento:</strong> Os dados não serão repassados a terceiros, exceto por obrigação
+                legal.</p>
+
+              <p><strong>Direitos do Titular:</strong> Solicitar atualização, correção, anonimização e exclusão dos
+                dados,
+                além de obter informações completas sobre o tratamento.</p>
+
+              <hr>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="lgpdAceiteTitular">
+                <label class="form-check-label" for="lgpdAceiteTitular">
+                  Declaro que li e aceito a Política de Privacidade e as disposições da LGPD.
+                </label>
+              </div>
+
+              <small id="erroLgpdTitular" class="text-danger d-none">
+                Você deve aceitar a política antes de continuar.
+              </small>
+
+            </div>
+
+            <div class="modal-footer bg-light rounded-bottom-4">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
+              <button type="button" class="btn btn-success" onclick="confirmarLgpdTitular()">
+                Aceito e Confirmar Cadastro
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- DEPENDENTES -->
+      <div class="tab-pane fade" id="dependentes" role="tabpanel">
+
+        <div class="alert alert-info d-flex justify-content-between align-items-center">
+          <div>
+            <strong>Titular Selecionado:</strong>
+            <span id="nome-titular-selecionado" class="text-primary">Nenhum titular selecionado</span>
+          </div>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalTitulares">🔍
+            Selecionar Titular</button>
+        </div>
+
+        <input type="hidden" id="id_titular" name="id_titular">
+
+        <form id="formDependente" action="/admin/dependentes/create" method="post">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-primary mb-0">👨‍👩‍👧 Cadastro de Dependentes</h5>
+            <button type="button" class="btn btn-success" id="btn-add-dependente">
+              <i class="fas fa-plus"></i> Adicionar Dependente
+            </button>
+          </div>
+
+          <div id="dependentes-container" class="mt-3">
+
+            <!-- ITEM INICIAL -->
+            <div class="card shadow-sm mb-3 dependente-item">
+              <div class="card-header bg-light">
+                <strong><i class="fas fa-user"></i> Dependente 1</strong>
+              </div>
+              <div class="card-body">
+                <div class="row g-3 align-items-center">
+
+                  <div class="col-md-5">
+                    <label class="form-label">Nome do Dependente</label>
+                    <input type="text" class="form-control" name="dependentes[0][nome_dependente]"
+                      placeholder="Digite o nome completo">
+                  </div>
+
+                  <div class="col-md-3">
+                    <label class="form-label">Parentesco</label>
+                    <input type="text" class="form-control" name="dependentes[0][parentesco]">
+                  </div>
+
+                  <div class="col-md-2">
+                    <label class="form-label">Idade</label>
+                    <input type="number" class="form-control" name="dependentes[0][idade]" min="0">
+                  </div>
+
+                  <div class="col-md-2">
+                    <label class="form-label">Escolaridade</label>
+                    <input type="text" class="form-control" name="dependentes[0][escolaridade]">
+                  </div>
+
+                  <div class="col-md-3">
+                    <label class="form-label d-block">Possui Deficiência?</label>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input possui-deficiencia-sim" type="radio"
+                        name="dependentes[0][possui_deficiencia]" value="Sim">
+                      <label class="form-check-label">Sim</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input possui-deficiencia-nao" type="radio"
+                        name="dependentes[0][possui_deficiencia]" value="Não" checked>
+                      <label class="form-check-label">Não</label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <label class="form-label">Tipo de Deficiência</label>
+                    <select class="form-select tipo-deficiencia" name="dependentes[0][tipo_deficiencia]" disabled>
+                      <option value="">Selecione...</option>
+                      <option>Visual</option>
+                      <option>Física</option>
+                      <option>Auditiva</option>
+                      <option>Intelectual</option>
+                      <option>Outras</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-1 text-end">
+                    <button type="button" class="btn btn-danger btn-remover-dependente mt-3">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="card-footer text-end mt-3">
+            <button type="submit" class="btn btn-primary">💾 Salvar Dependentes</button>
+          </div>
+        </form>
+
+        <!-- Barra de Pesquisa -->
+        <div class="input-group" style="width: 300px;">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar usuário...">
+        </div>
+
+        <div class="mt-4">
+          <h5>Lista de Dependentes</h5>
+
+          <table class="table table-striped" id="usuariosTable">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Parentesco</th>
+                <th>Idade</th>
+                <th>Escolaridade</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="listaDependentes">
+              <tr>
+                <td colspan="5" class="text-center">Nenhum dependente adicionado</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- SOCIO ECONOMICO -->
+      <div class="tab-pane fade" id="socio_economico" role="tabpanel">
+
+        <!-- TITULAR SELECIONADO -->
+        <div class="alert alert-info d-flex justify-content-between align-items-center">
+          <div>
+            <strong>Titular Selecionado:</strong>
+            <span id="nome-titular-selecionado" class="text-primary">Nenhum titular selecionado</span>
+          </div>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalTitulares">
+            🔍 Selecionar Titular
+          </button>
+        </div>
+
+        <input type="hidden" id="id_titular" name="id_titular">
+
+        <form id="formDados">
+          <div class="card-body">
+
+            <!-- 03 - Renda Familiar -->
+            <h5 class="fw-bold mt-3 text-primary">Renda Familiar</h5>
+
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" name="renda_fixa_70" id="renda_fixa_70" value="Sim">
+                  <label class="form-check-label" for="renda_fixa_70">Menos de 70 reais</label>
+                </div>
+
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" name="renda_acima_70" id="renda_acima_70" value="Sim">
+                  <label class="form-check-label" for="renda_acima_70">Acima de 70 reais</label>
+                </div>
+
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" name="renda_1_salario" id="renda_1_salario"
+                    value="Sim">
+                  <label class="form-check-label" for="renda_1_salario">Até 1 salário mínimo</label>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" name="renda_2_salarios" id="renda_2_salarios"
+                    value="Sim">
+                  <label class="form-check-label" for="renda_2_salarios">De 1 a 2 salários</label>
+                </div>
+
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" name="renda_3_salarios" id="renda_3_salarios"
+                    value="Sim">
+                  <label class="form-check-label" for="renda_3_salarios">Acima de 2 salários</label>
+                </div>
+
+                <input type="text" id="renda_outro_valor" class="form-control mt-2" name="renda_outro_valor"
+                  placeholder="Outro valor (se houver)">
+
+              </div>
+
+            </div>
+
+            <div class="form-group mt-3">
+              <label class="fw-bold">Principal Fonte de Renda</label>
+              <input type="text" class="form-control" name="principal_fonte_renda">
+            </div>
+
+            <div class="mt-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="trabalhador_formal" name="trabalhador_formal"
+                  value="Sim">
+                <label class="form-check-label" for="trabalhador_formal">Trabalhador Formal</label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="trabalhador_informal" name="trabalhador_informal"
+                  value="Sim">
+                <label class="form-check-label" for="trabalhador_informal">Trabalhador Informal</label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="autonomo" name="autonomo" value="Sim">
+                <label class="form-check-label" for="autonomo">Autônomo</label>
+              </div>
+
+              <input type="text" class="form-control mt-2" name="outros_quais_renda" placeholder="Outros quais?">
+            </div>
+
+            <hr>
+
+            <!-- 04 - Saneamento Básico -->
+            <h5 class="fw-bold">Saneamento Básico</h5>
+
+            <label class="mb-1">Forma de recebimento de água:</label>
+            <div class="mb-3">
+
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="recebimento_agua" id="agua_tratada" value="Tratada">
+                <label class="form-check-label" for="agua_tratada">Tratada</label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="recebimento_agua" id="agua_filtrada"
+                  value="Filtrada">
+                <label class="form-check-label" for="agua_filtrada">Filtrada</label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="recebimento_agua" id="agua_poco" value="Poço">
+                <label class="form-check-label" for="agua_poco">Poço</label>
+              </div>
+
+            </div>
+
+            <div class="form-group">
+              <label>A casa possui fossa sanitária?</label>
+              <select class="form-control" name="possui_fossa">
+                <option value="">-- Selecionar --</option>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+              </select>
+            </div>
+
+            <div class="mt-3">
+              <label class="mb-1">Como o lixo é tratado?</label>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="lixo_coleta" id="lixo_coleta" value="Sim">
+                <label class="form-check-label" for="lixo_coleta">Coleta do carro de lixo</label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="lixo_queimado" id="lixo_queimado" value="Sim">
+                <label class="form-check-label" for="lixo_queimado">Queimado</label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="lixo_jogado_rua" id="lixo_jogado_rua" value="Sim">
+                <label class="form-check-label" for="lixo_jogado_rua">Jogado nas ruas</label>
+              </div>
+
+              <input type="text" class="form-control mt-2" name="lixo_outros" placeholder="Outros quais?">
+            </div>
+
+            <hr>
+
+            <!-- 05 - Habitação -->
+            <h5 class="fw-bold">Habitação</h5>
+
+            <label>A casa é:</label>
+            <div class="mb-3">
+
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="tipo_posse" id="casa_propria" value="Própria">
+                <label class="form-check-label" for="casa_propria">Própria</label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="tipo_posse" id="casa_cedida" value="Cedida">
+                <label class="form-check-label" for="casa_cedida">Cedida</label>
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="tipo_posse" id="casa_alugada" value="Alugada">
+                <label class="form-check-label" for="casa_alugada">Alugada</label>
+              </div>
+
+            </div>
+
+            <div class="form-group">
+              <label>Material da Casa</label>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="casa_madeira" id="casa_madeira" value="Sim">
+                <label class="form-check-label" for="casa_madeira">Madeira</label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="casa_alvenaria" id="casa_alvenaria" value="Sim">
+                <label class="form-check-label" for="casa_alvenaria">Alvenaria</label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="casa_palafita" id="casa_palafita" value="Sim">
+                <label class="form-check-label" for="casa_palafita">Palafita</label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="casa_enchimento" id="casa_enchimento" value="Sim">
+                <label class="form-check-label" for="casa_enchimento">Enchimento</label>
+              </div>
+
+              <input type="text" class="form-control mt-2" name="casa_estrutura_outros" placeholder="Outros:">
+            </div>
+
+            <hr>
+
+            <!-- 06 - Participação Comunitária -->
+            <h5 class="fw-bold">Participação Comunitária</h5>
+
+            <div class="form-group">
+              <label>Participa de Grupo Comunitário?</label>
+              <select class="form-control" name="participa_comunidade">
+                <option value="">-- Selecionar --</option>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+              </select>
+              <input type="text" class="form-control mt-2" name="comunidade_qual" placeholder="Qual?">
+            </div>
+
+            <div class="mt-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="associacoes" id="associacoes" value="Sim">
+                <label class="form-check-label" for="associacoes">Associações</label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="cooperativas" id="cooperativas" value="Sim">
+                <label class="form-check-label" for="cooperativas">Cooperativas</label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="centro_comunitario" id="centro_comunitario"
+                  value="Sim">
+                <label class="form-check-label" for="centro_comunitario">Centro Comunitário</label>
+              </div>
+
+              <input type="text" class="form-control mt-2" name="outras_participacoes" placeholder="Outros">
+            </div>
+
+            <!-- Principais dificuldades -->
+            <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
+              <h5 class="fw-bold text-primary mb-0">📝 Principais Dificuldades</h5>
+            </div>
+
+            <div class="card shadow-sm mb-3">
+              <div class="card-body">
+                <table class="table table-bordered text-center">
+                  <thead class="table-light">
+                    <tr>
+                      <th>SAÚDE</th>
+                      <th>ALIMENTAÇÃO</th>
+                      <th>DOCUMENTAÇÃO</th>
+                      <th>MORADIA</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><textarea class="form-control" name="saude" rows="3"></textarea></td>
+                      <td><textarea class="form-control" name="alimentacao" rows="3"></textarea></td>
+                      <td><textarea class="form-control" name="documentacao" rows="3"></textarea></td>
+                      <td><textarea class="form-control" name="moradia" rows="3"></textarea></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Escola de votação -->
+            <div class="card shadow-sm mb-3">
+              <div class="card-body">
+                <label class="form-label fw-bold">Escola de Votação</label>
+                <input type="text" class="form-control" name="escola_votacao">
+              </div>
+            </div>
+
+            <!-- Outras informações -->
+            <div class="card shadow-sm mb-3">
+              <div class="card-body">
+                <label class="form-label fw-bold">Outras Informações</label>
+                <textarea class="form-control" name="outras_informacoes" rows="3"></textarea>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="card-footer text-end">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+          </div>
+        </form>
+      </div>
+
+
+    </div> <!-- FECHA tab-content -->
+
+  </div> <!-- FECHA card-body -->
+</div> <!-- FECHA card -->
+
+<!-- =======================
+     MODAL SELECIONAR TITULAR
+========================== -->
+
+<div class="modal fade" id="modalTitulares" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Selecionar Titular</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <input type="text" id="buscarTitular" class="form-control mb-3" placeholder="Digite o nome para buscar...">
+
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>CPF</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody id="listaTitulares">
+            <tr>
+              <td colspan="3" class="text-center">Carregando...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDITAR DEPENDENTE -->
+<div class="modal fade" id="modalEditarDependente" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Editar Dependente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <input type="hidden" id="editIdDependente">
+
+        <div class="row">
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Nome do Dependente</label>
+            <input type="text" class="form-control" id="editNomeDependente">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Parentesco</label>
+            <input type="text" class="form-control" id="editParentesco">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Idade</label>
+            <input type="number" class="form-control" id="editIdade">
+          </div>
+
+          <div class="col-md-8 mb-3">
+            <label class="form-label">Escolaridade</label>
+            <input type="text" class="form-control" id="editEscolaridade">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Estuda</label>
+            <select class="form-control" id="editEstuda">
+              <option value="">Selecione</option>
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+            </select>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Trabalha</label>
+            <select class="form-control" id="editTrabalha">
+              <option value="">Selecione</option>
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+            </select>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <label class="form-label">Ocupação</label>
+            <input type="text" class="form-control" id="editOcupacao">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Possui Deficiência?</label>
+            <select class="form-control" id="editDeficiencia">
+              <option value="">Selecione</option>
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+            </select>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Tipo de Deficiência</label>
+            <input type="text" class="form-control" id="editTipoDeficiencia">
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <label class="form-label">Outros</label>
+            <textarea class="form-control" id="editOutros"></textarea>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" onclick="salvarEdicaoDependente()">Salvar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+<script>
+  // FLAG para permitir o envio após aceitar LGPD
+  let lgpdAceito = false;
+  let lgpdModalInstance = null; // instância do modal
+
+  // SALVAR TITULAR
+  (() => {
+    'use strict';
+    const form = document.getElementById('formTitular');
+
+    form.addEventListener('submit', function (e) {
+
+      // Se LGPD não foi aceito ainda, bloqueia envio
+      if (!lgpdAceito) {
+        e.preventDefault();
+        return;
+      }
+
+      e.preventDefault(); // evita envio normal
+
+      const formData = new FormData(form);
+
+      const tipoBeneficio = formData.getAll('tipo_beneficio[]');
+
+      const data = {
+        nome: formData.get('nome'),
+        endereco: formData.get('endereco'),
+        numero: formData.get('numero'),
+        complemento: formData.get('complemento'),
+        bairro: formData.get('bairro'),
+        cidade: formData.get('cidade'),
+        uf: formData.get('uf'),
+        cep: formData.get('cep'),
+        telefone: formData.get('telefone'),
+        email: formData.get('email'),
+        rg: formData.get('rg'),
+        cpf: formData.get('cpf'),
+        data_nascimento: formData.get('data_nascimento'),
+        estado_civil: formData.get('estado_civil'),
+        grau_escolaridade: formData.get('grau_escolaridade'),
+        profissao: formData.get('profissao'),
+        trabalha_atualmente: formData.get('trabalha') || 'Não',
+        recebe_beneficio_governo: formData.get('beneficio') || 'Não',
+        tipo_beneficio: JSON.stringify(tipoBeneficio)
+      };
+
+      fetch(form.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+        .then(res => res.json())
+        .then(res => {
+
+          alert(res.message);
+
+          if (res.status === 'success') {
+
+            // Fecha o modal LGPD
+            if (lgpdModalInstance) {
+              lgpdModalInstance.hide();
+            }
+
+            // Reset form
+            form.reset();
+            lgpdAceito = false; // reseta para próxima vez
+          }
+        })
+        .catch(err => console.error(err));
+    });
+  })();
+
+
+
+
+  // JS para adicionar/remover dependentes
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('dependentes-container');
+    const btnAdd = document.getElementById('btn-add-dependente');
+
+    // Função para configurar eventos de um card
+    function configurar(item) {
+      const sim = item.querySelector('.possui-deficiencia-sim');
+      const nao = item.querySelector('.possui-deficiencia-nao');
+      const tipo = item.querySelector('.tipo-deficiencia');
+      const remover = item.querySelector('.btn-remover-dependente');
+
+      const toggle = (enable) => {
+        tipo.disabled = !enable;
+        tipo.style.backgroundColor = enable ? '#fff' : '#e9ecef';
+      };
+
+      sim.addEventListener('change', () => toggle(true));
+      nao.addEventListener('change', () => toggle(false));
+
+      remover.addEventListener('click', () => {
+        if (document.querySelectorAll('.dependente-item').length > 1) {
+          if (confirm('Deseja remover este dependente?')) {
+            item.remove();
+            atualizarNumeracao();
+          }
+        } else {
+          alert('Deve haver pelo menos um dependente cadastrado.');
+        }
+      });
+    }
+
+    // Atualiza a numeração de todos os cards
+    function atualizarNumeracao() {
+      document.querySelectorAll('.dependente-item').forEach((el, i) => {
+        const header = el.querySelector('.card-header strong');
+        header.innerHTML = `<i class="fas fa-user"></i> Dependente ${i + 1}`;
+
+        // Atualiza o índice nos names dos inputs e selects
+        el.querySelectorAll('input, select').forEach(inp => {
+          const name = inp.getAttribute('name');
+          if (name) inp.setAttribute('name', name.replace(/\[\d+\]/, `[${i}]`));
+        });
+      });
+    }
+
+    // Configura o card inicial
+    configurar(container.querySelector('.dependente-item'));
+    atualizarNumeracao();
+
+    // Adicionar novo dependente
+    btnAdd.addEventListener('click', () => {
+      const novo = container.querySelector('.dependente-item').cloneNode(true);
+
+      // Limpa os valores dos inputs e atualiza os radios/selects
+      novo.querySelectorAll('input, select').forEach(el => {
+        if (el.type !== 'radio' && el.type !== 'checkbox') el.value = '';
+        if (el.type === 'radio') el.checked = false;
+        if (el.classList.contains('possui-deficiencia-nao')) el.checked = true;
+        if (el.classList.contains('tipo-deficiencia')) el.disabled = true;
+      });
+
+      container.appendChild(novo);
+      configurar(novo);
+      atualizarNumeracao();
+    });
+  });
+
+
+  // 🔹 FORM DEPENDENTES
+  // SUBMIT DOS DEPENDENTES
+  document.getElementById('formDependente').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+    const dependentes = [];
+
+    for (let [key, value] of formData.entries()) {
+      const match = key.match(/^dependentes\[(\d+)\]\[(.+)\]$/);
+      if (match) {
+        const index = match[1];
+        const field = match[2];
+        dependentes[index] = dependentes[index] || {};
+        dependentes[index][field] = value;
+      }
+    }
+
+    const idTitular = localStorage.getItem("id_titular");
+    dependentes.forEach(dep => dep.id_titular = idTitular);
+
+    const res = await fetch(form.action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ dependentes })
+    });
+
+    const json = await res.json();
+    alert(json.message || 'Dependentes salvos com sucesso!');
+
+    // 👉 LIMPA OS CAMPOS APÓS SALVAR
+    limparCamposDependentes();
+  });
+
+
+
+  // =======================================
+  // MODAL - CARREGAR TITULARES E SELECIONAR
+  // =======================================
+
+  // 🔹 Carregar lista quando abrir o modal
+  document.getElementById("modalTitulares").addEventListener("shown.bs.modal", carregarTitulares);
+
+  async function carregarTitulares() {
+    const tbody = document.getElementById("listaTitulares");
+    tbody.innerHTML = `<tr><td colspan="5" class="text-center">Carregando...</td></tr>`;
+
+    const res = await fetch("/admin/titulares/list"); // <-- SUA ROTA DE LISTAGEM
+    const titulares = await res.json();
+
+    if (!titulares.length) {
+      tbody.innerHTML = `<tr><td colspan="3" class="text-center">Nenhum titular encontrado</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = "";
+
+    titulares.forEach(t => {
+      tbody.innerHTML += `
+      <tr>
+        <td>${t.nome}</td>
+        <td>${t.cpf}</td>
+        <td>
+          <button class="btn btn-primary btn-sm" onclick="selecionarTitular(${t.id}, '${t.nome}')">
+            Selecionar
+          </button>
+        </td>
+      </tr>
+    `;
+    });
+  }
+
+  // 🔹 SELECIONAR TITULAR
+  window.selecionarTitular = function (id, nome) {
+    document.getElementById("id_titular").value = id;
+    document.getElementById("nome-titular-selecionado").innerText = nome;
+
+    // Grava no localStorage para seu código existente
+    localStorage.setItem("id_titular", id);
+    localStorage.setItem("nome_titular", nome);
+
+    // Fecha o modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById("modalTitulares"));
+    modal.hide();
+  };
+
+  // 🔹 Busca em tempo real no modal
+  document.getElementById("buscarTitular").addEventListener("keyup", () => {
+    const termo = document.getElementById("buscarTitular").value.toLowerCase();
+    document.querySelectorAll("#listaTitulares tr").forEach(tr => {
+      const nome = tr.children[0]?.innerText.toLowerCase();
+      tr.style.display = nome.includes(termo) ? "" : "none";
+    });
+  });
+
+  // 🔹 Carregar seleção salva ao abrir página
+  document.addEventListener("DOMContentLoaded", () => {
+    const nome = localStorage.getItem("nome_titular");
+    if (nome) document.getElementById("nome-titular-selecionado").innerText = nome;
+
+    const id = localStorage.getItem("id_titular");
+    if (id) document.getElementById("id_titular").value = id;
+  });
+
+  // ===============================
+  // LIMPAR CAMPOS APÓS SALVAR
+  // ===============================
+  function limparCamposDependentes() {
+    const container = document.getElementById('dependentes-container');
+
+    // Mantém apenas o primeiro dependente
+    const itens = container.querySelectorAll('.dependente-item');
+    itens.forEach((item, idx) => {
+      if (idx > 0) item.remove();
+    });
+
+    const primeiro = container.querySelector('.dependente-item');
+
+    // Limpa todos os inputs e selects
+    primeiro.querySelectorAll('input, select').forEach(el => {
+      if (el.type === 'radio') el.checked = false;
+      else el.value = '';
+
+      // Forçar "Não" na deficiência
+      if (el.classList.contains('possui-deficiencia-nao')) {
+        el.checked = true;
+      }
+
+      // Desabilitar o select
+      if (el.classList.contains('tipo-deficiencia')) {
+        el.disabled = true;
+        el.value = '';
+      }
+    });
+  }
+
+  // CARREGAR LIST DEPENDENTES
+  document.addEventListener("DOMContentLoaded", () => {
+    carregarDependentes();
+  });
+
+  function carregarDependentes() {
+    const tbody = document.getElementById("listaDependentes");
+    if (!tbody) {
+      console.error("Elemento #listaDependentes não encontrado no HTML");
+      return;
+    }
+
+    // Estado de carregamento
+    tbody.innerHTML = `
+    <tr>
+      <td colspan="5" class="text-center">Carregando...</td>
+    </tr>
+  `;
+
+    fetch("/admin/dependentes/list")
+      .then(res => res.json())
+      .then(data => {
+        console.log("Retorno da API:", data);
+        tbody.innerHTML = "";
+
+        if (!Array.isArray(data) || data.length === 0) {
+          tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="text-center">Nenhum dependente encontrado.</td>
+          </tr>
+        `;
+          return;
+        }
+
+        // Fragment para performance
+        const fragment = document.createDocumentFragment();
+
+        data.forEach(dep => {
+          const tr = document.createElement("tr");
+
+          tr.innerHTML = `
+          <td>${dep.nome_dependente ?? "—"}</td>
+          <td>${dep.parentesco ?? "—"}</td>
+          <td>${dep.idade ?? "—"}</td>
+          <td>${dep.escolaridade ?? "—"}</td>
+          <td class="text-center acoes-dependente">
+  <button class="btn btn-sm btn-warning" title="Editar"
+          onclick="editarDependente(${dep.id_dependente})">
+    <i class="fa-solid fa-pen-to-square"></i>
+  </button>
+
+  <button class="btn btn-sm btn-danger" title="Remover"
+          onclick="removerDependente(${dep.id_dependente})">
+    <i class="fa-solid fa-trash"></i>
+  </button>
+</td>
+
+        `;
+
+          // Atribui eventos sem inline JS (mais seguro)
+          tr.querySelector(".btn-warning").addEventListener("click", () => {
+            editarDependente(dep.id_dependente);
+          });
+
+          tr.querySelector(".btn-danger").addEventListener("click", () => {
+            removerDependente(dep.id_dependente);
+          });
+
+          fragment.appendChild(tr);
+        });
+
+        tbody.appendChild(fragment);
+      })
+      .catch(err => {
+        console.error("Erro carregarDependentes:", err);
+        tbody.innerHTML = `
+        <tr>
+          <td colspan="5" class="text-center text-danger">Erro ao carregar dependentes.</td>
+        </tr>
+      `;
+      });
+  }
+
+
+
+  // EDITAR DEPENDENTE (correto)
+  function editarDependente(id) {
+
+    fetch(`/admin/dependentes/${id}`)
+      .then(r => r.json())
+      .then(dep => {
+
+        if (dep.error) return alert(dep.error);
+
+        document.getElementById("editIdDependente").value = dep.id_dependente;
+
+        document.getElementById("editNomeDependente").value = dep.nome_dependente ?? "";
+        document.getElementById("editParentesco").value = dep.parentesco ?? "";
+        document.getElementById("editIdade").value = dep.idade ?? "";
+        document.getElementById("editEscolaridade").value = dep.escolaridade ?? "";
+
+        document.getElementById("editEstuda").value = dep.estuda ?? "";
+        document.getElementById("editTrabalha").value = dep.trabalha ?? "";
+        document.getElementById("editOcupacao").value = dep.ocupacao ?? "";
+        document.getElementById("editDeficiencia").value = dep.deficiencia ?? "";
+        document.getElementById("editTipoDeficiencia").value = dep.tipo_deficiencia ?? "";
+        document.getElementById("editOutros").value = dep.outros ?? "";
+
+        new bootstrap.Modal(document.getElementById("modalEditarDependente")).show();
+      })
+      .catch(err => {
+        console.error("ERRO NO FETCH:", err);
+        alert("Erro ao carregar dependente.");
+      });
+  }
+
+  function salvarEdicaoDependente() {
+
+    const id = document.getElementById("editIdDependente").value;
+
+    const payload = {
+      nome_dependente: document.getElementById("editNomeDependente").value,
+      parentesco: document.getElementById("editParentesco").value,
+      idade: document.getElementById("editIdade").value,
+      escolaridade: document.getElementById("editEscolaridade").value,
+      estuda: document.getElementById("editEstuda").value,
+      trabalha: document.getElementById("editTrabalha").value,
+      ocupacao: document.getElementById("editOcupacao").value,
+      deficiencia: document.getElementById("editDeficiencia").value,
+      tipo_deficiencia: document.getElementById("editTipoDeficiencia").value,
+      outros: document.getElementById("editOutros").value
+    };
+
+    fetch(`/admin/dependentes/update/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    })
+      .then(r => r.json())
+      .then(res => {
+
+        if (res.status === "error") {
+          alert("Erro: " + res.message);
+          return;
+        }
+
+        alert("Dependente atualizado com sucesso!");
+
+        // Fecha modal
+        bootstrap.Modal.getInstance(
+          document.getElementById("modalEditarDependente")
+        ).hide();
+
+        // Recarrega tabela
+        carregarDependentes();
+      })
+      .catch(err => {
+        console.error("ERRO AO SALVAR:", err);
+        alert("Erro ao atualizar dependente.");
+      });
+
+  }
+
+
+
+
+  function removerDependente(id) {
+    if (!confirm("Deseja realmente excluir este dependente?")) return;
+
+    fetch(`/admin/dependentes/delete/${id}`, {
+      method: "DELETE"
+    })
+      .then(r => r.json())
+      .then(resp => {
+        if (resp.status === "success") {
+          alert("Dependente removido com sucesso!");
+          carregarDependentes(); // Atualiza tabela
+        } else {
+          alert("Erro: " + resp.message);
+        }
+      })
+      .catch(err => alert("Erro ao remover dependente."));
+  }
+
+
+
+  //API VIA CEP
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const inputCep = document.querySelector("input[name='cep']");
+    const inputEndereco = document.querySelector("input[name='endereco']");
+    const inputBairro = document.querySelector("input[name='bairro']");
+    const inputCidade = document.querySelector("input[name='cidade']");
+    const inputUf = document.querySelector("input[name='uf']");
+    const btnBuscarCep = document.getElementById("btnBuscarCep");
+
+    function limparCamposEndereco() {
+      inputEndereco.value = "";
+      inputBairro.value = "";
+      inputCidade.value = "";
+      inputUf.value = "";
+    }
+
+    // Máscara para CEP
+    inputCep.addEventListener("input", () => {
+      let valor = inputCep.value.replace(/\D/g, "");
+      if (valor.length > 8) valor = valor.substring(0, 8);
+
+      if (valor.length > 5) {
+        valor = valor.replace(/(\d{5})(\d{1,3})/, "$1-$2");
+      }
+
+      inputCep.value = valor;
+
+      if (valor.replace(/\D/g, "").length === 8) {
+        consultarCep(valor.replace(/\D/g, ""));
+      }
+    });
+
+    // Clique no botão Buscar
+    btnBuscarCep.addEventListener("click", () => {
+      const cep = inputCep.value.replace(/\D/g, "");
+
+      if (cep.length !== 8) {
+        alert("Digite um CEP válido com 8 dígitos.");
+        return;
+      }
+
+      consultarCep(cep);
+    });
+
+    function consultarCep(cep) {
+      inputEndereco.value = "Consultando...";
+      inputBairro.value = "";
+      inputCidade.value = "";
+      inputUf.value = "";
+
+      fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.erro) {
+            alert("CEP não encontrado!");
+            limparCamposEndereco();
+            return;
+          }
+
+          inputEndereco.value = data.logradouro || "";
+          inputBairro.value = data.bairro || "";
+          inputCidade.value = data.localidade || "";
+          inputUf.value = data.uf || "";
+        })
+        .catch(err => {
+          console.error("Erro ViaCEP:", err);
+          alert("Erro ao consultar o CEP!");
+          limparCamposEndereco();
+        });
+    }
+  });
+
+
+  document.addEventListener("DOMContentLoaded", () => {
+
+    // ==========================
+    // 1) ATIVAR MÁSCARAS
+    // ==========================
+    function maskMoney(input) {
+      input.addEventListener("input", () => {
+        let v = input.value.replace(/\D/g, "");
+        v = (v / 100).toFixed(2).replace(".", ",");
+        input.value = v;
+      });
+    }
+
+    function maskText(input) {
+      input.addEventListener("input", () => {
+        input.value = input.value.replace(/[^\w\sÀ-ú.,-]/g, "");
+      });
+    }
+
+    const campoRendaOutro = document.getElementById("renda_outro_valor");
+    if (campoRendaOutro) maskMoney(campoRendaOutro);
+
+    document.querySelectorAll("input[type=text], textarea").forEach(el => maskText(el));
+
+
+    // ==========================
+    // 2) VALIDAÇÕES
+    // ==========================
+    function validarFormulario(dados) {
+
+      if (!dados.id_titular || dados.id_titular.trim() === "") {
+        alert("Selecione um titular antes de salvar!");
+        return false;
+      }
+
+      // Pelo menos 1 renda marcada
+      const rendas = [
+        "renda_fixa_70",
+        "renda_acima_70",
+        "renda_1_salario",
+        "renda_2_salarios",
+        "renda_3_salarios"
+      ];
+
+      const algumaRenda = rendas.some(c => dados[c] === "Sim");
+
+      if (!algumaRenda) {
+        alert("Selecione pelo menos uma faixa de renda.");
+        return false;
+      }
+
+      // Água precisa ser selecionada
+      if (
+        !dados.recebimento_agua_tratada &&
+        !dados.recebimento_agua_filtrada &&
+        !dados.recebimento_agua_poco
+      ) {
+        alert("Selecione o tipo de recebimento de água.");
+        return false;
+      }
+
+      return true;
+    }
+
+
+    // ==========================
+    // 3) LIMPAR CAMPOS DEPOIS DE SALVAR
+    // ==========================
+    function limparCampos() {
+      document.getElementById("formDados").reset();
+
+      document.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = false);
+      document.querySelectorAll("input[type=text], textarea").forEach(el => el.value = "");
+
+      document.getElementById("id_titular").value = "";
+      const txt = document.getElementById("nome-titular-selecionado");
+      if (txt) txt.textContent = "Nenhum titular selecionado";
+    }
+
+
+    // ==========================
+    // 4) SALVAR DADOS
+    // ==========================
+    const form = document.getElementById("formDados");
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const idTitular = document.getElementById("id_titular").value;
+
+      const formData = new FormData(form);
+      let dados = {};
+
+      formData.forEach((value, key) => {
+        dados[key] = value;
+      });
+
+      // Forçar todos os campos que o backend espera
+      const camposBackend = [
+        "renda_fixa_70",
+        "renda_acima_70",
+        "renda_1_salario",
+        "renda_2_salarios",
+        "renda_3_salarios",
+        "renda_outro_valor",
+        "trabalhador_formal",
+        "trabalhador_informal",
+        "autonomo",
+        "outros_quais_renda",
+        "recebimento_agua_tratada",
+        "recebimento_agua_filtrada",
+        "recebimento_agua_poco",
+        "possui_fossa",
+        "lixo_coleta",
+        "lixo_queimado",
+        "lixo_jogado_rua",
+        "lixo_outros",
+        "casa_propria",
+        "casa_cedida",
+        "casa_alugada",
+        "casa_madeira",
+        "casa_alvenaria",
+        "casa_palafita",
+        "casa_enchimento",
+        "casa_estrutura_outros",
+        "participa_comunidade",
+        "comunidade_qual",
+        "associacoes",
+        "cooperativas",
+        "centro_comunitario",
+        "outras_participacoes",
+        "saude",
+        "alimentacao",
+        "documentacao",
+        "moradia",
+        "escola_votacao",
+        "outras_informacoes"
+      ];
+
+      camposBackend.forEach(campo => {
+        if (!dados[campo]) dados[campo] = "";
+      });
+
+      // Água → 3 colunas
+      const agua = formData.get("recebimento_agua");
+      dados.recebimento_agua_tratada = agua === "Tratada" ? "Sim" : "";
+      dados.recebimento_agua_filtrada = agua === "Filtrada" ? "Sim" : "";
+      dados.recebimento_agua_poco = agua === "Poço" ? "Sim" : "";
+
+      // ID titular
+      dados.id_titular = idTitular;
+
+      // Validação
+      if (!validarFormulario(dados)) return;
+
+      try {
+        const response = await fetch("/admin/socioeconomico/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dados)
+        });
+
+        const resultado = await response.json();
+
+        if (resultado.status === "success") {
+          alert("Dados salvos com sucesso!");
+          limparCampos();
+        } else {
+          alert("Erro: " + resultado.message);
+        }
+
+      } catch (erro) {
+        console.error("Erro ao enviar:", erro);
+        alert("Erro inesperado ao conectar ao servidor.");
+      }
+    });
+
+  });
+
+
+  // Mascara para moeda
+  function maskMoney(input) {
+    input.addEventListener("input", () => {
+      let v = input.value.replace(/\D/g, "");
+      v = (v / 100).toFixed(2) + "";
+      v = v.replace(".", ",");
+      input.value = v;
+    });
+  }
+
+  // Mascara somente números
+  function maskNumber(input) {
+    input.addEventListener("input", () => {
+      input.value = input.value.replace(/\D/g, "");
+    });
+  }
+
+  // Mascara texto (impede caracteres estranhos)
+  function maskText(input) {
+    input.addEventListener("input", () => {
+      input.value = input.value.replace(/[^\w\sÀ-ú.,-]/g, "");
+    });
+  }
+
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const campoRenda = document.getElementById("renda_outro_valor");
+    const camposTexto = document.querySelectorAll("input[type=text], textarea");
+
+    if (campoRenda) maskMoney(campoRenda);
+    camposTexto.forEach(maskText);
+  });
+
+  function validarFormulario(dados) {
+    // 1 - validar titular
+    if (!dados.id_titular || dados.id_titular.trim() === "") {
+      alert("Selecione um titular antes de salvar.");
+      return false;
+    }
+
+    // 2 - validar pelo menos 1 renda marcada
+    const opcoesRenda = [
+      "renda_fixa_70",
+      "renda_acima_70",
+      "renda_1_salario",
+      "renda_2_salarios",
+      "renda_3_salarios"
+    ];
+
+    const algumaRendaMarcada = opcoesRenda.some(campo => dados[campo] === "Sim");
+
+    if (!algumaRendaMarcada) {
+      alert("Selecione pelo menos uma faixa de renda.");
+      return false;
+    }
+
+    // 3 - validar recebimento de água
+    if (
+      dados.recebimento_agua_tratada === "" &&
+      dados.recebimento_agua_filtrada === "" &&
+      dados.recebimento_agua_poco === ""
+    ) {
+      alert("Selecione como a família recebe água.");
+      return false;
+    }
+
+    // 4 - validar campo outros da renda
+    if (dados.outros_quais_renda && dados.outros_quais_renda.trim().length < 2) {
+      alert("Descreva corretamente o campo 'Outros quais renda'.");
+      return false;
+    }
+
+    return true;
+  }
+
+  function limparCampos() {
+    document.getElementById("formDados").reset();
+
+    // desmarcar checkboxes manualmente
+    document.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = false);
+
+    // limpar textos
+    document.querySelectorAll("input[type=text], textarea").forEach(el => el.value = "");
+
+    // limpar ID do titular selecionado
+    document.getElementById("id_titular").value = "";
+    document.getElementById("nome-titular-selecionado").textContent = "Nenhum titular selecionado";
+  }
+
+  document.getElementById("searchInput").addEventListener("keyup", function () {
+    let filtro = this.value.toLowerCase();
+    let linhas = document.querySelectorAll("#usuariosTable tbody tr");
+
+    linhas.forEach(linha => {
+      let texto = linha.textContent.toLowerCase();
+      linha.style.display = texto.includes(filtro) ? "" : "none";
+    });
+  });
+
+
+  $(document).ready(function () {
+
+    const tabela = $('#usuariosTable').DataTable({
+      responsive: true,
+
+      dom: "<'row mb-3'<'col-12'B>>" +
+        "<'row'<'col-sm-12 col-md-6'f><'col-sm-12 col-md-6'l>>" +
+        "rt" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+
+      buttons: [
+        { extend: 'copy', text: 'Copiar', className: 'btn btn-primary btn-sm' },
+        { extend: 'csvHtml5', text: 'CSV', className: 'btn btn-secondary btn-sm' },
+        { extend: 'excelHtml5', text: 'Excel', className: 'btn btn-success btn-sm' },
+        { extend: 'pdfHtml5', text: 'PDF', className: 'btn btn-danger btn-sm' },
+        { extend: 'print', text: 'Imprimir', className: 'btn btn-dark btn-sm' }
+      ],
+
+      language: {
+        url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json'
+      },
+
+      pageLength: 10,
+      lengthMenu: [
+        [10, 25, 50, 100],
+        ['10 registros', '25 registros', '50 registros', '100 registros']
+      ]
+    });
+
+    // Pesquisa personalizada
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+      tabela.search(this.value).draw();
+    });
+
+  });
+
+  const formTitular = document.getElementById("formTitular");
+
+  function abrirLgpdTitular() {
+
+    if (!formTitular.checkValidity()) {
+      formTitular.classList.add("was-validated");
+      return;
+    }
+
+    // Cria a instância do modal LGPD (e salva)
+    lgpdModalInstance = new bootstrap.Modal(document.getElementById("modalLGPD_Titular"));
+    lgpdModalInstance.show();
+  }
+
+  function confirmarLgpdTitular() {
+    const check = document.getElementById("lgpdAceiteTitular");
+    const erro = document.getElementById("erroLgpdTitular");
+
+    if (!check.checked) {
+      erro.classList.remove("d-none");
+      return;
+    }
+
+    erro.classList.add("d-none");
+
+    // Marca LGPD como aceita
+    lgpdAceito = true;
+
+    // Dispara submit para acionar o FETCH
+    formTitular.dispatchEvent(new Event("submit", { cancelable: true }));
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const radiosBeneficio = document.getElementsByName("beneficio");
+    const checkboxesBeneficio = document.querySelectorAll("input[name='tipo_beneficio[]']");
+
+    function atualizarBeneficios() {
+      const selecionado = [...radiosBeneficio].find(r => r.checked)?.value;
+
+      if (selecionado === "Sim") {
+        checkboxesBeneficio.forEach(c => {
+          c.disabled = false;
+        });
+      } else {
+        checkboxesBeneficio.forEach(c => {
+          c.checked = false;
+          c.disabled = true;
+        });
+      }
+    }
+
+    // Adiciona evento nos radios
+    radiosBeneficio.forEach(r => {
+      r.addEventListener("change", atualizarBeneficios);
+    });
+
+    // Executa ao carregar para garantir o estado inicial
+    atualizarBeneficios();
+  });
+
+  // Remove qualquer backdrop travado ao fechar qualquer modal
+  document.addEventListener('hidden.bs.modal', function () {
+    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+    document.body.classList.remove('modal-open');
+  });
+
+  // Remove backdrop antes de abrir o modal de edição
+  function abrirModalEditar() {
+    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+    const modal = new bootstrap.Modal(document.getElementById('modalEditarDependente'));
+    modal.show();
+  }
+</script>
+
+
+<style>
+  #dependentes-container .card {
+    border-left: 5px solid #0d6efd;
+    transition: 0.2s;
+  }
+
+  #dependentes-container .card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-header strong {
+    color: #0d6efd;
+  }
+
+  #dependentes-container .card {
+    border-left: 5px solid #0d6efd;
+    transition: all 0.25s ease-in-out;
+  }
+
+  #dependentes-container .card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-header strong {
+    color: #0d6efd;
+  }
+
+  /* Garante que os botões na coluna Ações não quebrem */
+  .table .acoes-dependente {
+    white-space: nowrap;
+  }
+
+  /* Espaçamento entre botões (compatível com Bootstrap) */
+  .acoes-dependente .btn {
+    margin-right: .25rem;
+    min-width: 38px;
+    /* garante tamanho mínimo para não "sumir" */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>

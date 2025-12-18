@@ -1,0 +1,212 @@
+<!-- CSS do DataTables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- JS do DataTables -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+
+
+<div class="card mb-4">
+  <div class="card-header d-flex justify-content-center">
+    <h3 class="card-title mb-0">CLIENTE</h3>
+  </div>
+
+  <!-- /.card-header -->
+  <!--begin::App Content-->
+  <div class="app-content">
+    <!--begin::Container-->
+    <div class="container-fluid">
+      <!--begin::Row-->
+      <div class="row">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h3 class="card-title">Informações para contato</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="table-responsive">
+            <table id="tabela_titulares" class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nome Completo</th>
+                  <th>Telefone</th>
+                  <th>Estado Civil</th>
+                  <th>RG</th>
+                  <th>CPF</th>
+                  <th>SEXO</th>
+                  <th>Status</th>
+                  <th>NIS</th>
+                  <th>Data Nascimento</th>
+                  <th>Idade</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loop="$lista_titulares"}
+                <tr>
+                  <td>{$value.id}</td>
+                  <td>{$value.nome_completo}</td>
+                  <td>{$value.telefone}</td>
+                  <td>{$value.estado_civil}</td>
+                  <td>{$value.rg}</td>
+                  <td>{$value.cpf}</td>
+                  <td>{$value.genero_cliente}</td>
+                  <td>{$value.status_cliente}</td>
+                  <td>{$value.nis}</td>
+                  <td>{$value.data_nascimento}</td>
+                  <td>{$value.idade_cliente}</td>
+                  <td>
+                    <div class="btn-group" role="group">
+                      <a href="#" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#modalRelatorio"
+                        data-id="{$value.id}" data-nome="{$value.nome_completo}" data-social="{$value.nome_social}"
+                        data-mae="{$value.nome_mae}" data-cor="{$value.cor_cliente}" data-telefone="{$value.telefone}"
+                        data-estado="{$value.estado_civil}" data-rg="{$value.rg}" data-cpf="{$value.cpf}"
+                        data-sexo="{$value.genero_cliente}" data-status="{$value.status_cliente}"
+                        data-nis="{$value.nis}" data-nascimento="{$value.data_nascimento}"
+                        data-idade="{$value.idade_cliente}" data-cep="{$value.cep}" data-bairro="{$value.bairro}"
+                        data-rua="{$value.rua}" data-numero="{$value.numero}" data-referencia="{$value.referencia}"
+                        data-nacionalidade="{$value.nacionalidade}" data-naturalidade="{$value.naturalidade}"
+                        data-tempo="{$value.tempo_moradia_cliente}" data-cidade="{$value.cidade}">
+                        <i class="fa fa-eye"></i> Visualizar
+                      </a>
+                      <a href="/admin/clientes/{$value.id}" class="btn btn-warning btn-xs">
+                        <i class="fa fa-edit"></i> Editar
+                      </a>
+                      <a href="/admin/clientes/{$value.id}/delete"
+                        onclick="return confirm('Deseja realmente excluir este registro?')"
+                        class="btn btn-danger btn-xs">
+                        <i class="fa fa-trash"></i> Excluir
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                {/loop}
+              </tbody>
+            </table>
+
+            <!-- MODAL COMPLETO -->
+            <div class="modal fade" id="modalRelatorio" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Detalhes do Titular</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <ul class="list-group mb-3">
+                          <li class="list-group-item"><b>ID:</b> <span id="m_id"></span></li>
+                          <li class="list-group-item"><b>Nome Completo:</b> <span id="m_nome"></span></li>
+                          <li class="list-group-item"><b>Nome Social:</b> <span id="m_social"></span></li>
+                          <li class="list-group-item"><b>Nome da Mãe:</b> <span id="m_mae"></span></li>
+                          <li class="list-group-item"><b>Cor/Etnia:</b> <span id="m_cor"></span></li>
+                          <li class="list-group-item"><b>Telefone:</b> <span id="m_telefone"></span></li>
+                          <li class="list-group-item"><b>Estado Civil:</b> <span id="m_estado"></span></li>
+                          <li class="list-group-item"><b>RG:</b> <span id="m_rg"></span></li>
+                          <li class="list-group-item"><b>CPF:</b> <span id="m_cpf"></span></li>
+                          <li class="list-group-item"><b>Sexo:</b> <span id="m_sexo"></span></li>
+                          <li class="list-group-item"><b>Status:</b> <span id="m_status"></span></li>
+                          <li class="list-group-item"><b>NIS:</b> <span id="m_nis"></span></li>
+                        </ul>
+                      </div>
+                      <div class="col-md-6">
+                        <ul class="list-group mb-3">
+                          <li class="list-group-item"><b>Data de Nascimento:</b> <span id="m_nascimento"></span></li>
+                          <li class="list-group-item"><b>Idade:</b> <span id="m_idade"></span></li>
+                          <li class="list-group-item"><b>CEP:</b> <span id="m_cep"></span></li>
+                          <li class="list-group-item"><b>Bairro:</b> <span id="m_bairro"></span></li>
+                          <li class="list-group-item"><b>Rua:</b> <span id="m_rua"></span></li>
+                          <li class="list-group-item"><b>Número:</b> <span id="m_numero"></span></li>
+                          <li class="list-group-item"><b>Referência:</b> <span id="m_referencia"></span></li>
+                          <li class="list-group-item"><b>Nacionalidade:</b> <span id="m_nacionalidade"></span></li>
+                          <li class="list-group-item"><b>Naturalidade:</b> <span id="m_naturalidade"></span></li>
+                          <li class="list-group-item"><b>Tempo de Moradia:</b> <span id="m_tempo"></span></li>
+                          <li class="list-group-item"><b>Cidade:</b> <span id="m_cidade"></span></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer clearfix">
+            <ul class="pagination pagination-sm m-0 float-end">
+              <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+            </ul>
+          </div>
+        </div> <!-- fim do card mb-4 -->
+
+      </div> <!-- fim da row -->
+
+    </div> <!--end::Container-->
+  </div> <!--end::App Content-->
+
+  <!-- /.card-body -->
+  <div class="card-footer clearfix">
+    <a href="/admin/clientes/create" class="btn btn-sm btn-primary float-start">
+      NOVO CADASTRO
+    </a>
+  </div>
+</div> <!-- fim do card principal -->
+
+
+<script>
+  $(document).ready(function () {
+    $('#tabela_titulares').DataTable({
+      paging: true,       // paginação
+      searching: true,    // barra de busca
+      ordering: true,     // ordenar colunas
+      info: true,         // mostrar info de registros
+      pageLength: 10,     // registros por página
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json' // traduz para português
+      }
+    });
+  });
+
+  <!-- SCRIPT PARA POPULAR O MODAL -->
+  document.addEventListener("DOMContentLoaded", function () {
+    const modalRelatorio = document.getElementById('modalRelatorio');
+    modalRelatorio.addEventListener('show.bs.modal', function (event) {
+      const button = event.relatedTarget; // botão que abriu o modal
+
+      document.getElementById('m_id').textContent = button.getAttribute('data-id');
+      document.getElementById('m_nome').textContent = button.getAttribute('data-nome');
+      document.getElementById('m_social').textContent = button.getAttribute('data-social');
+      document.getElementById('m_mae').textContent = button.getAttribute('data-mae');
+      document.getElementById('m_cor').textContent = button.getAttribute('data-cor');
+      document.getElementById('m_telefone').textContent = button.getAttribute('data-telefone');
+      document.getElementById('m_estado').textContent = button.getAttribute('data-estado');
+      document.getElementById('m_rg').textContent = button.getAttribute('data-rg');
+      document.getElementById('m_cpf').textContent = button.getAttribute('data-cpf');
+      document.getElementById('m_sexo').textContent = button.getAttribute('data-sexo');
+      document.getElementById('m_status').textContent = button.getAttribute('data-status');
+      document.getElementById('m_nis').textContent = button.getAttribute('data-nis');
+      document.getElementById('m_nascimento').textContent = button.getAttribute('data-nascimento');
+      document.getElementById('m_idade').textContent = button.getAttribute('data-idade');
+      document.getElementById('m_cep').textContent = button.getAttribute('data-cep');
+      document.getElementById('m_bairro').textContent = button.getAttribute('data-bairro');
+      document.getElementById('m_rua').textContent = button.getAttribute('data-rua');
+      document.getElementById('m_numero').textContent = button.getAttribute('data-numero');
+      document.getElementById('m_referencia').textContent = button.getAttribute('data-referencia');
+      document.getElementById('m_nacionalidade').textContent = button.getAttribute('data-nacionalidade');
+      document.getElementById('m_naturalidade').textContent = button.getAttribute('data-naturalidade');
+      document.getElementById('m_tempo').textContent = button.getAttribute('data-tempo');
+      document.getElementById('m_cidade').textContent = button.getAttribute('data-cidade');
+    });
+  });
+</script>

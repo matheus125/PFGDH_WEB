@@ -1,0 +1,97 @@
+<div class="card mb-4">
+  <div class="card-header">
+    <h3 class="card-title">USUÁRIOS</h3>
+    <div class="card-tools">
+      <ul class="pagination pagination-sm float-end">
+        <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+      </ul>
+    </div>
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-striped align-middle" id="usuariosSistemaTable">
+        <thead>
+          <tr>
+            <th style="width: 50px">#</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Login</th>
+            <th class="text-center" style="width: 140px">Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {loop="$users"}
+          <tr>
+            <td>{$value.id_usuario}</td>
+            <td>{$value.nome_pessoa}</td>
+            <td>{$value.email}</td>
+            <td>{$value.login}</td>
+
+            <td class="text-center">
+
+              <!-- Botão Editar -->
+              <a href="/admin/users/{$value.id_usuario}" class="btn btn-outline-primary btn-sm rounded-circle me-1"
+                title="Editar">
+                <i class="bi bi-pencil-fill"></i>
+              </a>
+
+              <!-- Botão Alterar Senha -->
+              <a href="/admin/users/{$value.id_usuario}/password"
+                class="btn btn-outline-secondary btn-sm rounded-circle me-1" title="Alterar Senha">
+                <i class="bi bi-shield-lock-fill"></i>
+              </a>
+
+              <!-- Botão Excluir -->
+              <a href="/admin/users/{$value.id_usuario}/delete"
+                onclick="return confirm('Deseja realmente excluir este registro?')"
+                class="btn btn-outline-danger btn-sm rounded-circle" title="Excluir">
+                <i class="bi bi-trash-fill"></i>
+              </a>
+
+            </td>
+          </tr>
+          {/loop}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- /.card-body -->
+  <div class="card-footer clearfix">
+    <a href="/admin/users/create" class="btn btn-sm btn-primary float-start">
+      NOVO CADASTRO
+    </a>
+
+  </div>
+</div>
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<style>
+  .btn-sm.rounded-circle {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  table.table td,
+  table.table th {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+  }
+</style>

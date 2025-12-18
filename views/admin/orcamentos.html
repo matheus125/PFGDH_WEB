@@ -1,0 +1,58 @@
+<div class="card mb-4">
+  <div class="card-header d-flex justify-content-center">
+    <h3 class="card-title mb-0">ORÇAMENTOS</h3>
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body p-0">
+    <table class="table">
+      <thead>
+        <tr>
+          <th style="width: 10px">#</th>
+          <th>Nome</th>
+          <th style="width: 300px">&nbsp; Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {if="$orcamentos"}
+        {loop="$orcamentos"}
+        <tr>
+          <td>{$value.id}</td>
+          <td>{$value.localizador}</td>
+          <td>{$value.status}</td>
+          <td>{$value.data_emissao}</td>
+          <td>{$value.origem}</td>
+          <td>{$value.destino}</td>
+          <td>{$value.duracao}</td>
+          <td>{$value.escalas}</td>
+          <td>{$value.bagagem}</td>
+          <td>{$value.classe}</td>
+          <td>{$value.tarifa}</td>
+          <td>{$value.taxa}</td>
+          <td>{$value.tx_embarque}</td>
+          <td>{$value.total}</td>
+          <td>
+            <a href="/admin/orcamentos/{$value.id}" class="btn btn-primary btn-xs">
+              <i class="fa fa-edit"></i> Editar
+            </a>
+            <a href="/admin/orcamentos/{$value.id}/delete"
+              onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs">
+              <i class="fa fa-trash"></i> Excluir
+            </a>
+          </td>
+        </tr>
+        {/loop}
+        {else}
+        <tr>
+          <td colspan="15">Nenhum orçamento encontrado.</td>
+        </tr>
+        {/if}
+      </tbody>
+    </table>
+  </div>
+  <!-- /.card-body -->
+  <div class="card-footer clearfix">
+    <a href="/admin/orcamentos/create" class="btn btn-sm btn-primary float-start">
+      NOVO CADASTRO
+    </a>
+  </div>
+</div>
