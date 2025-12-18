@@ -254,13 +254,13 @@
                 <li class="nav-item">
                   <a href="/admin/funcionarios" class="nav-link active">
                     <i class="nav-icon bi bi-circle"></i>
-                    <p>FUNCIONÁRIOS</p>
+                    <p>Funcionários</p>
                   </a>
                 </li>
                 <li class="nav-item">
                   <a href="/admin/clientes" class="nav-link active">
                     <i class="nav-icon bi bi-circle"></i>
-                    <p>CLIENTES</p>
+                    <p>Clientes</p>
                   </a>
                 </li>
                

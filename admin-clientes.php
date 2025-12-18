@@ -5,8 +5,6 @@ use \Hcode\Model\Clientes;
 
 $app->get("/admin/clientes", function () {
 
-	Clientes::verifyLogin();
-
 	$lista_titulares = Clientes::lista_titulares();
 
 	$page = new PageAdmin();
@@ -20,16 +18,12 @@ $app->get("/admin/clientes", function () {
 
 $app->get("/admin/clientes/create", function () {
 
-	Clientes::verifyLogin();
-
 	$page = new PageAdmin();
 
 	$page->setTpl("clientes-create");
 });
 
 $app->post("/admin/clientes/create", function () {
-
-	Clientes::verifyLogin();
 
 	$clientes = new Clientes();
 
@@ -42,8 +36,6 @@ $app->post("/admin/clientes/create", function () {
 });
 
 $app->get("/admin/index", function () {
-
-	Clientes::verifyLogin();
 
 	// pega lista e total
 	$lista_titulares = Clientes::lista_titulares();

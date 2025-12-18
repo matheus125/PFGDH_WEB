@@ -14,7 +14,7 @@
         Caso ache que isso é um erro, entre em contato com o administrador.
       </p>
 
-      <a href="/admin/funcionarios" class="btn btn-primary"> ← Voltar ao painel</a>
+      <a href="/admin/index" class="btn btn-primary"> ← Voltar ao painel</a>
     </div>
   </div>
 </section>

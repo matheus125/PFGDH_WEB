@@ -25,77 +25,81 @@ class Clientes extends Model
         return $clientes;
     }
 
-    public static function checkLogin($inadmin = true)
-    {
 
-        if (
-            !isset($_SESSION[Clientes::SESSION])
-            ||
-            !$_SESSION[Clientes::SESSION]
-            ||
-            !(int)$_SESSION[Clientes::SESSION]["iduser"] > 0
-        ) {
-            //Não está logado
-            return false;
-        } else {
 
-            if ($inadmin === true && (bool)$_SESSION[Clientes::SESSION]['inadmin'] === true) {
 
-                return true;
-            } else if ($inadmin === false) {
-
-                return true;
-            } else {
-
-                return false;
-            }
-        }
-    }
     public static function lista_titulares()
     {
-
         $sql = new Sql();
 
-        return $sql->select("select c.id, c.nome_completo, c.nome_social, c.cor_cliente, c.nome_mae, c.telefone, 
-               	c.data_nascimento, c.idade_cliente, c.genero_cliente, c.estado_civil, c.rg, c.cpf, c.nis,c.status_cliente,
-                	e.id, e.cep, e.bairro, e.rua, e.numero, e.referencia, e.nacionalidade, e.naturalidade, e.cidade, e.tempo_moradia_cliente
-                	from tb_titular c inner join tb_endereco e on c.id_endereco = e.id order by nome_completo;");
+        // Seleciona todas as informações do titular e do endereço
+        $results = $sql->select("
+    SELECT 
+        t.id,
+        t.nome_completo,
+        t.nome_social,
+        t.cor_cliente,
+        t.nome_mae,
+        t.telefone,
+        t.data_nascimento,
+        TIMESTAMPDIFF(YEAR, t.data_nascimento, CURDATE()) AS idade_cliente,
+        t.genero AS genero_cliente,
+        t.estado_civil,
+        t.rg,
+        t.cpf,
+        t.nis,
+        t.status_cliente,
+        e.id AS id_endereco,
+        e.cep,
+        e.bairro,
+        e.rua,
+        e.numero,
+        e.referencia,
+        e.nacionalidade,
+        e.naturalidade,
+        e.cidade,
+        e.tempo_moradia_anos AS tempo_moradia
+    FROM tb_titular t
+    LEFT JOIN tb_endereco e ON t.id_endereco = e.id
+    ORDER BY t.nome_completo
+");
+
+        // Garante que sempre retorna um array (mesmo vazio)
+        return $results ?: [];
     }
-
-    public static function verifyLogin($inadmin = true)
-    {
-
-        if (!Clientes::checkLogin($inadmin)) {
-
-            if ($inadmin) {
-                header("Location: /admin/login");
-            } else {
-                header("Location: /login");
-            }
-            exit;
-        }
-    }
-
 
 
     public function salvar_cliente_titular()
     {
         $sql = new Sql();
 
-        $results = $sql->select("CALL sp_salvar_titular(
-        :nome_completo,
-        :nome_social,
-        :cor_cliente,
-        :nome_mae,
-        :telefone,
-        :data_nascimento,
-        :idade_cliente,
-        :genero_cliente,
-        :estado_civil,
-        :rg,
-        :cpf,
-        :nis,
-        :status_cliente,
+        // ====== GERAR NOME DA FAMÍLIA AUTOMATICAMENTE ======
+        $nomeCompleto = $this->getnome_completo();
+        $nomeFamilia = '';
+
+        if (empty($this->getnome_familia())) {
+            $partes = explode(' ', trim($nomeCompleto));
+
+            if (count($partes) >= 2) {
+                $segundoNome = $partes[1];
+                $nomeFamilia = 'Família ' . $segundoNome;
+            } else {
+                $nomeFamilia = 'Família ' . $partes[0];
+            }
+        } else {
+            $nomeFamilia = $this->getnome_familia();
+        }
+
+        // ====== VALIDAR E NORMALIZAR GÊNERO ======
+        $genero = strtoupper(trim($this->getgenero_cliente())); // maiúsculo
+        $valores_validos = ['M', 'F', 'OUTRO'];
+
+        if (!in_array($genero, $valores_validos)) {
+            $genero = 'OUTRO';
+        }
+
+        // ====== CHAMAR A PROCEDURE UNIFICADA ======
+        $results = $sql->select("CALL sp_cadastrar_titular_familia_endereco(
         :cep,
         :bairro,
         :rua,
@@ -104,36 +108,56 @@ class Clientes extends Model
         :nacionalidade,
         :naturalidade,
         :cidade,
-        :tempo_moradia_cliente
+        :tempo_moradia_anos,
+        :nome_familia,
+        :nome_completo,
+        :nome_social,
+        :cor_cliente,
+        :nome_mae,
+        :telefone,
+        :data_nascimento,
+        :genero,
+        :estado_civil,
+        :rg,
+        :cpf,
+        :nis,
+        :status_cliente
     )", array(
-            ":nome_completo"          => $this->getnome_completo(),
-            ":nome_social"            => $this->getnome_social(),
-            ":cor_cliente"            => $this->getcor_cliente(),
-            ":nome_mae"               => $this->getnome_mae(),
-            ":telefone"               => $this->gettelefone(),
-            ":data_nascimento"        => $this->getdata_nascimento(),
-            ":idade_cliente"          => $this->getidade_cliente(),
-            ":genero_cliente"         => $this->getgenero_cliente(),
-            ":estado_civil"           => $this->getestado_civil(),
-            ":rg"                     => $this->getrg(),
-            ":cpf"                    => $this->getcpf(),
-            ":nis"                    => $this->getnis(),
-            ":status_cliente"         => $this->getstatus_cliente(),
-            ":cep"                    => $this->getcep(),
-            ":bairro"                 => $this->getbairro(),
-            ":rua"                    => $this->getrua(),
-            ":numero"                 => $this->getnumero(),
-            ":referencia"             => $this->getreferencia(),
-            ":nacionalidade"          => $this->getnacionalidade(),
-            ":naturalidade"           => $this->getnaturalidade(),
-            ":cidade"                 => $this->getcidade(),
-            ":tempo_moradia_cliente"  => $this->gettempo_moradia_cliente()
+            // ENDEREÇO
+            ":cep"                 => $this->getcep(),
+            ":bairro"              => $this->getbairro(),
+            ":rua"                 => $this->getrua(),
+            ":numero"              => $this->getnumero(),
+            ":referencia"          => $this->getreferencia(),
+            ":nacionalidade"       => $this->getnacionalidade(),
+            ":naturalidade"        => $this->getnaturalidade(),
+            ":cidade"              => $this->getcidade(),
+            ":tempo_moradia_anos"  => $this->gettempo_moradia_cliente(),
+
+            // FAMÍLIA
+            ":nome_familia"        => $nomeFamilia,
+
+            // TITULAR
+            ":nome_completo"       => $nomeCompleto,
+            ":nome_social"         => $this->getnome_social(),
+            ":cor_cliente"         => $this->getcor_cliente(),
+            ":nome_mae"            => $this->getnome_mae(),
+            ":telefone"            => $this->gettelefone(),
+            ":data_nascimento"     => $this->getdata_nascimento(),
+            ":genero"              => $genero,
+            ":estado_civil"        => $this->getestado_civil(),
+            ":rg"                  => $this->getrg(),
+            ":cpf"                 => $this->getcpf(),
+            ":nis"                 => $this->getnis(),
+            ":status_cliente"      => $this->getstatus_cliente()
         ));
 
         if (isset($results[0])) {
             $this->setData($results[0]);
         }
     }
+
+
 
     public function get($iduser)
     {
@@ -226,7 +250,5 @@ class Clientes extends Model
 
         // se vier vazio, retorna 0
         return (count($result) > 0) ? (int)$result[0]['total'] : 0;
-
-        
     }
 }

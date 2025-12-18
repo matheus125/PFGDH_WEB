@@ -1,4 +1,4 @@
-<div class="card card-info card-outline mb-4">
+<?php if(!class_exists('Rain\Tpl')){exit;}?><div class="card card-info card-outline mb-4">
   <div class="card-header">
     <div class="card-title">Clientes</div>
   </div>

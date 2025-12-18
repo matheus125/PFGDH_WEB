@@ -1,4 +1,4 @@
-<!-- CSS do DataTables -->
+<?php if(!class_exists('Rain\Tpl')){exit;}?><!-- CSS do DataTables -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
 <!-- jQuery -->
@@ -45,37 +45,37 @@
                 </tr>
               </thead>
               <tbody>
-                {loop="$lista_titulares"}
+                <?php $counter1=-1;  if( isset($lista_titulares) && ( is_array($lista_titulares) || $lista_titulares instanceof Traversable ) && sizeof($lista_titulares) ) foreach( $lista_titulares as $key1 => $value1 ){ $counter1++; ?>
                 <tr>
-                  <td>{$value.id}</td>
-                  <td>{$value.nome_completo}</td>
-                  <td>{$value.telefone}</td>
-                  <td>{$value.estado_civil}</td>
-                  <td>{$value.rg}</td>
-                  <td>{$value.cpf}</td>
-                  <td>{$value.genero_cliente}</td>
-                  <td>{$value.status_cliente}</td>
-                  <td>{$value.nis}</td>
-                  <td>{$value.data_nascimento}</td>
-                  <td>{$value.idade_cliente}</td>
+                  <td><?php echo htmlspecialchars( $value1["id"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                  <td><?php echo htmlspecialchars( $value1["nome_completo"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                  <td><?php echo htmlspecialchars( $value1["telefone"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                  <td><?php echo htmlspecialchars( $value1["estado_civil"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                  <td><?php echo htmlspecialchars( $value1["rg"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                  <td><?php echo htmlspecialchars( $value1["cpf"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                  <td><?php echo htmlspecialchars( $value1["genero_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                  <td><?php echo htmlspecialchars( $value1["status_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                  <td><?php echo htmlspecialchars( $value1["nis"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                  <td><?php echo htmlspecialchars( $value1["data_nascimento"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                  <td><?php echo htmlspecialchars( $value1["idade_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                   <td>
                     <div class="btn-group" role="group">
                       <a href="#" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#modalRelatorio"
-                        data-id="{$value.id}" data-nome="{$value.nome_completo}" data-social="{$value.nome_social}"
-                        data-mae="{$value.nome_mae}" data-cor="{$value.cor_cliente}" data-telefone="{$value.telefone}"
-                        data-estado="{$value.estado_civil}" data-rg="{$value.rg}" data-cpf="{$value.cpf}"
-                        data-sexo="{$value.genero_cliente}" data-status="{$value.status_cliente}"
-                        data-nis="{$value.nis}" data-nascimento="{$value.data_nascimento}"
-                        data-idade="{$value.idade_cliente}" data-cep="{$value.cep}" data-bairro="{$value.bairro}"
-                        data-rua="{$value.rua}" data-numero="{$value.numero}" data-referencia="{$value.referencia}"
-                        data-nacionalidade="{$value.nacionalidade}" data-naturalidade="{$value.naturalidade}"
-                        data-tempo="{$value.tempo_moradia}" data-cidade="{$value.cidade}">
+                        data-id="<?php echo htmlspecialchars( $value1["id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-nome="<?php echo htmlspecialchars( $value1["nome_completo"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-social="<?php echo htmlspecialchars( $value1["nome_social"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                        data-mae="<?php echo htmlspecialchars( $value1["nome_mae"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-cor="<?php echo htmlspecialchars( $value1["cor_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-telefone="<?php echo htmlspecialchars( $value1["telefone"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                        data-estado="<?php echo htmlspecialchars( $value1["estado_civil"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-rg="<?php echo htmlspecialchars( $value1["rg"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-cpf="<?php echo htmlspecialchars( $value1["cpf"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                        data-sexo="<?php echo htmlspecialchars( $value1["genero_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-status="<?php echo htmlspecialchars( $value1["status_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                        data-nis="<?php echo htmlspecialchars( $value1["nis"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-nascimento="<?php echo htmlspecialchars( $value1["data_nascimento"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                        data-idade="<?php echo htmlspecialchars( $value1["idade_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-cep="<?php echo htmlspecialchars( $value1["cep"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-bairro="<?php echo htmlspecialchars( $value1["bairro"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                        data-rua="<?php echo htmlspecialchars( $value1["rua"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-numero="<?php echo htmlspecialchars( $value1["numero"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-referencia="<?php echo htmlspecialchars( $value1["referencia"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                        data-nacionalidade="<?php echo htmlspecialchars( $value1["nacionalidade"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-naturalidade="<?php echo htmlspecialchars( $value1["naturalidade"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                        data-tempo="<?php echo htmlspecialchars( $value1["tempo_moradia"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-cidade="<?php echo htmlspecialchars( $value1["cidade"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                         <i class="fa fa-eye"></i> Visualizar
                       </a>
-                      <a href="/admin/clientes/{$value.id}" class="btn btn-warning btn-xs">
+                      <a href="/admin/clientes/<?php echo htmlspecialchars( $value1["id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="btn btn-warning btn-xs">
                         <i class="fa fa-edit"></i> Editar
                       </a>
-                      <a href="/admin/clientes/{$value.id}/delete"
+                      <a href="/admin/clientes/<?php echo htmlspecialchars( $value1["id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/delete"
                         onclick="return confirm('Deseja realmente excluir este registro?')"
                         class="btn btn-danger btn-xs">
                         <i class="fa fa-trash"></i> Excluir
@@ -83,7 +83,7 @@
                     </div>
                   </td>
                 </tr>
-                {/loop}
+                <?php } ?>
               </tbody>
             </table>
 
