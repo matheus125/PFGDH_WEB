@@ -65,22 +65,31 @@ $app->post('/admin/dependentes/create-json', function () {
                 INSERT INTO tb_dependentes (
                     id_titular,
                     nome,
-                    dependencia_cliente,
-                    idade
-                    
+                    rg,
+                    cpf,
+                    data_nascimento,
+                    idade,
+                    genero,
+                    dependencia_cliente
                 ) VALUES (
                     :id_titular,
                     :nome,
-                    :dependencia_cliente,
-                    :idade
-                    
+                    :rg,
+                    :cpf,
+                    :data_nascimento,
+                    :idade,
+                    :genero,
+                    :dependencia_cliente                    
                 )
             ", [
                 ':id_titular'   => $idTitular,
                 ':nome'         => $dep['nome'],
-                ':dependencia_cliente'   => $dep['dependencia_cliente'] ?? null,
-                ':idade'        => $dep['idade'] ?? null
-               
+                ':rg'           => $dep['rg'] ?? null,
+                ':cpf'          => $dep['cpf'] ?? null,
+                ':data_nascimento' => $dep['data_nascimento'] ?? null,
+                ':idade'        => $dep['idade'] ?? null,
+                ':genero'       => $dep['genero'] ?? null,
+                ':dependencia_cliente'   => $dep['dependencia_cliente'] ?? null
             ]);
         }
 
@@ -108,3 +117,27 @@ $app->post('/admin/dependentes/create-json', function () {
         exit;
     }
 });
+
+// Retorna dependentes de um titular em JSON
+$app->get("/admin/dependentes/ajax/:id", function ($id) {
+
+    $sql = new Sql();
+
+    $dependentes = $sql->select("
+        SELECT 
+            nome,
+            dependencia_cliente,
+            TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) AS idade,
+            genero
+        FROM tb_dependentes
+        WHERE id_titular = :id
+        ORDER BY nome
+    ", [
+        ":id" => $id
+    ]);
+
+    header('Content-Type: application/json');
+    echo json_encode($dependentes);
+    exit;
+});
+

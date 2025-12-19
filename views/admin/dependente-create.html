@@ -266,7 +266,7 @@
                 }
 
                 alert('Dependentes salvos com sucesso!');
-                window.location.href = '/admin/dependentes';
+                window.location.href = '/admin/dependentes/create';
             })
             .catch(err => {
                 console.error(err);

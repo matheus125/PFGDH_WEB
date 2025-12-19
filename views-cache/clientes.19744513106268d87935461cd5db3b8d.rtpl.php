@@ -60,25 +60,30 @@
                   <td><?php echo htmlspecialchars( $value1["idade_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                   <td>
                     <div class="btn-group" role="group">
-                      <a href="#" class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#modalRelatorio"
-                        data-id="<?php echo htmlspecialchars( $value1["id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-nome="<?php echo htmlspecialchars( $value1["nome_completo"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-social="<?php echo htmlspecialchars( $value1["nome_social"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                        data-mae="<?php echo htmlspecialchars( $value1["nome_mae"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-cor="<?php echo htmlspecialchars( $value1["cor_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-telefone="<?php echo htmlspecialchars( $value1["telefone"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                        data-estado="<?php echo htmlspecialchars( $value1["estado_civil"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-rg="<?php echo htmlspecialchars( $value1["rg"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-cpf="<?php echo htmlspecialchars( $value1["cpf"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                        data-sexo="<?php echo htmlspecialchars( $value1["genero_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-status="<?php echo htmlspecialchars( $value1["status_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                        data-nis="<?php echo htmlspecialchars( $value1["nis"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-nascimento="<?php echo htmlspecialchars( $value1["data_nascimento"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                        data-idade="<?php echo htmlspecialchars( $value1["idade_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-cep="<?php echo htmlspecialchars( $value1["cep"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-bairro="<?php echo htmlspecialchars( $value1["bairro"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                        data-rua="<?php echo htmlspecialchars( $value1["rua"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-numero="<?php echo htmlspecialchars( $value1["numero"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-referencia="<?php echo htmlspecialchars( $value1["referencia"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                      <button class="btn btn-sm btn-primary btn-detalhes" data-bs-toggle="modal"
+                        data-bs-target="#modalRelatorio" data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="Visualizar detalhes do titular" data-id="<?php echo htmlspecialchars( $value1["id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-nome="<?php echo htmlspecialchars( $value1["nome_completo"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                        data-social="<?php echo htmlspecialchars( $value1["nome_social"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-mae="<?php echo htmlspecialchars( $value1["nome_mae"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-cor="<?php echo htmlspecialchars( $value1["cor_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                        data-telefone="<?php echo htmlspecialchars( $value1["telefone"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-estado="<?php echo htmlspecialchars( $value1["estado_civil"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-rg="<?php echo htmlspecialchars( $value1["rg"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                        data-cpf="<?php echo htmlspecialchars( $value1["cpf"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-sexo="<?php echo htmlspecialchars( $value1["genero_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                        data-status="<?php echo htmlspecialchars( $value1["status_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-nis="<?php echo htmlspecialchars( $value1["nis"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                        data-nascimento="<?php echo htmlspecialchars( $value1["data_nascimento"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-idade="<?php echo htmlspecialchars( $value1["idade_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                        data-cep="<?php echo htmlspecialchars( $value1["cep"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-bairro="<?php echo htmlspecialchars( $value1["bairro"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-rua="<?php echo htmlspecialchars( $value1["rua"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
+                        data-numero="<?php echo htmlspecialchars( $value1["numero"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-referencia="<?php echo htmlspecialchars( $value1["referencia"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
                         data-nacionalidade="<?php echo htmlspecialchars( $value1["nacionalidade"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-naturalidade="<?php echo htmlspecialchars( $value1["naturalidade"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
                         data-tempo="<?php echo htmlspecialchars( $value1["tempo_moradia"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" data-cidade="<?php echo htmlspecialchars( $value1["cidade"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
-                        <i class="fa fa-eye"></i> Visualizar
+                        <i class="bi bi-eye"></i>
+                      </button>
+
+                      <a href="/admin/clientes/<?php echo htmlspecialchars( $value1["id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="btn btn-warning btn-sm" data-bs-toggle="tooltip"
+                        title="Editar">
+                        <i class="bi bi-pencil"></i>
                       </a>
-                      <a href="/admin/clientes/<?php echo htmlspecialchars( $value1["id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="btn btn-warning btn-xs">
-                        <i class="fa fa-edit"></i> Editar
-                      </a>
+
                       <a href="/admin/clientes/<?php echo htmlspecialchars( $value1["id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/delete"
                         onclick="return confirm('Deseja realmente excluir este registro?')"
-                        class="btn btn-danger btn-xs">
-                        <i class="fa fa-trash"></i> Excluir
+                        class="btn btn-danger btn-sm" data-bs-toggle="tooltip" title="Excluir">
+                        <i class="bi bi-trash"></i>
                       </a>
                     </div>
                   </td>
@@ -193,12 +198,15 @@
                       <div class="tab-pane fade" id="tab-dependentes" role="tabpanel"
                         aria-labelledby="tab-dependentes-tab">
                         <div class="card shadow-sm mb-3 p-3 border-start border-4 border-warning">
-                          <h6 class="text-warning mb-3"><i class="bi bi-people me-1"></i> Dependentes</h6>
+                          <h6 class="text-warning mb-3">
+                            <i class="bi bi-people me-1"></i> Dependentes
+                          </h6>
                           <div id="m_dependentes">
-                            <p>Nenhum dependente cadastrado.</p>
+                            <p class="text-muted">Selecione um titular...</p>
                           </div>
                         </div>
                       </div>
+
 
                     </div>
                   </div>
@@ -249,50 +257,170 @@
 
 </div> <!-- fim do card principal -->
 
-
 <script>
   $(document).ready(function () {
+
+    // DataTable
     $('#tabela_titulares').DataTable({
-      paging: true,       // paginação
-      searching: true,    // barra de busca
-      ordering: true,     // ordenar colunas
-      info: true,         // mostrar info de registros
-      pageLength: 10,     // registros por página
+      paging: true,
+      searching: true,
+      ordering: true,
+      info: true,
+      pageLength: 10,
       language: {
-        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json' // traduz para português
+        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json'
       }
     });
-  });
 
-  <!-- SCRIPT PARA POPULAR O MODAL -->
-  document.addEventListener("DOMContentLoaded", function () {
-    const modalRelatorio = document.getElementById('modalRelatorio');
-    modalRelatorio.addEventListener('show.bs.modal', function (event) {
-      const button = event.relatedTarget; // botão que abriu o modal
+    let titularAtual = null;
 
-      document.getElementById('m_id').textContent = button.getAttribute('data-id');
-      document.getElementById('m_nome').textContent = button.getAttribute('data-nome');
-      document.getElementById('m_social').textContent = button.getAttribute('data-social');
-      document.getElementById('m_mae').textContent = button.getAttribute('data-mae');
-      document.getElementById('m_cor').textContent = button.getAttribute('data-cor');
-      document.getElementById('m_telefone').textContent = button.getAttribute('data-telefone');
-      document.getElementById('m_estado').textContent = button.getAttribute('data-estado');
-      document.getElementById('m_rg').textContent = button.getAttribute('data-rg');
-      document.getElementById('m_cpf').textContent = button.getAttribute('data-cpf');
-      document.getElementById('m_sexo').textContent = button.getAttribute('data-sexo');
-      document.getElementById('m_status').textContent = button.getAttribute('data-status');
-      document.getElementById('m_nis').textContent = button.getAttribute('data-nis');
-      document.getElementById('m_nascimento').textContent = button.getAttribute('data-nascimento');
-      document.getElementById('m_idade').textContent = button.getAttribute('data-idade');
-      document.getElementById('m_cep').textContent = button.getAttribute('data-cep');
-      document.getElementById('m_bairro').textContent = button.getAttribute('data-bairro');
-      document.getElementById('m_rua').textContent = button.getAttribute('data-rua');
-      document.getElementById('m_numero').textContent = button.getAttribute('data-numero');
-      document.getElementById('m_referencia').textContent = button.getAttribute('data-referencia');
-      document.getElementById('m_nacionalidade').textContent = button.getAttribute('data-nacionalidade');
-      document.getElementById('m_naturalidade').textContent = button.getAttribute('data-naturalidade');
-      document.getElementById('m_tempo').textContent = button.getAttribute('data-tempo');
-      document.getElementById('m_cidade').textContent = button.getAttribute('data-cidade');
+    // Modal dados
+    $('#modalRelatorio').on('show.bs.modal', function (event) {
+      const button = event.relatedTarget;
+
+      $('#m_id').text(button.dataset.id);
+      $('#m_nome').text(button.dataset.nome);
+      $('#m_social').text(button.dataset.social);
+      $('#m_mae').text(button.dataset.mae);
+      $('#m_cor').text(button.dataset.cor);
+      $('#m_telefone').text(button.dataset.telefone);
+      $('#m_estado').text(button.dataset.estado);
+      $('#m_rg').text(button.dataset.rg);
+      $('#m_cpf').text(button.dataset.cpf);
+      $('#m_sexo').text(button.dataset.sexo);
+      $('#m_status').text(button.dataset.status);
+      $('#m_nis').text(button.dataset.nis);
+      $('#m_nascimento').text(button.dataset.nascimento);
+      $('#m_idade').text(button.dataset.idade);
+      $('#m_cep').text(button.dataset.cep);
+      $('#m_bairro').text(button.dataset.bairro);
+      $('#m_rua').text(button.dataset.rua);
+      $('#m_numero').text(button.dataset.numero);
+      $('#m_referencia').text(button.dataset.referencia);
+      $('#m_nacionalidade').text(button.dataset.nacionalidade);
+      $('#m_naturalidade').text(button.dataset.naturalidade);
+      $('#m_tempo').text(button.dataset.tempo);
+      $('#m_cidade').text(button.dataset.cidade);
+
+      titularAtual = button.dataset.id;
+
+
     });
+
+    $('#tab-dependentes-tab').on('shown.bs.tab', function () {
+
+      if (!titularAtual) return;
+
+      // ===================================
+      // Skeleton / Loading
+      // ===================================
+      $('#m_dependentes').html(`
+      <div class="d-flex flex-column gap-2">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+    `);
+
+      $.ajax({
+        url: `/admin/dependentes/ajax/${titularAtual}`,
+        method: 'GET',
+        dataType: 'json',
+        success: function (deps) {
+
+          if (!deps.length) {
+            $('#m_dependentes').html(`
+                    <div class="text-center text-muted py-3">
+                        <i class="fas fa-user-friends fa-2x mb-2"></i>
+                        <p>Nenhum dependente cadastrado.</p>
+                    </div>
+                `);
+            return;
+          }
+
+          let html = '';
+          deps.forEach(d => {
+            html += `
+                  <div class="card mb-2 shadow-sm">
+                    <div class="card-body d-flex justify-content-between align-items-start">
+                      <div>
+                        <p><b>Nome:</b> ${d.nome}</p>
+                        <p><b>Parentesco:</b> ${d.dependencia_cliente}</p>
+                        <p><b>Idade:</b> ${d.idade ?? '-'}</p>
+                        <p><b>Sexo:</b> ${d.genero ?? '-'}</p>
+                      </div>
+
+                      <div class="btn-group-vertical">
+                        <button class="btn btn-sm btn-primary mb-1" onclick="editarDependente(${d.id})">
+                          <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="excluirDependente(${d.id})">
+                          <i class="fas fa-trash"></i> Excluir
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                `;
+          });
+
+          $('#m_dependentes').html(html);
+
+        },
+        error: function (xhr, status, error) {
+          console.error("Erro ao carregar dependentes:", xhr.responseText);
+          $('#m_dependentes').html(`<p class="text-danger">Erro ao carregar dependentes.</p>`);
+        }
+      });
+
+    });
+
+
+
+    function editarDependente(idDep) {
+      alert("Editar dependente ID: " + idDep);
+      // Aqui você pode abrir outro modal de edição
+    }
+
+    function excluirDependente(idDep) {
+      if (!confirm("Tem certeza que deseja excluir este dependente?")) return;
+
+      $.ajax({
+        url: `/admin/dependentes/excluir/${idDep}`,
+        method: 'DELETE',
+        success: function (res) {
+          alert("Dependente excluído!");
+          // Recarrega a aba de dependentes
+          $('#tab-dependentes-tab').trigger('shown.bs.tab');
+        },
+        error: function (xhr) {
+          alert("Erro ao excluir dependente!");
+        }
+      });
+    }
+
+
+
   });
 </script>
+
+
+
+<style>
+  .skeleton-card {
+    height: 80px;
+    background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
+    background-size: 200% 100%;
+    animation: shine 1.5s infinite;
+    border-radius: 6px;
+  }
+
+  @keyframes shine {
+    0% {
+      background-position: 200% 0;
+    }
+
+    100% {
+      background-position: -200% 0;
+    }
+  }
+</style>

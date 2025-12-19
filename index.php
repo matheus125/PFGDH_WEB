@@ -14,10 +14,8 @@ $app->add(new PerfilMiddleware());
 require_once("functions.php");
 require_once("admin.php");
 require_once("admin-funcionarios.php");
-require_once("admin-clientes.php");
-require_once("admin-orçamentos.php");
-require_once("admin-passageiros.php");
 require_once("admin-dependentes.php");
+require_once("admin-clientes.php");
 require_once("jwt.php");
 
 $app->run();

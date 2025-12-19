@@ -2,6 +2,7 @@
 
 use \Hcode\PageAdmin;
 use \Hcode\Model\Clientes;
+use \Hcode\DB\Sql;
 
 $app->get("/admin/clientes", function () {
 
@@ -39,7 +40,7 @@ $app->get("/admin/index", function () {
 
 	// pega lista e total
 	$lista_titulares = Clientes::lista_titulares();
-	
+
 	$page = new PageAdmin();
 
 	$page->setTpl("index", [
@@ -61,3 +62,4 @@ $app->get("/admin/clientes/:id", function ($id) {
 		"clientes" => $clientes->getValues()
 	));
 });
+
