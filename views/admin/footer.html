@@ -146,8 +146,8 @@
   atualizarUsuarios();
   setInterval(atualizarUsuarios, 10000); // 10 segundos
 
-  
- function atualizarFamilia() {
+
+  function atualizarFamilia() {
     fetch("/api/total-familias")
       .then(r => r.json())
       .then(d => {
@@ -166,7 +166,8 @@
 
   // ---- CARREGAMENTO DOS DADOS ----
   function carregarUsuarios(animacao = false) {
-    document.getElementById("loader").style.display = "inline";
+    const loader = document.getElementById("loader");
+    if (loader) loader.style.display = "inline";
 
     fetch("/api/usuarios-titulares")
       .then(res => res.json())
@@ -174,26 +175,36 @@
         usuarios = data;
         pagina = 1;
         atualizarTabela(animacao);
-        document.getElementById("totalRegistros").innerText = usuarios.length;
+
+        const total = document.getElementById("totalRegistros");
+        if (total) total.innerText = usuarios.length;
       })
       .finally(() => {
-        document.getElementById("loader").style.display = "none";
+        if (loader) loader.style.display = "none";
       });
   }
 
- 
 
   // ---- INICIA ----
   carregarUsuarios();
 
   function atualizarDependentes() {
     fetch("/api/total-dependentes")
-      .then(r => r.json())
-      .then(d => {
-        document.getElementById("totalDependentes").textContent = d.total;
+      .then(r => {
+        if (!r.ok) {
+          throw new Error("Erro HTTP: " + r.status);
+        }
+        return r.json();
       })
-      .catch(err => console.error("Erro ao carregar total de dependentes:", err));
+      .then(d => {
+        const el = document.getElementById("totalDependentes");
+        if (el) el.textContent = d.total ?? 0;
+      })
+      .catch(err => {
+        console.error("Erro ao carregar total de dependentes:", err);
+      });
   }
+
 
   atualizarDependentes();
   setInterval(atualizarDependentes, 10000); // a cada 10 segundos

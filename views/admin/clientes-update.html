@@ -1,0 +1,165 @@
+<div class="card card-info card-outline mb-4">
+    <div class="card-header">
+        <div class="card-title">Atualizar Cliente</div>
+    </div>
+
+    <!-- Formulário UPDATE -->
+    <form class="needs-validation" action="/admin/clientes/update" method="post" novalidate>
+
+        <!-- ID oculto -->
+        <input type="hidden" name="id" value="{$clientes.id}">
+
+        <div class="card-body">
+            <div class="row g-3">
+
+                <!-- DADOS PESSOAIS -->
+                <h5 class="mt-3">Dados Pessoais</h5>
+                <div class="col-md-4">
+                    <label class="form-label">Nome Completo</label>
+                    <input type="text" class="form-control form-control-sm" name="nome_completo"
+                        value="{$clientes.nome_completo}" required>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Nome Social</label>
+                    <input type="text" class="form-control form-control-sm" name="nome_social"
+                        value="{$clientes.nome_social}">
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Cor / Etnia</label>
+                    <input type="text" class="form-control form-control-sm" name="cor_cliente"
+                        value="{$clientes.cor_cliente}">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Nome da Mãe</label>
+                    <input type="text" class="form-control form-control-sm" name="nome_mae" value="{$clientes.nome_mae}"
+                        required>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Sexo</label>
+                    <select class="form-select form-select-sm" name="genero_cliente">
+                        <option value="M" {if="$clientes.genero_cliente=='M'" }selected{/if}>Masculino</option>
+                        <option value="F" {if="$clientes.genero_cliente=='F'" }selected{/if}>Feminino</option>
+                        <option value="Outro" {if="$clientes.genero_cliente=='Outro'" }selected{/if}>Outro</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Estado Civil</label>
+                    <select class="form-select form-select-sm" name="estado_civil">
+                        <option {if="$clientes.estado_civil=='Solteiro(a)'" }selected{/if}>Solteiro(a)</option>
+                        <option {if="$clientes.estado_civil=='Casado(a)'" }selected{/if}>Casado(a)</option>
+                        <option {if="$clientes.estado_civil=='Divorciado(a)'" }selected{/if}>Divorciado(a)</option>
+                        <option {if="$clientes.estado_civil=='Viúvo(a)'" }selected{/if}>Viúvo(a)</option>
+                        <option {if="$clientes.estado_civil=='União Estável'" }selected{/if}>União Estável</option>
+                    </select>
+
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Nascimento</label>
+                    <input type="date" class="form-control form-control-sm" name="data_nascimento"
+                        value="{$clientes.data_nascimento }" required>
+                </div>
+
+                <div class="col-md-1">
+                    <label class="form-label">Idade</label>
+                    <input type="number" class="form-control form-control-sm" value="{$clientes.idade}" readonly>
+                </div>
+
+                <!-- DOCUMENTOS -->
+                <h5 class="mt-4">Documentos</h5>
+                <div class="col-md-3">
+                    <label class="form-label">RG</label>
+                    <input type="text" class="form-control form-control-sm" name="rg" value="{$clientes.rg}" required>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">CPF</label>
+                    <input type="text" class="form-control form-control-sm" name="cpf" value="{$clientes.cpf}" required>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">NIS</label>
+                    <input type="text" class="form-control form-control-sm" name="nis" value="{$clientes.nis}">
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Status</label>
+                    <input type="text" class="form-control form-control-sm" name="status_cliente"
+                        value="{$clientes.status_cliente}" required>
+                </div>
+
+                <!-- CONTATO -->
+                <h5 class="mt-4">Contato</h5>
+                <div class="col-md-3">
+                    <label class="form-label">Telefone</label>
+                    <input type="text" class="form-control form-control-sm" name="telefone" value="{$clientes.telefone}"
+                        required>
+                </div>
+
+                <!-- ENDEREÇO -->
+                <h5 class="mt-4">Endereço</h5>
+                <div class="col-md-2">
+                    <label class="form-label">CEP</label>
+                    <input type="text" class="form-control form-control-sm" name="cep" value="{$clientes.cep}" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Rua</label>
+                    <input type="text" class="form-control form-control-sm" name="rua" value="{$clientes.rua}" required>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Nº</label>
+                    <input type="text" class="form-control form-control-sm" name="numero" value="{$clientes.numero}"
+                        required>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Bairro</label>
+                    <input type="text" class="form-control form-control-sm" name="bairro" value="{$clientes.bairro}"
+                        required>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Cidade</label>
+                    <input type="text" class="form-control form-control-sm" name="cidade" value="{$clientes.cidade}"
+                        required>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Referência</label>
+                    <input type="text" class="form-control form-control-sm" name="referencia"
+                        value="{$clientes.referencia}">
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Tempo de Moradia</label>
+                    <input type="text" class="form-control form-control-sm" name="tempo_moradia_cliente"
+                        value="{$clientes.tempo_moradia_anos}">
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Nacionalidade</label>
+                    <input type="text" class="form-control form-control-sm" name="nacionalidade"
+                        value="{$clientes.nacionalidade}">
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Naturalidade</label>
+                    <input type="text" class="form-control form-control-sm" name="naturalidade"
+                        value="{$clientes.naturalidade}">
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card-footer text-end">
+            <button class="btn btn-info btn-sm" type="submit">Atualizar</button>
+        </div>
+    </form>
+</div>

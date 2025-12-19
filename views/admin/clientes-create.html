@@ -92,11 +92,6 @@
           <input type="text" class="form-control form-control-sm" id="telefone" name="telefone" required>
         </div>
 
-        <div class="col-md-3">
-          <label for="email" class="form-label">E-mail</label>
-          <input type="email" class="form-control form-control-sm" id="email" name="email">
-        </div>
-
         <!-- ENDEREÇO -->
         <h5 class="mt-4">Endereço</h5>
         <div class="col-md-2">
@@ -122,11 +117,6 @@
         <div class="col-md-3">
           <label for="cidade" class="form-label">Cidade</label>
           <input type="text" class="form-control form-control-sm" id="cidade" name="cidade" required>
-        </div>
-
-        <div class="col-md-1">
-          <label for="uf" class="form-label">UF</label>
-          <input type="text" class="form-control form-control-sm" id="uf" name="uf" maxlength="2" required>
         </div>
 
         <div class="col-md-4">

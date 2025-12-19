@@ -1,0 +1,276 @@
+<div class="card card-info card-outline mb-4">
+    <!-- Header -->
+    <div class="card-header">
+        <div class="card-title">Dependentes</div>
+    </div>
+
+    <!-- Form -->
+    <form class="needs-validation" id="formDependentes" novalidate>
+
+        <!-- ID TITULAR -->
+        <input type="hidden" name="id_titular" id="id_titular" required>
+
+        <div class="card-body">
+            <div class="row g-3">
+
+                <!-- TITULAR -->
+                <h5 class="mt-2">Titular</h5>
+
+                <div class="col-md-8">
+                    <label class="form-label">Titular Selecionado</label>
+                    <input type="text" class="form-control" id="nome_titular" readonly required>
+                    <div class="invalid-feedback">Selecione um titular.</div>
+                </div>
+
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="button" class="btn btn-secondary w-100" data-bs-toggle="modal"
+                        data-bs-target="#modalTitulares">
+                        Selecionar Titular
+                    </button>
+                </div>
+
+                <!-- DEPENDENTES -->
+                <h5 class="mt-4">Dependentes</h5>
+
+                <div class="d-flex justify-content-end mb-3">
+                    <button type="button" class="btn btn-success" id="btnAddDependente">
+                        ➕ Adicionar Dependente
+                    </button>
+                </div>
+
+                <!-- CONTAINER DOS DEPENDENTES -->
+                <div id="dependentesContainer"></div>
+
+            </div>
+        </div>
+
+        <div class="card-footer d-flex gap-2">
+            <button class="btn btn-info" type="submit">Salvar</button>
+            <a href="/admin/dependentes" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+
+    </form>
+</div>
+
+<!-- MODAL TITULARES -->
+<div class="modal fade" id="modalTitulares" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Selecionar Titular</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaTitulares"></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/4.0.9/jquery.inputmask.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        $("[data-mask]").inputmask();
+
+        let dependenteIndex = 0;
+        const container = document.getElementById('dependentesContainer');
+        const btnAdd = document.getElementById('btnAddDependente');
+
+        btnAdd.addEventListener('click', function () {
+            dependenteIndex++;
+            criarDependente(dependenteIndex);
+        });
+
+        function criarDependente(index) {
+            const html = `
+        <div class="card mb-4 border-start border-4 border-primary dependente-item">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span class="fw-bold text-primary">
+                    👤 Dependente ${index}
+                </span>
+                <button type="button" class="btn btn-danger btn-sm remover-dependente">
+                    🗑️
+                </button>
+            </div>
+
+            <div class="card-body">
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label class="form-label">Nome</label>
+                        <input type="text" class="form-control" name="dependentes[${index}][nome]" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">RG</label>
+                        <input type="text" class="form-control" name="dependentes[${index}][rg]">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">CPF</label>
+                        <input type="text" class="form-control" name="dependentes[${index}][cpf]"
+                            data-inputmask='"mask": "999.999.999-99"' data-mask>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Nascimento</label>
+                        <input type="date" class="form-control" name="dependentes[${index}][data_nascimento]">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">Idade</label>
+                        <input type="number" class="form-control" name="dependentes[${index}][idade]">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Gênero</label>
+                        <select class="form-select" name="dependentes[${index}][genero]">
+                            <option value="">Selecione</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Feminino</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Parentesco</label>
+                        <select class="form-select" name="dependentes[${index}][dependencia_cliente]">
+                            <option value="">Selecione</option>
+                            <option value="Filho(a)">Filho(a)</option>
+                            <option value="Cônjuge">Cônjuge</option>
+                            <option value="Pai/Mãe">Pai/Mãe</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        `;
+            container.insertAdjacentHTML('beforeend', html);
+            $("[data-mask]").inputmask();
+        }
+
+        container.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remover-dependente')) {
+                e.target.closest('.dependente-item').remove();
+            }
+        });
+
+        $('#modalTitulares').on('show.bs.modal', function () {
+            carregarTitulares();
+        });
+
+    });
+
+    function selecionarTitular(id, nome) {
+        document.getElementById('id_titular').value = id;
+        document.getElementById('nome_titular').value = nome;
+        $('#modalTitulares').modal('hide');
+    }
+
+    function carregarTitulares() {
+        $.getJSON('/admin/titulares/json', function (data) {
+
+            let html = '';
+
+            if (!data.length) {
+                html = `<tr><td colspan="4" class="text-center">Nenhum titular encontrado</td></tr>`;
+            } else {
+                data.forEach(t => {
+                    html += `
+                <tr>
+                    <td>${t.id}</td>
+                    <td>${t.nome_completo}</td>
+                    <td>${t.cpf ?? ''}</td>
+                    <td>
+                        <button class="btn btn-success btn-sm"
+                            onclick="selecionarTitular(${t.id}, '${t.nome_completo.replace(/'/g, "\\'")}')">
+                            Selecionar
+                        </button>
+                    </td>
+                </tr>`;
+                });
+            }
+
+            $('#listaTitulares').html(html);
+        });
+    }
+</script>
+
+<script>
+    document.getElementById('formDependentes').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const idTitular = document.getElementById('id_titular').value;
+
+        if (!idTitular) {
+            alert('Selecione um titular');
+            return;
+        }
+
+        const dependentes = [];
+
+        document.querySelectorAll('.dependente-item').forEach(dep => {
+
+            const nome = dep.querySelector('input[name$="[nome]"]')?.value.trim();
+
+            if (!nome) {
+                alert('Todos os dependentes devem ter nome');
+                throw new Error('Nome vazio');
+            }
+
+            dependentes.push({
+                nome: nome,
+                rg: dep.querySelector('input[name$="[rg]"]')?.value ?? '',
+                cpf: dep.querySelector('input[name$="[cpf]"]')?.value ?? '',
+                data_nascimento: dep.querySelector('input[name$="[data_nascimento]"]')?.value ?? '',
+                idade: dep.querySelector('input[name$="[idade]"]')?.value ?? '',
+                genero: dep.querySelector('select[name$="[genero]"]')?.value ?? '',
+                dependencia_cliente: dep.querySelector('select[name$="[dependencia_cliente]"]')?.value ?? ''
+            });
+        });
+
+        fetch('/admin/dependentes/create-json', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id_titular: idTitular,
+                dependentes: dependentes
+            })
+        })
+            .then(res => res.json())
+            .then(json => {
+                if (!json.success) {
+                    alert(json.message);
+                    return;
+                }
+
+                alert('Dependentes salvos com sucesso!');
+                window.location.href = '/admin/dependentes';
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Erro ao salvar dependentes');
+            });
+    });
+</script>

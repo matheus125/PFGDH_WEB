@@ -1,7 +1,6 @@
 <?php
 
 use \Hcode\PageAdmin;
-use Firebase\JWT\JWT;
 use \Hcode\Model\Clientes;
 use Hcode\Model\Funcionarios;
 use \Hcode\DB\Sql;
@@ -185,4 +184,3 @@ $app->get('/admin/logout', function () {
 	header("Location: /admin/login");
 	exit;
 });
-

@@ -236,11 +236,17 @@
   </div> <!--end::App Content-->
 
   <!-- /.card-body -->
-  <div class="card-footer clearfix">
-    <a href="/admin/clientes/create" class="btn btn-sm btn-primary float-start">
-      NOVO CADASTRO
+  <div class="card-footer d-flex gap-2">
+    <a href="/admin/clientes/create" class="btn btn-sm btn-primary">
+      NOVO TITULAR
+    </a>
+
+    <a href="/admin/dependente/create" class="btn btn-sm btn-primary">
+      NOVO DEPENDENTE
     </a>
   </div>
+
+
 </div> <!-- fim do card principal -->
 
 

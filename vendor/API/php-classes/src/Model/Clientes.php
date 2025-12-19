@@ -25,9 +25,6 @@ class Clientes extends Model
         return $clientes;
     }
 
-
-
-
     public static function lista_titulares()
     {
         $sql = new Sql();
@@ -157,24 +154,54 @@ class Clientes extends Model
         }
     }
 
-
-
-    public function get($iduser)
+    public function getByTitular($id)
     {
-
         $sql = new Sql();
 
-        $results = $sql->select("SELECT * FROM tb_usuario a INNER JOIN tb_funcionario b USING(idperson) WHERE a.iduser = :iduser", array(
-            ":iduser" => $iduser
-        ));
+        // ===== TITULAR + ENDEREÇO =====
+        $results = $sql->select("
+        SELECT 
+            t.*,
+            e.cep,
+            e.bairro,
+            e.rua,
+            e.numero,
+            e.referencia,
+            e.nacionalidade,
+            e.naturalidade,
+            e.cidade,
+            e.tempo_moradia_anos
+        FROM tb_titular t
+        LEFT JOIN tb_endereco e 
+            ON e.id = t.id
+        WHERE t.id = :id
+        LIMIT 1
+    ", [
+            ":id" => $id
+        ]);
+
+        if (count($results) === 0) {
+            return false;
+        }
 
         $data = $results[0];
 
-        $data['person'] = utf8_encode($data['person']);
+        // ===== FAMÍLIA =====
+        $familia = $sql->select("
+        SELECT *
+        FROM tb_familia
+        WHERE id = :id
+    ", [
+            ":id" => $id
+        ]);
 
+        $data['familia'] = $familia;
 
         $this->setData($data);
+        return $this;
     }
+
+
 
     public static function setError($msg)
     {
@@ -249,11 +276,10 @@ class Clientes extends Model
         return $result[0]['total'];
     }
 
-     public static function total_familias()
+    public static function total_familias()
     {
         $sql = new Sql();
         $result = $sql->select("SELECT COUNT(*) AS total FROM tb_familia");
         return $result[0]['total'];
     }
-    
 }

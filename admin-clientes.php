@@ -39,15 +39,25 @@ $app->get("/admin/index", function () {
 
 	// pega lista e total
 	$lista_titulares = Clientes::lista_titulares();
-	$total_titulares = Clientes::getTotalTitulares(); // <<< aqui
 	
-
 	$page = new PageAdmin();
 
 	$page->setTpl("index", [
 		"lista_titulares" => $lista_titulares,
-		"total_titulares" => $total_titulares,
 		"msgError" => Clientes::getError(),
 		"msgSuccess" => Clientes::getSuccess()
 	]);
+});
+
+$app->get("/admin/clientes/:id", function ($id) {
+
+	$clientes = new Clientes();
+
+	$clientes->getByTitular((int)$id);
+
+	$page = new PageAdmin();
+
+	$page->setTpl("clientes-update", array(
+		"clientes" => $clientes->getValues()
+	));
 });
