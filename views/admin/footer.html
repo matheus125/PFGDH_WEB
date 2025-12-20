@@ -60,173 +60,170 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"
   integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8=" crossorigin="anonymous"></script>
 <script>
-  //-------------
-  // - PIE CHART -
-  //-------------
+/* =========================================================
+   UTILIDADES
+========================================================= */
 
+/**
+ * Atualiza texto de um elemento apenas se ele existir
+ */
+function setText(id, valor = 0) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = valor;
+}
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const el = document.querySelector('#pie-chart');
-    if (!el) return;
-
-    fetch('/api/grafico-titulares')
-      .then(response => {
-        if (!response.ok) throw new Error('Resposta da API não OK: ' + response.status);
-        return response.json();
-      })
-      .then(data => {
-        // labels e valores do retorno
-        const labels = Object.keys(data);
-        const valores = Object.values(data).map(v => Number(v) || 0);
-
-        // opções do gráfico
-        const graficoOptions = {
-          series: valores,
-          chart: {
-            type: 'donut',
-            height: 350
-          },
-          labels: labels,
-          legend: { position: 'bottom' },
-          colors: ['#0d6efd', '#20c997', '#ffc107'], // ajuste se quiser mais cores
-          tooltip: {
-            y: {
-              formatter: function (val) { return val + ' pessoas'; }
-            }
-          }
-        };
-
-        // renderiza gráfico (se já existir um gráfico, destrói antes)
-        if (window._pieChartInstance instanceof ApexCharts) {
-          window._pieChartInstance.destroy();
-        }
-        window._pieChartInstance = new ApexCharts(el, graficoOptions);
-        window._pieChartInstance.render();
-
-        // monta o rodapé/legenda com valores e percentuais
-        const legend = document.querySelector('#pie-legend');
-        legend.innerHTML = ''; // limpa
-
-        const total = valores.reduce((a, b) => a + b, 0) || 1;
-        labels.forEach((label, i) => {
-          const value = valores[i] || 0;
-          const percent = ((value / total) * 100).toFixed(1);
-
-          const li = document.createElement('li');
-          li.className = 'nav-item';
-          li.innerHTML = `
-          <a href="#" class="nav-link d-flex justify-content-between align-items-center">
-            <span>${label}</span>
-            <span class="float-end">
-              <strong>${value}</strong>
-              <small class="text-muted"> &nbsp;(${percent}%)</small>
-            </span>
-          </a>
-        `;
-          legend.appendChild(li);
-        });
-      })
-      .catch(err => {
-        console.error('Erro ao buscar API:', err);
-        // opcional: mostrar mensagem amigável no card
-        const legend = document.querySelector('#pie-legend');
-        if (legend) legend.innerHTML = '<li class="nav-item"><a class="nav-link text-danger">Erro ao carregar dados</a></li>';
-      });
+/**
+ * Fetch seguro com tratamento de erro
+ */
+function fetchJson(url) {
+  return fetch(url).then(res => {
+    if (!res.ok) {
+      throw new Error(`Erro ${res.status} em ${url}`);
+    }
+    return res.json();
   });
+}
 
+/* =========================================================
+   GRÁFICO DE PIZZA (APEXCHARTS)
+========================================================= */
 
-  function atualizarUsuarios() {
-    fetch("/api/total-usuarios")
-      .then(r => r.json())
-      .then(d => {
-        document.getElementById("totalUsuarios").textContent = d.total;
-      });
-  }
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.querySelector('#pie-chart');
+  if (!el || typeof ApexCharts === 'undefined') return;
 
-  atualizarUsuarios();
-  setInterval(atualizarUsuarios, 10000); // 10 segundos
+  fetchJson('/api/grafico-titulares')
+    .then(data => {
+      const labels = Object.keys(data || {});
+      const valores = Object.values(data || {}).map(v => Number(v) || 0);
 
-
-  function atualizarFamilia() {
-    fetch("/api/total-familias")
-      .then(r => r.json())
-      .then(d => {
-        document.getElementById("totalFamilias").textContent = d.total;
-      });
-  }
-
-  atualizarFamilia();
-  setInterval(atualizarFamilia, 10000); // 10 segundos
-
-  let usuarios = [];
-  let pagina = 1;
-  const itensPorPagina = 8;
-  let ordemColuna = "";
-  let ordemAsc = true;
-
-  // ---- CARREGAMENTO DOS DADOS ----
-  function carregarUsuarios(animacao = false) {
-    const loader = document.getElementById("loader");
-    if (loader) loader.style.display = "inline";
-
-    fetch("/api/usuarios-titulares")
-      .then(res => res.json())
-      .then(data => {
-        usuarios = data;
-        pagina = 1;
-        atualizarTabela(animacao);
-
-        const total = document.getElementById("totalRegistros");
-        if (total) total.innerText = usuarios.length;
-      })
-      .finally(() => {
-        if (loader) loader.style.display = "none";
-      });
-  }
-
-
-  // ---- INICIA ----
-  carregarUsuarios();
-
-  function atualizarDependentes() {
-    fetch("/api/total-dependentes")
-      .then(r => {
-        if (!r.ok) {
-          throw new Error("Erro HTTP: " + r.status);
+      const options = {
+        series: valores,
+        chart: { type: 'donut', height: 350 },
+        labels,
+        legend: { position: 'bottom' },
+        colors: ['#0d6efd', '#20c997', '#ffc107'],
+        tooltip: {
+          y: { formatter: val => `${val} pessoas` }
         }
-        return r.json();
-      })
-      .then(d => {
-        const el = document.getElementById("totalDependentes");
-        if (el) el.textContent = d.total ?? 0;
-      })
-      .catch(err => {
-        console.error("Erro ao carregar total de dependentes:", err);
+      };
+
+      if (window._pieChartInstance instanceof ApexCharts) {
+        window._pieChartInstance.destroy();
+      }
+
+      window._pieChartInstance = new ApexCharts(el, options);
+      window._pieChartInstance.render();
+
+      /* Legenda customizada */
+      const legend = document.getElementById('pie-legend');
+      if (!legend) return;
+
+      legend.innerHTML = '';
+      const total = valores.reduce((a, b) => a + b, 0) || 1;
+
+      labels.forEach((label, i) => {
+        const percent = ((valores[i] / total) * 100).toFixed(1);
+        legend.insertAdjacentHTML('beforeend', `
+          <li class="nav-item">
+            <a class="nav-link d-flex justify-content-between">
+              <span>${label}</span>
+              <span><strong>${valores[i]}</strong> <small>(${percent}%)</small></span>
+            </a>
+          </li>
+        `);
       });
-  }
+    })
+    .catch(err => {
+      console.error('Erro no gráfico:', err);
+      const legend = document.getElementById('pie-legend');
+      if (legend) legend.innerHTML = '<li class="text-danger">Erro ao carregar gráfico</li>';
+    });
+});
 
+/* =========================================================
+   CONTADORES
+========================================================= */
 
-  atualizarDependentes();
-  setInterval(atualizarDependentes, 10000); // a cada 10 segundos
+function atualizarUsuarios() {
+  fetchJson('/api/total-titulares')
+    .then(d => setText('totalUsuarios', d.total))
+    .catch(err => console.error('Usuários:', err));
+}
 
-  function atualizarTotalGeral() {
-    Promise.all([
-      fetch("/api/total-usuarios").then(r => r.json()),
-      fetch("/api/total-dependentes").then(r => r.json())
-    ])
-      .then(([tit, dep]) => {
-        const total = (tit.total ?? 0) + (dep.total ?? 0);
-        document.getElementById("totalGeral").textContent = total;
-      });
-  }
+function atualizarFamilia() {
+  fetchJson('/api/total-familias')
+    .then(d => setText('totalFamilias', d.total))
+    .catch(err => console.error('Famílias:', err));
+}
 
-  atualizarTotalGeral();
-  setInterval(atualizarTotalGeral, 10000);
+function atualizarDependentes() {
+  fetchJson('/api/total-dependentes')
+    .then(d => setText('totalDependentes', d.total))
+    .catch(err => console.error('Dependentes:', err));
+}
 
+function atualizarTotalGeral() {
+  Promise.all([
+    fetchJson('/api/total-titulares'),
+    fetchJson('/api/total-dependentes')
+  ])
+    .then(([tit, dep]) => {
+      setText('totalGeral', (tit.total || 0) + (dep.total || 0));
+    })
+    .catch(err => console.error('Total geral:', err));
+}
 
+/* Inicialização */
+atualizarUsuarios();
+atualizarFamilia();
+atualizarDependentes();
+atualizarTotalGeral();
+
+/* Intervalos */
+setInterval(atualizarUsuarios, 10000);
+setInterval(atualizarFamilia, 10000);
+setInterval(atualizarDependentes, 10000);
+setInterval(atualizarTotalGeral, 10000);
+
+/* =========================================================
+   LISTA DE USUÁRIOS (SEM QUEBRAR SE NÃO EXISTIR TABELA)
+========================================================= */
+
+let usuarios = [];
+
+function carregarUsuarios() {
+  const loader = document.getElementById('loader');
+  if (loader) loader.style.display = 'inline';
+
+  fetchJson('/api/usuarios-titulares')
+    .then(data => {
+      if (!Array.isArray(data)) {
+        console.error('usuarios-titulares não retornou array:', data);
+        return;
+      }
+
+      usuarios = data;
+      setText('totalRegistros', usuarios.length);
+
+      /* Só chama se a função existir */
+      if (typeof atualizarTabela === 'function') {
+        atualizarTabela();
+      }
+    })
+    .catch(err => console.error('Erro usuários:', err))
+    .finally(() => {
+      if (loader) loader.style.display = 'none';
+    });
+}
+
+carregarUsuarios();
 
 </script>
+
 <!--end::Script-->
+
+
 <style>
   .table-modern thead th {
     background: #0d6efd;

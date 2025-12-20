@@ -125,6 +125,7 @@ $app->get("/admin/dependentes/ajax/:id", function ($id) {
 
     $dependentes = $sql->select("
         SELECT 
+            id,
             nome,
             dependencia_cliente,
             TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) AS idade,
@@ -141,3 +142,50 @@ $app->get("/admin/dependentes/ajax/:id", function ($id) {
     exit;
 });
 
+// Rota para editar/atualizar dependente via AJAX
+$app->post("/admin/dependentes/editar/:id", function ($id) {
+
+    $body = json_decode(file_get_contents('php://input'), true);
+
+    if (!$body) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Dados inválidos']);
+        exit;
+    }
+
+    $sql = new Sql();
+
+    $sql->query("
+        UPDATE tb_dependentes SET
+            nome = :nome,
+            dependencia_cliente = :dependencia_cliente,
+            idade = :idade,
+            genero = :genero
+        WHERE id = :id
+    ", [
+        ':nome' => $body['nome'] ?? '',
+        ':dependencia_cliente' => $body['dependencia_cliente'] ?? null,
+        ':idade' => $body['idade'] ?? null,
+        ':genero' => $body['genero'] ?? null,
+        ':id' => $id
+    ]);
+
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true, 'message' => 'Dependente atualizado com sucesso']);
+    exit;
+});
+
+$app->get('/admin/dependentes/get/{id}', function ($request, $response, $args) {
+    $id = $args['id'];
+
+    // Buscar dependente no banco
+    $sql = new Sql();
+    $dependente = $sql->select("SELECT * FROM tb_dependentes WHERE id = :id", [':id' => $id]);
+
+    if (empty($dependente)) {
+        return $response->withStatus(404)->write('Dependente não encontrado');
+    }
+
+    return $response->withHeader('Content-Type', 'application/json')
+        ->write(json_encode($dependente[0]));
+});

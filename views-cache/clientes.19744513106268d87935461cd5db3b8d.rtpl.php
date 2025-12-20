@@ -207,6 +207,48 @@
                         </div>
                       </div>
 
+                      <!-- Modal Edição Dependente -->
+                      <div class="modal fade" id="modalEditarDependente" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                              <h5 class="modal-title">Editar Dependente</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Fechar"></button>
+                            </div>
+                            <div class="modal-body">
+                              <input type="hidden" id="editIdDependente">
+                              <div class="mb-3">
+                                <label>Nome</label>
+                                <input type="text" id="editNome" class="form-control">
+                              </div>
+                              <div class="mb-3">
+                                <label>Parentesco</label>
+                                <input type="text" id="editParentesco" class="form-control">
+                              </div>
+                              <div class="mb-3">
+                                <label>Idade</label>
+                                <input type="number" id="editIdade" class="form-control">
+                              </div>
+                              <div class="mb-3">
+                                <label>Sexo</label>
+                                <select id="editGenero" class="form-control">
+                                  <option value="">Selecione</option>
+                                  <option value="Masculino">Masculino</option>
+                                  <option value="Feminino">Feminino</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                              <button type="button" class="btn btn-primary"
+                                onclick="salvarEdicaoDependente()">Salvar</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
 
                     </div>
                   </div>
@@ -221,8 +263,6 @@
                 </div>
               </div>
             </div>
-
-
 
 
           </div>
@@ -255,28 +295,35 @@
   </div>
 
 
+
+
+
 </div> <!-- fim do card principal -->
 
 <script>
   $(document).ready(function () {
 
-    // DataTable
+    // Inicializa DataTable
+
     $('#tabela_titulares').DataTable({
+      language: {
+        url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
+      }
+      , // arquivo local
       paging: true,
       searching: true,
       ordering: true,
       info: true,
-      pageLength: 10,
-      language: {
-        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json'
-      }
+      pageLength: 10
     });
+
+
 
     let titularAtual = null;
 
-    // Modal dados
-    $('#modalRelatorio').on('show.bs.modal', function (event) {
-      const button = event.relatedTarget;
+    // Função para preencher os dados do titular no modal
+    function preencherDadosTitular(button) {
+      if (!button) return;
 
       $('#m_id').text(button.dataset.id);
       $('#m_nome').text(button.dataset.nome);
@@ -303,124 +350,188 @@
       $('#m_cidade').text(button.dataset.cidade);
 
       titularAtual = button.dataset.id;
+    }
 
+    // Função para carregar dependentes
+    function carregarDependentes() {
+      const container = $('#m_dependentes');
+      if (!titularAtual) {
+        container.html('<p class="text-muted">Selecione um titular...</p>');
+        return;
+      }
 
-    });
-
-    $('#tab-dependentes-tab').on('shown.bs.tab', function () {
-
-      if (!titularAtual) return;
-
-      // ===================================
-      // Skeleton / Loading
-      // ===================================
-      $('#m_dependentes').html(`
-      <div class="d-flex flex-column gap-2">
-        <div class="skeleton-card"></div>
-        <div class="skeleton-card"></div>
-        <div class="skeleton-card"></div>
-      </div>
-    `);
+      // Skeleton de loading
+      container.html(`
+<div class="d-flex flex-column gap-2">
+  <div class="skeleton-card"></div>
+  <div class="skeleton-card"></div>
+  <div class="skeleton-card"></div>
+</div>
+`);
 
       $.ajax({
         url: `/admin/dependentes/ajax/${titularAtual}`,
         method: 'GET',
         dataType: 'json',
         success: function (deps) {
-
-          if (!deps.length) {
-            $('#m_dependentes').html(`
-                    <div class="text-center text-muted py-3">
-                        <i class="fas fa-user-friends fa-2x mb-2"></i>
-                        <p>Nenhum dependente cadastrado.</p>
-                    </div>
-                `);
+          if (!deps || deps.length === 0) {
+            container.html(`
+<div class="text-center text-muted py-3">
+  <i class="fas fa-user-friends fa-2x mb-2"></i>
+  <p>Nenhum dependente cadastrado.</p>
+</div>
+`);
             return;
           }
 
           let html = '';
           deps.forEach(d => {
             html += `
-                  <div class="card mb-2 shadow-sm">
-                    <div class="card-body d-flex justify-content-between align-items-start">
-                      <div>
-                        <p><b>Nome:</b> ${d.nome}</p>
-                        <p><b>Parentesco:</b> ${d.dependencia_cliente}</p>
-                        <p><b>Idade:</b> ${d.idade ?? '-'}</p>
-                        <p><b>Sexo:</b> ${d.genero ?? '-'}</p>
-                      </div>
-
-                      <div class="btn-group-vertical">
-                        <button class="btn btn-sm btn-primary mb-1" onclick="editarDependente(${d.id})">
-                          <i class="fas fa-edit"></i> Editar
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="excluirDependente(${d.id})">
-                          <i class="fas fa-trash"></i> Excluir
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                `;
+<div class="card mb-2 shadow-sm">
+  <div class="card-body d-flex justify-content-between align-items-start">
+    <div>
+      <p><b>Nome:</b> ${d.nome}</p>
+      <p><b>Parentesco:</b> ${d.dependencia_cliente}</p>
+      <p><b>Idade:</b> ${d.idade ?? '-'}</p>
+      <p><b>Sexo:</b> ${d.genero ?? '-'}</p>
+    </div>
+    <div class="btn-group-vertical">
+      <button class="btn btn-sm btn-primary mb-1" onclick="editarDependente(${d.id})">
+        <i class="fas fa-edit"></i> Editar
+      </button>
+      <button class="btn btn-sm btn-danger" onclick="excluirDependente(${d.id})">
+        <i class="fas fa-trash"></i> Excluir
+      </button>
+    </div>
+  </div>
+</div>
+`;
           });
 
-          $('#m_dependentes').html(html);
-
+          container.html(html);
         },
-        error: function (xhr, status, error) {
+        error: function (xhr) {
           console.error("Erro ao carregar dependentes:", xhr.responseText);
-          $('#m_dependentes').html(`<p class="text-danger">Erro ao carregar dependentes.</p>`);
+          container.html('<p class="text-danger">Erro ao carregar dependentes.</p>');
         }
       });
-
-    });
-
-
-
-    function editarDependente(idDep) {
-      alert("Editar dependente ID: " + idDep);
-      // Aqui você pode abrir outro modal de edição
     }
 
-    function excluirDependente(idDep) {
+    // Abrir modal do titular
+    $('#modalRelatorio').on('show.bs.modal', function (event) {
+      const button = event.relatedTarget || {}; // Proteção caso seja undefined
+      preencherDadosTitular(button);
+      carregarDependentes();
+    });
+
+    // Recarregar dependentes quando a aba é clicada
+    $('#tab-dependentes-tab').on('shown.bs.tab', function () {
+      carregarDependentes();
+    });
+
+    // Excluir dependente
+    window.excluirDependente = function (idDep) {
       if (!confirm("Tem certeza que deseja excluir este dependente?")) return;
 
       $.ajax({
         url: `/admin/dependentes/excluir/${idDep}`,
         method: 'DELETE',
-        success: function (res) {
+        success: function () {
           alert("Dependente excluído!");
-          // Recarrega a aba de dependentes
-          $('#tab-dependentes-tab').trigger('shown.bs.tab');
+          carregarDependentes();
         },
-        error: function (xhr) {
+        error: function () {
           alert("Erro ao excluir dependente!");
         }
       });
     }
 
+  });
 
+  // Editar dependente
+  function editarDependente(idDep) {
+    $.ajax({
+      url: `/admin/dependentes/get/${idDep}`, // ajuste para sua rota real
+      method: 'GET',
+      dataType: 'json',
+      success: function (d) {
+        $('#editIdDependente').val(d.id);
+        $('#editNome').val(d.nome);
+        $('#editParentesco').val(d.dependencia_cliente);
+        $('#editIdade').val(d.idade);
+        $('#editGenero').val(d.genero);
 
+        const modal = new bootstrap.Modal(document.getElementById('modalEditarDependente'));
+        modal.show();
+      },
+      error: function () {
+        alert("Erro ao carregar dependente!");
+      }
+    });
+  }
+
+  // Salvar alterações via AJAX
+  $('#btnSalvarEdicao').on('click', function () {
+    const idDep = $('#editIdDependente').val();
+    const data = {
+      nome: $('#editNome').val(),
+      dependencia_cliente: $('#editParentesco').val(),
+      idade: $('#editIdade').val(),
+      genero: $('#editGenero').val()
+    };
+
+    $.ajax({
+      url: `/admin/dependentes/editar/${idDep}`,
+      method: 'POST',
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      success: function () {
+        alert("Dependente atualizado com sucesso!");
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modalEditarDependente'));
+        modal.hide();
+        carregarDependentes();
+      },
+      error: function () {
+        alert("Erro ao salvar dependente!");
+      }
+    });
   });
 </script>
 
 
 
+
+
 <style>
+  /* Skeleton geral */
   .skeleton-card {
-    height: 80px;
+    height: 100px;
+    width: 100%;
+    border-radius: 8px;
     background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
     background-size: 200% 100%;
-    animation: shine 1.5s infinite;
-    border-radius: 6px;
+    animation: shimmer 1.5s infinite;
+    margin-bottom: 12px;
   }
 
-  @keyframes shine {
+  @keyframes shimmer {
     0% {
-      background-position: 200% 0;
+      background-position: -200% 0;
     }
 
     100% {
-      background-position: -200% 0;
+      background-position: 200% 0;
     }
+  }
+
+  /* Skeleton linha interna (opcional) */
+  .skeleton-line {
+    height: 12px;
+    width: 80%;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
   }
 </style>

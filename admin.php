@@ -20,8 +20,41 @@ $app->get('/', function () {
 	$page->setTpl("index");
 });
 
-$app->get("/api/total-usuarios", function () {
+$app->get("/api/total-titulares", function () {
 	$total = Clientes::total_usuarios(); // esse método deve retornar um número
+	echo json_encode(["total" => $total]);
+});
+
+$app->get('/api/usuarios-titulares', function () {
+
+	header('Content-Type: application/json; charset=utf-8');
+
+	try {
+		$sql = new Sql();
+
+		$dados = $sql->select("
+            SELECT 
+                id,
+                nome_completo,
+                telefone
+            FROM tb_titular
+            ORDER BY nome_completo
+        ");
+
+		echo json_encode($dados, JSON_UNESCAPED_UNICODE);
+	} catch (Throwable $e) {
+		http_response_code(500);
+		echo json_encode([
+			'erro' => true,
+			'mensagem' => $e->getMessage()
+		]);
+	}
+});
+
+
+
+$app->get("/api/total-dependentes", function () {
+	$total = Clientes::total_dependentes(); // esse método deve retornar um número
 	echo json_encode(["total" => $total]);
 });
 

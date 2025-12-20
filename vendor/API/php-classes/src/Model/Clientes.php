@@ -276,6 +276,13 @@ class Clientes extends Model
         return $result[0]['total'];
     }
 
+    public static function total_dependentes()
+    {
+        $sql = new Sql();
+        $result = $sql->select("SELECT COUNT(*) AS total FROM tb_dependentes");
+        return $result[0]['total'];
+    }
+
     public static function total_familias()
     {
         $sql = new Sql();
