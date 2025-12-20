@@ -65,66 +65,53 @@ $app->get("/api/total-familias", function () {
 
 $app->get("/api/grafico-titulares", function () {
 
+	header('Content-Type: application/json; charset=utf-8');
 	require __DIR__ . "/vendor/autoload.php";
 
+	try {
+		$sql = new Sql();
 
-	$sql = new Sql();
-	$rows = $sql->select("SELECT data_nascimento FROM tb_titular");
+		$rows = $sql->select("
+            SELECT data_nascimento, genero FROM tb_titular
+            UNION ALL
+            SELECT data_nascimento, genero FROM tb_dependentes
+        ");
 
-	$faixas = [
-		'3 a 17 anos' => 0,
-		'18 a 59 anos' => 0,
-		'60+ anos' => 0
-	];
+		// Totais por faixa (SIMPLES, direto pro gráfico)
+		$faixas = [
+			'3-17' => 0,
+			'18-59' => 0,
+			'60+' => 0
+		];
 
-	foreach ($rows as $row) {
-		if (!empty($row['data_nascimento'])) {
-			$dt = new DateTime($row['data_nascimento']);
-			$idade = $dt->diff(new DateTime())->y;
+		foreach ($rows as $row) {
 
-			if ($idade >= 3 && $idade <= 17) $faixas['3 a 17 anos']++;
-			elseif ($idade >= 18 && $idade <= 59) $faixas['18 a 59 anos']++;
-			else $faixas['60+ anos']++;
+			if (empty($row['data_nascimento'])) continue;
+
+			$idade = (new DateTime($row['data_nascimento']))
+				->diff(new DateTime())->y;
+
+			if ($idade >= 3 && $idade <= 17) {
+				$faixas['3-17']++;
+			} elseif ($idade >= 18 && $idade <= 59) {
+				$faixas['18-59']++;
+			} else {
+				$faixas['60+']++;
+			}
 		}
-	}
 
-	header('Content-Type: application/json');
-	echo json_encode($faixas);
+		echo json_encode($faixas, JSON_UNESCAPED_UNICODE);
+	} catch (Throwable $e) {
+		http_response_code(500);
+		echo json_encode([
+			'erro' => true,
+			'mensagem' => $e->getMessage()
+		]);
+	}
 });
 
-$app->get("/api/grafico-titulares", function () {
-
-	require __DIR__ . "/vendor/autoload.php";
 
 
-	$sql = "SELECT data_nascimento, sexo, pcd FROM tb_titular";
-	$result = $conn->query($sql);
-
-	$faixas = [
-		'3-17' => ['Masc' => 0, 'Fem' => 0, 'MascPCD' => 0, 'FemPCD' => 0],
-		'18-59' => ['Masc' => 0, 'Fem' => 0, 'MascPCD' => 0, 'FemPCD' => 0],
-		'60+' => ['Masc' => 0, 'Fem' => 0, 'MascPCD' => 0, 'FemPCD' => 0]
-	];
-
-	while ($row = $result->fetch_assoc()) {
-		if (empty($row['data_nascimento'])) continue;
-
-		$idade = (new DateTime($row['data_nascimento']))->diff(new DateTime())->y;
-		$sexo = strtolower($row['sexo']) == 'feminino' ? 'Fem' : 'Masc';
-		$pcd = strtolower($row['pcd']) == 'sim' ? 'PCD' : '';
-
-		if ($idade >= 3 && $idade <= 17) $faixa = '3-17';
-		elseif ($idade >= 18 && $idade <= 59) $faixa = '18-59';
-		else $faixa = '60+';
-
-		if ($pcd == 'PCD')
-			$faixas[$faixa][$sexo . 'PCD']++;
-		else
-			$faixas[$faixa][$sexo]++;
-	}
-
-	echo json_encode($faixas);
-});
 
 
 
