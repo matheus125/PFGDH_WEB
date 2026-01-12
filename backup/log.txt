@@ -1,0 +1,362 @@
+[2026-01-12 21:17:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:17:50] Upload OK
+[2026-01-12 21:17:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:17:50] Upload OK
+[2026-01-12 21:17:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:17:50] Upload OK
+[2026-01-12 21:17:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:17:50] Upload OK
+[2026-01-12 21:17:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:17:50] Upload OK
+[2026-01-12 21:17:51] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:17:51] Upload OK
+[2026-01-12 21:17:51] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:17:51] Upload OK
+[2026-01-12 21:17:51] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:17:51] Upload OK
+[2026-01-12 21:17:51] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:17:51] Upload OK
+[2026-01-12 21:17:51] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:17:51] Upload OK
+[2026-01-12 21:17:51] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:17:51] Upload OK
+[2026-01-12 21:17:51] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:17:51] Upload OK
+[2026-01-12 21:17:51] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:17:51] Upload OK
+[2026-01-12 21:18:01] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:01] Upload OK
+[2026-01-12 21:18:01] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:01] Upload OK
+[2026-01-12 21:18:01] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:01] Upload OK
+[2026-01-12 21:18:01] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:01] Upload OK
+[2026-01-12 21:18:01] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:01] Upload OK
+[2026-01-12 21:18:11] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:11] Upload OK
+[2026-01-12 21:18:11] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:11] Upload OK
+[2026-01-12 21:18:11] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:11] Upload OK
+[2026-01-12 21:18:11] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:11] Upload OK
+[2026-01-12 21:18:11] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:11] Upload OK
+[2026-01-12 21:18:21] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:21] Upload OK
+[2026-01-12 21:18:21] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:21] Upload OK
+[2026-01-12 21:18:21] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:21] Upload OK
+[2026-01-12 21:18:21] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:21] Upload OK
+[2026-01-12 21:18:21] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:21] Upload OK
+[2026-01-12 21:18:31] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:31] Upload OK
+[2026-01-12 21:18:31] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:31] Upload OK
+[2026-01-12 21:18:31] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:31] Upload OK
+[2026-01-12 21:18:31] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:31] Upload OK
+[2026-01-12 21:18:31] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:31] Upload OK
+[2026-01-12 21:18:41] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:41] Upload OK
+[2026-01-12 21:18:41] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:41] Upload OK
+[2026-01-12 21:18:41] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:41] Upload OK
+[2026-01-12 21:18:41] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:41] Upload OK
+[2026-01-12 21:18:41] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:41] Upload OK
+[2026-01-12 21:18:51] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:51] Upload OK
+[2026-01-12 21:18:51] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:51] Upload OK
+[2026-01-12 21:18:51] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:51] Upload OK
+[2026-01-12 21:18:51] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:51] Upload OK
+[2026-01-12 21:18:51] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:18:51] Upload OK
+[2026-01-12 21:19:01] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:01] Upload OK
+[2026-01-12 21:19:01] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:01] Upload OK
+[2026-01-12 21:19:01] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:01] Upload OK
+[2026-01-12 21:19:01] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:01] Upload OK
+[2026-01-12 21:19:01] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:01] Upload OK
+[2026-01-12 21:19:28] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:28] Upload OK
+[2026-01-12 21:19:28] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:28] Upload OK
+[2026-01-12 21:19:28] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:28] Upload OK
+[2026-01-12 21:19:28] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:28] Upload OK
+[2026-01-12 21:19:28] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:28] Upload OK
+[2026-01-12 21:19:29] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:29] Upload OK
+[2026-01-12 21:19:29] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:29] Upload OK
+[2026-01-12 21:19:29] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:29] Upload OK
+[2026-01-12 21:19:29] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:29] Upload OK
+[2026-01-12 21:19:29] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:29] Upload OK
+[2026-01-12 21:19:29] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:29] Upload OK
+[2026-01-12 21:19:29] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:29] Upload OK
+[2026-01-12 21:19:29] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:29] Upload OK
+[2026-01-12 21:19:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:40] Upload OK
+[2026-01-12 21:19:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:40] Upload OK
+[2026-01-12 21:19:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:40] Upload OK
+[2026-01-12 21:19:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:40] Upload OK
+[2026-01-12 21:19:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:40] Upload OK
+[2026-01-12 21:19:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:50] Upload OK
+[2026-01-12 21:19:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:50] Upload OK
+[2026-01-12 21:19:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:50] Upload OK
+[2026-01-12 21:19:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:50] Upload OK
+[2026-01-12 21:19:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:19:50] Upload OK
+[2026-01-12 21:20:00] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:00] Upload OK
+[2026-01-12 21:20:00] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:00] Upload OK
+[2026-01-12 21:20:00] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:00] Upload OK
+[2026-01-12 21:20:00] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:00] Upload OK
+[2026-01-12 21:20:00] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:00] Upload OK
+[2026-01-12 21:20:10] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:10] Upload OK
+[2026-01-12 21:20:10] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:10] Upload OK
+[2026-01-12 21:20:10] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:10] Upload OK
+[2026-01-12 21:20:10] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:10] Upload OK
+[2026-01-12 21:20:10] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:10] Upload OK
+[2026-01-12 21:20:20] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:20] Upload OK
+[2026-01-12 21:20:20] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:20] Upload OK
+[2026-01-12 21:20:20] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:20] Upload OK
+[2026-01-12 21:20:20] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:20] Upload OK
+[2026-01-12 21:20:20] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:20] Upload OK
+[2026-01-12 21:20:30] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:30] Upload OK
+[2026-01-12 21:20:30] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:30] Upload OK
+[2026-01-12 21:20:30] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:30] Upload OK
+[2026-01-12 21:20:30] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:30] Upload OK
+[2026-01-12 21:20:30] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:30] Upload OK
+[2026-01-12 21:20:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:40] Upload OK
+[2026-01-12 21:20:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:40] Upload OK
+[2026-01-12 21:20:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:40] Upload OK
+[2026-01-12 21:20:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:40] Upload OK
+[2026-01-12 21:20:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:20:40] Upload OK
+[2026-01-12 21:21:13] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:13] Upload OK
+[2026-01-12 21:21:13] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:13] Upload OK
+[2026-01-12 21:21:13] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:13] Upload OK
+[2026-01-12 21:21:13] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:13] Upload OK
+[2026-01-12 21:21:13] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:13] Upload OK
+[2026-01-12 21:21:20] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:20] Upload OK
+[2026-01-12 21:21:20] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:20] Upload OK
+[2026-01-12 21:21:20] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:20] Upload OK
+[2026-01-12 21:21:20] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:20] Upload OK
+[2026-01-12 21:21:20] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:20] Upload OK
+[2026-01-12 21:21:30] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:30] Upload OK
+[2026-01-12 21:21:30] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:30] Upload OK
+[2026-01-12 21:21:30] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:30] Upload OK
+[2026-01-12 21:21:30] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:30] Upload OK
+[2026-01-12 21:21:30] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:30] Upload OK
+[2026-01-12 21:21:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:40] Upload OK
+[2026-01-12 21:21:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:40] Upload OK
+[2026-01-12 21:21:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:40] Upload OK
+[2026-01-12 21:21:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:40] Upload OK
+[2026-01-12 21:21:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:40] Upload OK
+[2026-01-12 21:21:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:50] Upload OK
+[2026-01-12 21:21:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:50] Upload OK
+[2026-01-12 21:21:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:50] Upload OK
+[2026-01-12 21:21:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:50] Upload OK
+[2026-01-12 21:21:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:21:50] Upload OK
+[2026-01-12 21:22:00] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:00] Upload OK
+[2026-01-12 21:22:00] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:00] Upload OK
+[2026-01-12 21:22:00] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:00] Upload OK
+[2026-01-12 21:22:00] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:00] Upload OK
+[2026-01-12 21:22:00] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:00] Upload OK
+[2026-01-12 21:22:10] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:10] Upload OK
+[2026-01-12 21:22:10] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:10] Upload OK
+[2026-01-12 21:22:10] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:10] Upload OK
+[2026-01-12 21:22:10] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:10] Upload OK
+[2026-01-12 21:22:10] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:10] Upload OK
+[2026-01-12 21:22:45] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:45] Upload OK
+[2026-01-12 21:22:45] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:45] Upload OK
+[2026-01-12 21:22:45] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:45] Upload OK
+[2026-01-12 21:22:45] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:45] Upload OK
+[2026-01-12 21:22:45] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:45] Upload OK
+[2026-01-12 21:22:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:50] Upload OK
+[2026-01-12 21:22:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:50] Upload OK
+[2026-01-12 21:22:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:50] Upload OK
+[2026-01-12 21:22:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:50] Upload OK
+[2026-01-12 21:22:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:50] Upload OK
+[2026-01-12 21:22:59] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:59] Upload OK
+[2026-01-12 21:22:59] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:59] Upload OK
+[2026-01-12 21:22:59] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:59] Upload OK
+[2026-01-12 21:22:59] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:59] Upload OK
+[2026-01-12 21:22:59] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:22:59] Upload OK
+[2026-01-12 21:23:09] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:09] Upload OK
+[2026-01-12 21:23:09] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:09] Upload OK
+[2026-01-12 21:23:09] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:09] Upload OK
+[2026-01-12 21:23:09] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:09] Upload OK
+[2026-01-12 21:23:09] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:09] Upload OK
+[2026-01-12 21:23:20] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:20] Upload OK
+[2026-01-12 21:23:20] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:20] Upload OK
+[2026-01-12 21:23:20] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:20] Upload OK
+[2026-01-12 21:23:20] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:20] Upload OK
+[2026-01-12 21:23:20] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:20] Upload OK
+[2026-01-12 21:23:30] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:30] Upload OK
+[2026-01-12 21:23:30] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:30] Upload OK
+[2026-01-12 21:23:30] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:30] Upload OK
+[2026-01-12 21:23:30] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:30] Upload OK
+[2026-01-12 21:23:30] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:30] Upload OK
+[2026-01-12 21:23:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:40] Upload OK
+[2026-01-12 21:23:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:40] Upload OK
+[2026-01-12 21:23:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:40] Upload OK
+[2026-01-12 21:23:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:40] Upload OK
+[2026-01-12 21:23:40] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:40] Upload OK
+[2026-01-12 21:23:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:50] Upload OK
+[2026-01-12 21:23:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:50] Upload OK
+[2026-01-12 21:23:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:50] Upload OK
+[2026-01-12 21:23:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:50] Upload OK
+[2026-01-12 21:23:50] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:23:50] Upload OK
+[2026-01-12 21:24:02] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:24:02] Upload OK
+[2026-01-12 21:24:02] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:24:02] Upload OK
+[2026-01-12 21:24:02] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:24:02] Upload OK
+[2026-01-12 21:24:02] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:24:02] Upload OK
+[2026-01-12 21:24:02] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:24:02] Upload OK
+[2026-01-12 21:24:10] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:24:10] Upload OK
+[2026-01-12 21:24:10] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:24:10] Upload OK
+[2026-01-12 21:24:10] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:24:10] Upload OK
+[2026-01-12 21:24:10] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:24:10] Upload OK
+[2026-01-12 21:24:10] Backup OK: prato_cheio_2026-01-12.sql
+[2026-01-12 21:24:10] Upload OK

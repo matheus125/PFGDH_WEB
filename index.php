@@ -18,4 +18,7 @@ require_once("admin-dependentes.php");
 require_once("admin-clientes.php");
 require_once("jwt.php");
 
+backupAutomatico();
+
+
 $app->run();
