@@ -32,7 +32,7 @@
   <!-- apexcharts -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css"
     integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0=" crossorigin="anonymous" />
-    
+
 </head>
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -59,115 +59,50 @@
           <!--end::Messages Dropdown Menu-->
           <!--begin::Notifications Dropdown Menu-->
           <li class="nav-item dropdown">
+            <!--begin::Notifications Dropdown Menu-->
+          <li class="nav-item dropdown">
             <a class="nav-link" data-bs-toggle="dropdown" href="#">
               <i class="bi bi-bell-fill"></i>
-              <span class="navbar-badge badge text-bg-warning">18</span>
+              <span class="navbar-badge badge text-bg-warning"><?php echo htmlspecialchars( $total, ENT_COMPAT, 'UTF-8', FALSE ); ?></span>
             </a>
+
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-              <span class="dropdown-item dropdown-header">18 Notificações</span>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">3 mins</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">12 hours</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">2 days</span>
-              </a>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">3 mins</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">12 hours</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">2 days</span>
-              </a>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">3 mins</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">12 hours</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">2 days</span>
-              </a>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">3 mins</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">12 hours</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">2 days</span>
-              </a>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">3 mins</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">12 hours</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">2 days</span>
-              </a>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">3 mins</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">12 hours</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">2 days</span>
-              </a>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">3 mins</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">12 hours</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="bi bi-people-fill me-2"></i> BACKUP
-                <span class="float-end text-secondary fs-7">2 days</span>
-              </a>
+              <span class="dropdown-item dropdown-header">
+                <?php echo htmlspecialchars( $total, ENT_COMPAT, 'UTF-8', FALSE ); ?> Notificações
+              </span>
 
               <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item dropdown-footer"> Ver todas as notificações </a>
+
+              <?php if( $total == 0 ){ ?>
+              <span class="dropdown-item text-muted">
+                Nenhuma notificação.
+              </span>
+              <?php }else{ ?>
+              <?php $counter1=-1;  if( isset($notificacoes) && ( is_array($notificacoes) || $notificacoes instanceof Traversable ) && sizeof($notificacoes) ) foreach( $notificacoes as $key1 => $value1 ){ $counter1++; ?>
+              <a href="#" class="dropdown-item">
+                <i class="bi bi-cloud-check-fill me-2 text-success"></i>
+                <?php echo htmlspecialchars( $value1["msg"], ENT_COMPAT, 'UTF-8', FALSE ); ?>
+                <span class="float-end text-secondary fs-7">
+                  <?php echo htmlspecialchars( $value1["time"], ENT_COMPAT, 'UTF-8', FALSE ); ?>
+                </span>
+              </a>
+              <div class="dropdown-divider"></div>
+              <?php } ?>
+              <?php } ?>
+
+              <a href="#" class="dropdown-item dropdown-footer">
+                Ver todas as notificações
+              </a>
             </div>
+          </li>
+          <!--end::Notifications Dropdown Menu-->
+
+
+
+
+
+
+
           </li>
           <!--end::Notifications Dropdown Menu-->
           <!--begin::Fullscreen Toggle-->
@@ -219,7 +154,7 @@
       <!--begin::Sidebar Brand-->
       <div class="sidebar-brand">
         <!--begin::Brand Link-->
-        <a href="./index.html" class="brand-link">
+        <a href="/admin/index" class="brand-link">
           <!--begin::Brand Image-->
           <img src="/res/admin/dist/assets/img/AdminLTELogo.png" alt="AdminLTE Logo"
             class="brand-image opacity-75 shadow" />
@@ -263,7 +198,31 @@
                     <p>Clientes</p>
                   </a>
                 </li>
-               
+
+              </ul>
+            </li>
+            <li class="nav-item menu-open">
+              <a href="#" class="nav-link active">
+                <i class="nav-icon bi bi-speedometer"></i>
+                <p>
+                  Vendas
+                  <i class="nav-arrow bi bi-chevron-right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="/admin/vendas" class="nav-link active">
+                    <i class="nav-icon bi bi-circle"></i>
+                    <p>Senhas</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/admin/clientes" class="nav-link active">
+                    <i class="nav-icon bi bi-circle"></i>
+                    <p>Expediente</p>
+                  </a>
+                </li>
+
               </ul>
             </li>
           </ul>

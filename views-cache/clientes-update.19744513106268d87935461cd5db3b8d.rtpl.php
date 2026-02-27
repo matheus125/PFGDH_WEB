@@ -6,8 +6,14 @@
     <!-- Formulário UPDATE -->
     <form class="needs-validation" action="/admin/clientes/update" method="post" novalidate>
 
-        <!-- ID oculto -->
-        <input type="hidden" name="id" value="<?php echo htmlspecialchars( $clientes["id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+        <!-- IDs em um único payload (base64(JSON)) -->
+        <input type="hidden" name="ids_b64" value="<?php echo htmlspecialchars( $ids_b64, ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+        <div class="mb-3">
+            <label class="form-label">Nome da Família</label>
+            <input type="text" class="form-control" name="nome_familia" value="<?php echo htmlspecialchars( $clientes["familia"]["0"]["nome_familia"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+        </div>
+    
+
 
         <div class="card-body">
             <div class="row g-3">
@@ -34,27 +40,27 @@
 
                 <div class="col-md-3">
                     <label class="form-label">Nome da Mãe</label>
-                    <input type="text" class="form-control form-control-sm" name="nome_mae" value="<?php echo htmlspecialchars( $clientes["nome_mae"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                        required>
+                    <input type="text" class="form-control form-control-sm" name="nome_mae"
+                        value="<?php echo htmlspecialchars( $clientes["nome_mae"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label">Sexo</label>
                     <select class="form-select form-select-sm" name="genero_cliente">
-                        <option value="M" {if="$clientes.genero_cliente=='M'" }selected<?php  ?>>Masculino</option>
-                        <option value="F" {if="$clientes.genero_cliente=='F'" }selected<?php  ?>>Feminino</option>
-                        <option value="Outro" {if="$clientes.genero_cliente=='Outro'" }selected<?php  ?>>Outro</option>
+                        <option value="M" <?php if($clientes["genero"]=='M') { ?>selected<?php } ?>>Masculino</option>
+                        <option value="F" <?php if($clientes["genero"]=='F') { ?>selected<?php } ?>>Feminino</option>
+                        <option value="Outro" <?php if($clientes["genero"]=='Outro') { ?>selected<?php } ?>>Outro</option>
                     </select>
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label">Estado Civil</label>
                     <select class="form-select form-select-sm" name="estado_civil">
-                        <option {if="$clientes.estado_civil=='Solteiro(a)'" }selected<?php  ?>>Solteiro(a)</option>
-                        <option {if="$clientes.estado_civil=='Casado(a)'" }selected<?php  ?>>Casado(a)</option>
-                        <option {if="$clientes.estado_civil=='Divorciado(a)'" }selected<?php  ?>>Divorciado(a)</option>
-                        <option {if="$clientes.estado_civil=='Viúvo(a)'" }selected<?php  ?>>Viúvo(a)</option>
-                        <option {if="$clientes.estado_civil=='União Estável'" }selected<?php  ?>>União Estável</option>
+                        <option <?php if($clientes["estado_civil"]=='Solteiro(a)') { ?>selected<?php } ?>>Solteiro(a)</option>
+                        <option <?php if($clientes["estado_civil"]=='Casado(a)') { ?>selected<?php } ?>>Casado(a)</option>
+                        <option <?php if($clientes["estado_civil"]=='Divorciado(a)') { ?>selected<?php } ?>>Divorciado(a)</option>
+                        <option <?php if($clientes["estado_civil"]=='Viúvo(a)') { ?>selected<?php } ?>>Viúvo(a)</option>
+                        <option <?php if($clientes["estado_civil"]=='União Estável') { ?>selected<?php } ?>>União Estável</option>
                     </select>
 
                 </div>
@@ -93,6 +99,15 @@
                         value="<?php echo htmlspecialchars( $clientes["status_cliente"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" required>
                 </div>
 
+
+                <!-- FAMÍLIA -->
+                <h5 class="mt-4">Família</h5>
+                <div class="col-md-6">
+                    <label class="form-label">Nome da Família</label>
+                    <input type="text" class="form-control form-control-sm" name="nome_familia"
+                        value="<?php echo htmlspecialchars( $clientes["familia"]["0"]["nome_familia"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                </div>
+
                 <!-- CONTATO -->
                 <h5 class="mt-4">Contato</h5>
                 <div class="col-md-3">
@@ -105,30 +120,27 @@
                 <h5 class="mt-4">Endereço</h5>
                 <div class="col-md-2">
                     <label class="form-label">CEP</label>
-                    <input type="text" class="form-control form-control-sm" name="cep" value="<?php echo htmlspecialchars( $clientes["cep"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" required>
+                    <input type="text" class="form-control form-control-sm" name="cep" value="<?php echo htmlspecialchars( $clientes["cep"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Rua</label>
-                    <input type="text" class="form-control form-control-sm" name="rua" value="<?php echo htmlspecialchars( $clientes["rua"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" required>
+                    <input type="text" class="form-control form-control-sm" name="rua" value="<?php echo htmlspecialchars( $clientes["rua"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label">Nº</label>
-                    <input type="text" class="form-control form-control-sm" name="numero" value="<?php echo htmlspecialchars( $clientes["numero"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                        required>
+                    <input type="text" class="form-control form-control-sm" name="numero" value="<?php echo htmlspecialchars( $clientes["numero"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                 </div>
 
                 <div class="col-md-3">
                     <label class="form-label">Bairro</label>
-                    <input type="text" class="form-control form-control-sm" name="bairro" value="<?php echo htmlspecialchars( $clientes["bairro"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                        required>
+                    <input type="text" class="form-control form-control-sm" name="bairro" value="<?php echo htmlspecialchars( $clientes["bairro"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                 </div>
 
                 <div class="col-md-3">
                     <label class="form-label">Cidade</label>
-                    <input type="text" class="form-control form-control-sm" name="cidade" value="<?php echo htmlspecialchars( $clientes["cidade"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                        required>
+                    <input type="text" class="form-control form-control-sm" name="cidade" value="<?php echo htmlspecialchars( $clientes["cidade"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                 </div>
 
                 <div class="col-md-4">

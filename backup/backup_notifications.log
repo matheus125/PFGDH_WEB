@@ -1,0 +1,52 @@
+2026-02-05 21:23:17|
+2026-02-05 21:23:17|DEBUG: passou no lock, vai executar
+2026-02-05 21:23:17|
+2026-02-05 21:23:17|Backup OK: prato_cheio_2026-02-05.sql
+2026-02-05 21:23:17|
+2026-02-05 21:23:19|Upload realizado com sucesso
+2026-02-06 18:35:40|DEBUG: backupAutomatico() foi chamado
+2026-02-06 18:35:40|DEBUG: passou no lock, vai executar
+2026-02-06 18:35:40|DEBUG: antes do createBackup()
+2026-02-06 18:35:41|Backup OK: prato_cheio_2026-02-06.sql
+2026-02-06 18:35:41|DEBUG: antes do send()
+2026-02-06 18:35:44|Upload realizado com sucesso
+2026-02-13 14:59:40|DEBUG: backupAutomatico() foi chamado
+2026-02-13 14:59:40|DEBUG: passou no lock, vai executar
+2026-02-13 14:59:41|DEBUG: antes do createBackup()
+2026-02-13 14:59:41|Backup OK: prato_cheio_2026-02-13.sql
+2026-02-13 14:59:41|DEBUG: antes do send()
+2026-02-13 14:59:45|Upload realizado com sucesso
+2026-02-13 14:59:45|DEBUG: backupAutomatico() foi chamado
+2026-02-13 14:59:45|
+2026-02-19 02:54:04|DEBUG: backupAutomatico() foi chamado
+2026-02-19 02:54:04|DEBUG: passou no lock, vai executar
+2026-02-19 02:54:04|DEBUG: antes do createBackup()
+2026-02-19 02:54:05|Backup OK: prato_cheio_2026-02-19.sql
+2026-02-19 02:54:05|DEBUG: antes do send()
+2026-02-19 02:54:07|Upload realizado com sucesso
+2026-02-19 02:54:08|DEBUG: backupAutomatico() foi chamado
+2026-02-19 02:54:08|
+2026-02-19 02:59:10|DEBUG: backupAutomatico() foi chamado
+2026-02-19 02:59:10|DEBUG: passou no lock, vai executar
+2026-02-19 02:59:10|DEBUG: antes do createBackup()
+2026-02-19 02:59:10|Backup OK: prato_cheio_2026-02-19.sql
+2026-02-19 02:59:10|DEBUG: antes do send()
+2026-02-19 02:59:10|Upload realizado com sucesso
+2026-02-25 18:37:33|DEBUG: backupAutomatico() foi chamado
+2026-02-25 18:37:33|DEBUG: passou no lock, vai executar
+2026-02-25 18:37:33|DEBUG: antes do createBackup()
+2026-02-25 18:37:33|Backup OK: prato_cheio_2026-02-25.sql
+2026-02-25 18:37:33|DEBUG: antes do send()
+2026-02-25 18:37:37|Upload realizado com sucesso
+2026-02-25 20:19:12|DEBUG: backupAutomatico() foi chamado
+2026-02-25 20:19:12|DEBUG: passou no lock, vai executar
+2026-02-25 20:19:12|DEBUG: antes do createBackup()
+2026-02-25 20:19:12|Backup OK: prato_cheio_2026-02-25.sql
+2026-02-25 20:19:12|DEBUG: antes do send()
+2026-02-25 20:19:12|Upload realizado com sucesso
+2026-02-26 20:55:40|DEBUG: backupAutomatico() foi chamado
+2026-02-26 20:55:40|DEBUG: passou no lock, vai executar
+2026-02-26 20:55:40|DEBUG: antes do createBackup()
+2026-02-26 20:55:40|Backup OK: prato_cheio_2026-02-26.sql
+2026-02-26 20:55:40|DEBUG: antes do send()
+2026-02-26 20:55:44|Upload realizado com sucesso

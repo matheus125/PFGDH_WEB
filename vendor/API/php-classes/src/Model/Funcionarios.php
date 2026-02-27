@@ -145,7 +145,16 @@ class Funcionarios extends Model
 
 		$sql = new Sql();
 
-		return $sql->select("SELECT * FROM tb_usuario a INNER JOIN tb_funcionario b USING(id_pessoa) ORDER BY b.nome_funcionario");
+		return $sql->select("SELECT 
+			a.*,
+			b.*
+		FROM tb_usuario a
+		INNER JOIN tb_funcionario b 
+			USING (id_pessoa)
+		WHERE a.ativo = 1
+		AND b.ativo = 1
+		ORDER BY b.nome_funcionario;
+		");
 	}
 
 
@@ -295,7 +304,7 @@ class Funcionarios extends Model
 		}
 
 		$sql->query(
-			"CALL sp_funcionario_usuario_delete(:id_usuario)",
+			"CALL sp_funcionario_usuario_soft_delete(:id_usuario)",
 			[
 				":id_usuario" => $this->getid_usuario()
 			]

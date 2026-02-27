@@ -6,8 +6,14 @@
     <!-- Formulário UPDATE -->
     <form class="needs-validation" action="/admin/clientes/update" method="post" novalidate>
 
-        <!-- ID oculto -->
-        <input type="hidden" name="id" value="{$clientes.id}">
+        <!-- IDs em um único payload (base64(JSON)) -->
+        <input type="hidden" name="ids_b64" value="{$ids_b64}">
+        <div class="mb-3">
+            <label class="form-label">Nome da Família</label>
+            <input type="text" class="form-control" name="nome_familia" value="{$clientes.familia.0.nome_familia}">
+        </div>
+    
+
 
         <div class="card-body">
             <div class="row g-3">
@@ -34,16 +40,16 @@
 
                 <div class="col-md-3">
                     <label class="form-label">Nome da Mãe</label>
-                    <input type="text" class="form-control form-control-sm" name="nome_mae" value="{$clientes.nome_mae}"
-                        required>
+                    <input type="text" class="form-control form-control-sm" name="nome_mae"
+                        value="{$clientes.nome_mae}">
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label">Sexo</label>
                     <select class="form-select form-select-sm" name="genero_cliente">
-                        <option value="M" {if="$clientes.genero_cliente=='M'" }selected{/if}>Masculino</option>
-                        <option value="F" {if="$clientes.genero_cliente=='F'" }selected{/if}>Feminino</option>
-                        <option value="Outro" {if="$clientes.genero_cliente=='Outro'" }selected{/if}>Outro</option>
+                        <option value="M" {if="$clientes.genero=='M'" }selected{/if}>Masculino</option>
+                        <option value="F" {if="$clientes.genero=='F'" }selected{/if}>Feminino</option>
+                        <option value="Outro" {if="$clientes.genero=='Outro'" }selected{/if}>Outro</option>
                     </select>
                 </div>
 
@@ -93,6 +99,15 @@
                         value="{$clientes.status_cliente}" required>
                 </div>
 
+
+                <!-- FAMÍLIA -->
+                <h5 class="mt-4">Família</h5>
+                <div class="col-md-6">
+                    <label class="form-label">Nome da Família</label>
+                    <input type="text" class="form-control form-control-sm" name="nome_familia"
+                        value="{$clientes.familia.0.nome_familia}">
+                </div>
+
                 <!-- CONTATO -->
                 <h5 class="mt-4">Contato</h5>
                 <div class="col-md-3">
@@ -105,30 +120,27 @@
                 <h5 class="mt-4">Endereço</h5>
                 <div class="col-md-2">
                     <label class="form-label">CEP</label>
-                    <input type="text" class="form-control form-control-sm" name="cep" value="{$clientes.cep}" required>
+                    <input type="text" class="form-control form-control-sm" name="cep" value="{$clientes.cep}">
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label">Rua</label>
-                    <input type="text" class="form-control form-control-sm" name="rua" value="{$clientes.rua}" required>
+                    <input type="text" class="form-control form-control-sm" name="rua" value="{$clientes.rua}">
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label">Nº</label>
-                    <input type="text" class="form-control form-control-sm" name="numero" value="{$clientes.numero}"
-                        required>
+                    <input type="text" class="form-control form-control-sm" name="numero" value="{$clientes.numero}">
                 </div>
 
                 <div class="col-md-3">
                     <label class="form-label">Bairro</label>
-                    <input type="text" class="form-control form-control-sm" name="bairro" value="{$clientes.bairro}"
-                        required>
+                    <input type="text" class="form-control form-control-sm" name="bairro" value="{$clientes.bairro}">
                 </div>
 
                 <div class="col-md-3">
                     <label class="form-label">Cidade</label>
-                    <input type="text" class="form-control form-control-sm" name="cidade" value="{$clientes.cidade}"
-                        required>
+                    <input type="text" class="form-control form-control-sm" name="cidade" value="{$clientes.cidade}">
                 </div>
 
                 <div class="col-md-4">

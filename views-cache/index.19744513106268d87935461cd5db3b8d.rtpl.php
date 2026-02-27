@@ -75,8 +75,9 @@
             </svg>
           </div>
         </div>
+
         <!-- /.col -->
-       
+
         <div class="col-lg-3 col-6">
           <div class="small-box text-bg-primary">
             <div class="inner">
@@ -88,6 +89,25 @@
                 d="M12 2.25a9.75 9.75 0 110 19.5 9.75 9.75 0 010-19.5zM11.25 7.5a.75.75 0 011.5 0V12a.75.75 0 01-.75.75H9a.75.75 0 010-1.5h2.25V7.5z">
               </path>
             </svg>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-info">
+            <div class="inner">
+              <h5>Último Backup</h5>
+
+              <?php if( $ultimoBackup ){ ?>
+              <p>Último backup: <?php echo date('d/m/Y H:i', strtotime($ultimoBackup)); ?></p>
+              <?php }else{ ?>
+              <p>Último backup: Nunca executado</p>
+              <?php } ?>
+
+            </div>
+
+            <div class="icon">
+              <i class="bi bi-hdd"></i>
+            </div>
           </div>
         </div>
 
