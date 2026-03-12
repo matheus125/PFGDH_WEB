@@ -45,3 +45,24 @@ docker compose up -d --build;
 	</Directory>
 </VirtualHost>
 ```
+## Estrutura reorganizada (MVC-friendly)
+
+Este repositório foi reorganizado para separar melhor:
+
+- `public/` (document root recomendado): `index.php` + `res/`
+- `app/` (código da aplicação):
+  - `app/routes/` (rotas Slim)
+  - `app/helpers/` (funções utilitárias)
+  - `app/core/` (JWT e utilidades de core)
+  - `app/views/` (templates RainTPL)
+- `storage/` (arquivos gerados em runtime):
+  - `storage/logs/`
+  - `storage/backup/`
+  - `storage/cache/views/`
+- `database/sql/` (scripts SQL)
+
+### Importante (Apache/Nginx)
+
+Recomendado apontar o **DocumentRoot** do servidor para a pasta `public/`.
+
+Para compatibilidade, o arquivo `/index.php` na raiz apenas redireciona para `public/index.php`.

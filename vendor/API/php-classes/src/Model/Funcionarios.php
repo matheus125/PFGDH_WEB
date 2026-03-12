@@ -4,6 +4,7 @@ namespace Hcode\Model;
 
 use \Hcode\DB\Sql;
 use \Hcode\Model;
+use Hcode\Security\Permissions;
 
 class Funcionarios extends Model
 {
@@ -60,6 +61,64 @@ class Funcionarios extends Model
 	}
 
 
+
+	public static function getPermissions(bool $forceRefresh = false): array
+	{
+		if (!self::checkLogin()) {
+			return [];
+		}
+		if (!$forceRefresh && isset($_SESSION[self::SESSION]['permissions']) && is_array($_SESSION[self::SESSION]['permissions'])) {
+			return $_SESSION[self::SESSION]['permissions'];
+		}
+		$perfil = $_SESSION[self::SESSION]['perfil'] ?? 'ASSESSOR';
+		$permissions = [];
+		try {
+			$sql = new Sql();
+			$exists = $sql->select("SHOW TABLES LIKE 'tb_permissions'");
+			$existsRel = $sql->select("SHOW TABLES LIKE 'tb_profile_permissions'");
+			if (count($exists) > 0 && count($existsRel) > 0) {
+				$rows = $sql->select("SELECT p.permission_key FROM tb_profile_permissions pp INNER JOIN tb_permissions p ON p.id_permission = pp.id_permission WHERE pp.profile_key = :profile_key AND pp.allowed = 1 ORDER BY p.permission_key", [':profile_key' => $perfil]);
+				$permissions = array_map(function ($row) { return $row['permission_key']; }, $rows);
+			}
+		} catch (\Exception $e) {
+			$permissions = [];
+		}
+		if (empty($permissions)) {
+			$defaults = Permissions::defaultProfilePermissions();
+			$permissions = $defaults[$perfil] ?? [];
+		}
+		$_SESSION[self::SESSION]['permissions'] = array_values(array_unique($permissions));
+		return $_SESSION[self::SESSION]['permissions'];
+	}
+
+	public static function refreshPermissions(): array
+	{
+		return self::getPermissions(true);
+	}
+
+	public static function hasPermission(string $permission): bool
+	{
+		return in_array($permission, self::getPermissions(), true);
+	}
+
+	public static function hasAnyPermission(array $permissions): bool
+	{
+		foreach ($permissions as $permission) {
+			if (self::hasPermission($permission)) return true;
+		}
+		return false;
+	}
+
+	public static function checkPermission(string $permission, bool $redirect = true): bool
+	{
+		$allowed = self::hasPermission($permission);
+		if (!$allowed && $redirect) {
+			header("Location: /acesso-negado");
+			exit;
+		}
+		return $allowed;
+	}
+
 	public static function login($cpf, $senha)
 	{
 		$sql = new Sql();
@@ -83,6 +142,7 @@ class Funcionarios extends Model
 			$user->setData($data);
 
 			$_SESSION[Funcionarios::SESSION] = $user->getValues();
+			self::refreshPermissions();
 
 			return $user;
 		} else {
@@ -122,7 +182,7 @@ class Funcionarios extends Model
 
 			// Se não estiver logado
 			if (!isset($_SESSION[self::SESSION]['id_usuario'])) {
-				header("Location: /login");
+				header("Location: /admin/login");
 				exit;
 			}
 

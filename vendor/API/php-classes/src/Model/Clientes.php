@@ -158,7 +158,6 @@ class Clientes extends Model
     {
         $sql = new Sql();
 
-        // ===== TITULAR + ENDEREÇO =====
         $results = $sql->select("
         SELECT 
             t.*,
@@ -173,7 +172,7 @@ class Clientes extends Model
             e.tempo_moradia_anos
         FROM tb_titular t
         LEFT JOIN tb_endereco e 
-            ON e.id = t.id
+            ON e.id = t.id_endereco
         WHERE t.id = :id
         LIMIT 1
     ", [
@@ -186,13 +185,13 @@ class Clientes extends Model
 
         $data = $results[0];
 
-        // ===== FAMÍLIA =====
         $familia = $sql->select("
         SELECT *
         FROM tb_familia
-        WHERE id = :id
+        WHERE id = :id_familia
+        LIMIT 1
     ", [
-            ":id" => $id
+            ":id_familia" => $data["id_familia"]
         ]);
 
         $data['familia'] = $familia;

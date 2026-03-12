@@ -34,10 +34,19 @@ class Page
 			"statusBackup" => null
 		], $this->options["data"]);
 
+		// Normaliza diretórios (sempre termina com barra)
+		$tplBase = defined('VIEW_DIR') ? VIEW_DIR : $_SERVER["DOCUMENT_ROOT"];
+		$tplPath = $tplBase . str_replace('/views', '', $tpl_dir);
+		$tplPath = rtrim($tplPath, "/\\") . DIRECTORY_SEPARATOR;
+
+		$cacheBase = defined('VIEW_CACHE_DIR') ? VIEW_CACHE_DIR : ($_SERVER["DOCUMENT_ROOT"] . "/views-cache/");
+		$cacheBase = rtrim($cacheBase, "/\\") . DIRECTORY_SEPARATOR;
 
 		$config = array(
-			"tpl_dir"   => $_SERVER["DOCUMENT_ROOT"] . $tpl_dir,
-			"cache_dir" => $_SERVER["DOCUMENT_ROOT"] . "/views-cache/",
+			"tpl_dir"   => $tplPath,
+			"cache_dir" => $cacheBase,
+			// ✅ Força extensão dos templates (evita procurar .tpl quando seus arquivos são .html)
+			"tpl_ext"   => "html",
 			"debug"     => false
 		);
 
