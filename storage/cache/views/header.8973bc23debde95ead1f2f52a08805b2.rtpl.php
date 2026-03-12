@@ -25,7 +25,6 @@
     <nav class="app-header navbar navbar-expand bg-body painel-header">
       <div class="container-fluid">
 
-        <!-- ESQUERDA -->
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link btn-menu" data-lte-toggle="sidebar" href="#" role="button">
@@ -37,18 +36,17 @@
           </li>
         </ul>
 
-        <!-- DIREITA -->
         <ul class="navbar-nav ms-auto align-items-center">
 
           <!-- NOTIFICAÇÕES -->
           <li class="nav-item dropdown">
             <a class="nav-link nav-icone-topo position-relative" data-bs-toggle="dropdown" href="#">
               <i class="bi bi-bell-fill"></i>
-              <?php if( $total > 0 ){ ?>
+              <span id="badge-notificacoes" class="navbar-badge badge text-bg-warning"
+                style="{if='$total <= 0'}display:none;<?php  ?>">
+                <?php echo htmlspecialchars( $total, ENT_COMPAT, 'UTF-8', FALSE ); ?>
 
-              <span class="navbar-badge badge text-bg-warning"><?php echo htmlspecialchars( $total, ENT_COMPAT, 'UTF-8', FALSE ); ?></span>
-              <?php } ?>
-
+              </span>
             </a>
 
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-notificacoes shadow-sm">
@@ -98,7 +96,7 @@
 
 
               <a href="/admin/notificacoes" class="dropdown-item dropdown-footer">
-                Ver painel
+                Ver notificações
               </a>
             </div>
           </li>
@@ -155,17 +153,20 @@
           <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
 
             <li class="nav-header titulo-menu">PRINCIPAL</li>
+            <?php if( canAccess('DASHBOARD_VIEW') ){ ?>
+
             <li class="nav-item">
-              <?php if( canAccess('DASHBOARD_VIEW') ){ ?><a href="/admin" class="nav-link">
+              <a href="/admin" class="nav-link">
                 <i class="nav-icon bi bi-speedometer2"></i>
                 <p>Dashboard</p>
-              </a><?php } ?>
-
+              </a>
             </li>
+            <?php } ?>
+
 
             <li class="nav-header titulo-menu">CADASTROS</li>
             <li class="nav-item menu-open">
-              <a href="#" class="nav-link active">
+              <a href="#" class="nav-link">
                 <i class="nav-icon bi bi-folder2-open"></i>
                 <p>
                   Cadastros
@@ -173,20 +174,27 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
+                <?php if( canAccess('FUNCIONARIOS_VIEW') ){ ?>
+
                 <li class="nav-item">
-                  <?php if( canAccess('FUNCIONARIOS_VIEW') ){ ?><a href="/admin/funcionarios" class="nav-link active">
+                  <a href="/admin/funcionarios" class="nav-link active">
                     <i class="nav-icon bi bi-person-badge"></i>
                     <p>Funcionários</p>
-                  </a><?php } ?>
-
+                  </a>
                 </li>
+                <?php } ?>
+
+
+                <?php if( canAccess('CLIENTES_VIEW') ){ ?>
+
                 <li class="nav-item">
-                  <?php if( canAccess('CLIENTES_VIEW') ){ ?><a href="/admin/clientes" class="nav-link">
+                  <a href="/admin/clientes" class="nav-link">
                     <i class="nav-icon bi bi-people"></i>
                     <p>Clientes</p>
-                  </a><?php } ?>
-
+                  </a>
                 </li>
+                <?php } ?>
+
               </ul>
             </li>
 
@@ -200,22 +208,68 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
+                <?php if( canAccess('VENDAS_VIEW') ){ ?>
+
                 <li class="nav-item">
-                  <?php if( canAccess('VENDAS_VIEW') ){ ?><a href="/admin/vendas" class="nav-link">
+                  <a href="/admin/vendas" class="nav-link">
                     <i class="nav-icon bi bi-ticket-perforated"></i>
                     <p>Senhas</p>
-                  </a><?php } ?>
-
+                  </a>
                 </li>
+                <?php } ?>
+
+
+                <?php if( canAccess('RELATORIOS_VIEW') ){ ?>
+
                 <li class="nav-item">
-                  <?php if( canAccess('RELATORIOS_VIEW') ){ ?><a href="/admin/relatorio/senhas" class="nav-link">
+                  <a href="/admin/relatorio/senhas" class="nav-link">
                     <i class="nav-icon bi bi-file-earmark-text"></i>
                     <p>Expediente</p>
-                  </a><?php } ?>
-
+                  </a>
                 </li>
+                <?php } ?>
+
               </ul>
             </li>
+
+            <?php if( canAnyAccess(['ACL_PROFILES_MANAGE','ACL_DENIED_VIEW','USUARIOS_SECURITY_MANAGE']) ){ ?>
+
+            <li class="nav-header titulo-menu">SEGURANÇA</li>
+
+            <?php if( canAccess('ACL_PROFILES_MANAGE') ){ ?>
+
+            <li class="nav-item">
+              <a href="/admin/seguranca/permissoes" class="nav-link">
+                <i class="nav-icon bi bi-shield-lock"></i>
+                <p>Permissões por Perfil</p>
+              </a>
+            </li>
+            <?php } ?>
+
+
+            <?php if( canAccess('ACL_DENIED_VIEW') ){ ?>
+
+            <li class="nav-item">
+              <a href="/admin/seguranca/acessos-negados" class="nav-link">
+                <i class="nav-icon bi bi-ban"></i>
+                <p>Acessos Negados</p>
+              </a>
+            </li>
+            <?php } ?>
+
+
+            <?php if( canAccess('USUARIOS_SECURITY_MANAGE') ){ ?>
+
+            <li class="nav-item">
+              <a href="/admin/usuarios/seguranca" class="nav-link">
+                <i class="nav-icon bi bi-person-lock"></i>
+                <p>Segurança dos Usuários</p>
+              </a>
+            </li>
+            <?php } ?>
+
+            <?php } ?>
+
 
           </ul>
         </nav>
@@ -228,6 +282,7 @@
         font-family: "Source Sans 3", sans-serif;
       }
 
+      /* HEADER */
       .painel-header {
         border-bottom: 1px solid #dcdcdc;
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
@@ -254,6 +309,7 @@
         border-radius: 50px;
       }
 
+      /* DROPDOWN NOTIFICAÇÕES */
       .dropdown-notificacoes {
         width: 360px;
         border: 0;
@@ -313,8 +369,10 @@
         background: linear-gradient(135deg, #2e86c1, #3c8dbc) !important;
       }
 
+      /* SIDEBAR */
       .sidebar-custom {
-        border-right: 1px solid #dcdcdc;
+        background: #f8f9fb !important;
+        border-right: 1px solid #d9e1e7;
       }
 
       .brand-custom {
@@ -323,43 +381,112 @@
       }
 
       .brand-custom .brand-text {
-        color: #2c3e50;
+        color: #243746;
         font-size: 18px;
+        font-weight: 700;
       }
 
       .titulo-menu {
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
-        color: #7f8c8d !important;
+        color: #7b8a97 !important;
         letter-spacing: 0.8px;
-        margin-top: 8px;
+        margin: 14px 14px 6px 14px;
+        text-transform: uppercase;
+      }
+
+      .sidebar-menu .nav-item {
+        margin-bottom: 2px;
       }
 
       .sidebar-menu .nav-link {
-        border-radius: 8px;
-        margin: 3px 8px;
-        color: #34495e;
+        display: flex;
+        align-items: center;
+        border-radius: 10px;
+        margin: 4px 12px;
+        padding: 10px 14px;
+        color: #44515c !important;
+        font-weight: 500;
         transition: all 0.2s ease;
       }
 
       .sidebar-menu .nav-link:hover {
-        background: #edf4fa;
-        color: #2e86c1;
+        background: #eaf3fb;
+        color: #1f6fb2 !important;
+      }
+
+      .sidebar-menu .nav-link:hover .nav-icon,
+      .sidebar-menu .nav-link:hover p,
+      .sidebar-menu .nav-link:hover .nav-arrow {
+        color: #1f6fb2 !important;
       }
 
       .sidebar-menu .nav-link.active {
-        background: #2e86c1;
-        color: #fff !important;
-        font-weight: 600;
+        background: #dceeff !important;
+        color: #156fbf !important;
+        font-weight: 700;
+        box-shadow: inset 3px 0 0 #1f6fb2;
       }
 
-      .sidebar-menu .nav-treeview .nav-link.active {
-        background: #d9ecf8;
-        color: #2e86c1 !important;
+      .sidebar-menu .nav-link.active .nav-icon,
+      .sidebar-menu .nav-link.active p,
+      .sidebar-menu .nav-link.active .nav-arrow {
+        color: #156fbf !important;
       }
 
       .sidebar-menu .nav-icon {
-        margin-right: 6px;
+        margin-right: 10px;
+        font-size: 18px;
+        color: #7b8a97 !important;
+        min-width: 22px;
+        text-align: center;
+      }
+
+      .sidebar-menu .nav-link p {
+        margin: 0;
+        color: inherit !important;
+        font-size: 16px;
+      }
+
+      .sidebar-menu .nav-arrow {
+        margin-left: auto;
+        color: #7b8a97 !important;
+      }
+
+      .sidebar-menu .nav-treeview {
+        margin-top: 2px;
+        margin-bottom: 8px;
+      }
+
+      .sidebar-menu .nav-treeview .nav-link {
+        margin-left: 24px;
+        padding: 9px 14px;
+        background: transparent;
+        border-radius: 8px;
+        font-size: 15px;
+      }
+
+      .sidebar-menu .nav-treeview .nav-link .nav-icon {
+        font-size: 16px;
+        color: #8b98a5 !important;
+      }
+
+      .sidebar-menu .nav-treeview .nav-link.active {
+        background: #e8f3ff !important;
+        color: #156fbf !important;
+        box-shadow: none;
+      }
+
+      .sidebar-menu .menu-open>.nav-link {
+        background: #eef3f7;
+        color: #2f4554 !important;
+        font-weight: 600;
+      }
+
+      .sidebar-menu .menu-open>.nav-link .nav-icon,
+      .sidebar-menu .menu-open>.nav-link .nav-arrow,
+      .sidebar-menu .menu-open>.nav-link p {
+        color: #2f4554 !important;
       }
 
       .user-footer {
@@ -376,64 +503,111 @@
         }
       }
     </style>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const btn = document.getElementById("btn-limpar-notificacoes");
         if (!btn) return;
+
         btn.addEventListener("click", function () {
-          Swal.fire({ title: "Limpar notificações?", text: "Todas as notificações serão removidas.", icon: "warning", showCancelButton: true, confirmButtonText: "Sim, limpar", cancelButtonText: "Cancelar", confirmButtonColor: "#d33" }).then(function (result) {
+          Swal.fire({
+            title: "Limpar notificações?",
+            text: "Todas as notificações serão removidas.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sim, limpar",
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: "#d33"
+          }).then(function (result) {
             if (!result.isConfirmed) return;
-            fetch("/admin/notificacoes/limpar", { method: "POST", headers: { "X-Requested-With": "XMLHttpRequest" } })
+
+            fetch("/admin/notificacoes/limpar", {
+              method: "POST",
+              headers: { "X-Requested-With": "XMLHttpRequest" }
+            })
               .then(r => r.json())
               .then(function (data) {
                 if (data.success) {
-                  Swal.fire({ toast: true, position: "top-end", icon: "success", title: "Notificações limpas com sucesso", showConfirmButton: false, timer: 1800, timerProgressBar: true });
-                  setTimeout(function () { window.location.reload(); }, 1000);
+                  Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    icon: "success",
+                    title: "Notificações limpas com sucesso",
+                    showConfirmButton: false,
+                    timer: 1800,
+                    timerProgressBar: true
+                  });
+
+                  setTimeout(function () {
+                    window.location.reload();
+                  }, 1000);
                 } else {
                   throw new Error();
                 }
-              }).catch(function () {
-                Swal.fire({ icon: "error", title: "Erro", text: "Não foi possível limpar as notificações." });
+              })
+              .catch(function () {
+                Swal.fire({
+                  icon: "error",
+                  title: "Erro",
+                  text: "Não foi possível limpar as notificações."
+                });
               });
           });
         });
       });
 
-      let totalAnterior = { $total };
+      let totalAnterior = 0;
+      let notificacoesInterval = null;
 
       function atualizarNotificacoes() {
-
         fetch("/admin/api/notificacoes")
+          .then(async res => {
+            const texto = await res.text();
 
-          .then(res => res.json())
+            try {
+              const json = JSON.parse(texto);
 
+              if (!res.ok || json.success === false) {
+                throw new Error(json.mensagem || `HTTP ${res.status}`);
+              }
+
+              return json;
+            } catch {
+              throw new Error("A API retornou HTML em vez de JSON.");
+            }
+          })
           .then(data => {
-
+            const total = Number(data.total ?? 0);
             const badge = document.getElementById("badge-notificacoes");
 
-            if (!badge) return;
+            if (badge) {
+              badge.innerText = total;
+              badge.style.display = total > 0 ? "inline-block" : "none";
+            }
 
-            badge.innerText = data.total;
-
-            if (data.total > totalAnterior) {
-
+            if (total > totalAnterior) {
               Swal.fire({
                 toast: true,
-                position: 'top-end',
-                icon: 'info',
-                title: 'Nova notificação recebida',
+                position: "top-end",
+                icon: "info",
+                title: "Nova notificação recebida",
                 showConfirmButton: false,
                 timer: 3000
               });
-
             }
 
-            totalAnterior = data.total;
+            totalAnterior = total;
+          })
+          .catch(err => {
+            console.error("Erro detalhado:", err.message);
 
+            if (notificacoesInterval) {
+              clearInterval(notificacoesInterval);
+              notificacoesInterval = null;
+            }
           });
-
       }
 
-      setInterval(atualizarNotificacoes, 10000);
+      notificacoesInterval = setInterval(atualizarNotificacoes, 10000);
     </script>

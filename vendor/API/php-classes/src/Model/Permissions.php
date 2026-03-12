@@ -1,6 +1,7 @@
 <?php
 
-namespace Hcode\Security;
+namespace Hcode\Model;
+use \Hcode\DB\Sql;
 
 class Permissions
 {
@@ -82,14 +83,75 @@ class Permissions
         return [
             'ADMIN' => array_keys(self::definitions()),
             'SUPERVISOR' => [
-                'DASHBOARD_VIEW','FUNCIONARIOS_VIEW','FUNCIONARIOS_CREATE','FUNCIONARIOS_UPDATE','FUNCIONARIOS_PASSWORD',
-                'CLIENTES_VIEW','CLIENTES_CREATE','CLIENTES_UPDATE',
-                'DEPENDENTES_VIEW','DEPENDENTES_CREATE','DEPENDENTES_UPDATE',
-                'VENDAS_VIEW','RELATORIOS_VIEW','BACKUP_RUN','NOTIFICACOES_VIEW','NOTIFICACOES_CLEAR'
+                'DASHBOARD_VIEW',
+                'FUNCIONARIOS_VIEW',
+                'FUNCIONARIOS_CREATE',
+                'FUNCIONARIOS_UPDATE',
+                'FUNCIONARIOS_PASSWORD',
+                'CLIENTES_VIEW',
+                'CLIENTES_CREATE',
+                'CLIENTES_UPDATE',
+                'DEPENDENTES_VIEW',
+                'DEPENDENTES_CREATE',
+                'DEPENDENTES_UPDATE',
+                'VENDAS_VIEW',
+                'RELATORIOS_VIEW',
+                'BACKUP_RUN',
+                'NOTIFICACOES_VIEW',
+                'NOTIFICACOES_CLEAR'
             ],
             'ASSESSOR' => [
-                'DASHBOARD_VIEW','CLIENTES_VIEW','DEPENDENTES_VIEW','VENDAS_VIEW','RELATORIOS_VIEW','NOTIFICACOES_VIEW'
+                'DASHBOARD_VIEW',
+                'CLIENTES_VIEW',
+                'DEPENDENTES_VIEW',
+                'VENDAS_VIEW',
+                'RELATORIOS_VIEW',
+                'NOTIFICACOES_VIEW'
             ]
         ];
+    }
+
+    public static function listAll(): array
+    {
+        $sql = new Sql();
+        return $sql->select("SELECT * FROM tb_permissions ORDER BY module_name, description");
+    }
+
+    public static function listByProfile(string $perfil): array
+    {
+        $sql = new Sql();
+        $rows = $sql->select("SELECT p.*
+            FROM tb_permissions p
+            INNER JOIN tb_profile_permissions pp ON pp.id_permission = p.id_permission
+            WHERE pp.perfil = :perfil
+            ORDER BY p.module_name, p.description", [':perfil' => $perfil]);
+        return array_map(fn($r) => $r['permission_key'], $rows);
+    }
+
+    public static function saveProfilePermissions(string $perfil, array $permissionKeys): void
+    {
+        $sql = new Sql();
+        $sql->query("DELETE pp FROM tb_profile_permissions pp WHERE pp.perfil = :perfil", [':perfil' => $perfil]);
+        foreach ($permissionKeys as $key) {
+            $sql->query("INSERT IGNORE INTO tb_profile_permissions (perfil, id_permission)
+                SELECT :perfil, id_permission FROM tb_permissions WHERE permission_key = :permission_key", [
+                ':perfil' => $perfil,
+                ':permission_key' => $key
+            ]);
+        }
+    }
+
+    public static function userHasPermission(array $user, string $permissionKey): bool
+    {
+        if (($user['perfil'] ?? '') === 'ADMIN') return true;
+        if (!isset($_SESSION['acl_permissions']) || !is_array($_SESSION['acl_permissions'])) {
+            $_SESSION['acl_permissions'] = self::listByProfile($user['perfil'] ?? 'ASSESSOR');
+        }
+        return in_array($permissionKey, $_SESSION['acl_permissions'], true);
+    }
+
+    public static function clearSessionCache(): void
+    {
+        unset($_SESSION['acl_permissions']);
     }
 }

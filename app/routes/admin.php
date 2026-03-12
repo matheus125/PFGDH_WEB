@@ -5,6 +5,7 @@ use \Hcode\Model\Clientes;
 use \Hcode\Model\Funcionarios;
 use \Hcode\DB\Sql;
 use Hcode\Model\Notification;
+use Hcode\Model\Permissions;
 
 /*
 |--------------------------------------------------------------------------
@@ -196,10 +197,8 @@ $app->post('/admin/login', function () {
 		$_SESSION[Funcionarios::SESSION] = $funcionarios->getValues();
 		Funcionarios::registerAccess($funcionarios, 'LOGIN');
 
-		// 1) Responde o login imediatamente
 		echo json_encode(["success" => true]);
 
-		// 2) Fecha a resposta pro navegador
 		if (function_exists('fastcgi_finish_request')) {
 			fastcgi_finish_request();
 		} else {
@@ -208,7 +207,6 @@ $app->post('/admin/login', function () {
 			@flush();
 		}
 
-		// 3) Backup silencioso (se existir)
 		if (function_exists('backupAutomatico')) {
 			backupAutomatico();
 		}
@@ -268,6 +266,13 @@ $app->get('/admin/teste-backup', function () {
 
 	Notification::add("Backup executado (teste).");
 
+	Funcionarios::audit(
+		'BACKUP_RUN',
+		'BACKUP',
+		null,
+		'Backup executado pela rota de teste'
+	);
+
 	$notificacoesSessao = Notification::getAll();
 	$notificacoesBackup = function_exists('getBackupNotifications') ? getBackupNotifications(10) : [];
 
@@ -320,13 +325,18 @@ $app->get('/admin/debug-logpath', function () {
 
 $app->get('/admin/backup/run', function () {
 
-	echo "ENTROU NA ROTA /admin/backup/run<br>";
-
-	Funcionarios::verifyLogin(['ADMIN', 'SUPERVISOR']);
+	Funcionarios::checkPermission('BACKUP_RUN');
 
 	if (function_exists('backupAutomatico')) {
 		backupAutomatico();
 	}
+
+	Funcionarios::audit(
+		'BACKUP_RUN',
+		'BACKUP',
+		null,
+		'Backup manual executado'
+	);
 
 	echo "CHAMOU backupAutomatico()";
 	exit;
@@ -336,7 +346,6 @@ $app->get('/admin/ping', function () {
 	echo "OK PING";
 	exit;
 });
-
 
 $app->get('/admin/notificacoes', function () {
 
@@ -369,11 +378,16 @@ $app->get('/admin/notificacoes/limpar', function () {
 		}
 	}
 
+	Funcionarios::audit(
+		'NOTIFICACOES_CLEAR',
+		'NOTIFICACOES',
+		null,
+		'Todas as notificações foram removidas'
+	);
+
 	header("Location: /admin/notificacoes");
 	exit;
 });
-
-
 
 $app->post('/admin/notificacoes/limpar', function () {
 
@@ -388,6 +402,13 @@ $app->post('/admin/notificacoes/limpar', function () {
 		}
 	}
 
+	Funcionarios::audit(
+		'NOTIFICACOES_CLEAR',
+		'NOTIFICACOES',
+		null,
+		'Todas as notificações foram removidas via AJAX'
+	);
+
 	header('Content-Type: application/json; charset=utf-8');
 	echo json_encode(['success' => true]);
 	exit;
@@ -399,6 +420,157 @@ $app->get('/admin/notificacoes/add-teste', function () {
 
 	Notification::add("Notificação de teste criada com sucesso.");
 
+	Funcionarios::audit(
+		'NOTIFICACAO_TESTE_CREATE',
+		'NOTIFICACOES',
+		null,
+		'Notificação de teste criada manualmente'
+	);
+
 	header("Location: /admin");
 	exit;
+});
+
+$app->get('/admin/api/notificacoes', function () {
+
+	header('Content-Type: application/json; charset=utf-8');
+
+	$user = Funcionarios::getFromSession();
+
+	if (!$user || !$user->getid_usuario()) {
+		http_response_code(401);
+		echo json_encode([
+			'success' => false,
+			'mensagem' => 'Usuário não autenticado.'
+		], JSON_UNESCAPED_UNICODE);
+		exit;
+	}
+
+	$permissions = $_SESSION['User']['permissions'] ?? [];
+
+	if (!in_array('NOTIFICACOES_VIEW', $permissions)) {
+		http_response_code(403);
+		echo json_encode([
+			'success' => false,
+			'mensagem' => 'Acesso negado.'
+		], JSON_UNESCAPED_UNICODE);
+		exit;
+	}
+
+	try {
+		$notificacoesSessao = Notification::getAll();
+		$notificacoesBackup = function_exists('getBackupNotifications') ? getBackupNotifications(50) : [];
+
+		$notificacoes = array_merge($notificacoesSessao, $notificacoesBackup);
+
+		echo json_encode([
+			'success' => true,
+			'total' => count($notificacoes),
+			'notificacoes' => $notificacoes
+		], JSON_UNESCAPED_UNICODE);
+	} catch (Throwable $e) {
+		http_response_code(500);
+		echo json_encode([
+			'success' => false,
+			'mensagem' => $e->getMessage()
+		], JSON_UNESCAPED_UNICODE);
+	}
+
+	exit;
+});
+
+
+$app->get('/admin/seguranca/permissoes', function () {
+	Funcionarios::checkPermission('ACL_PROFILES_MANAGE');
+
+	$page = new PageAdmin();
+	$all = Permissions::listAll();
+
+	$page->setTpl('seguranca-permissoes', [
+		'permissions' => $all,
+		'admin_permissions' => Permissions::listByProfile('ADMIN'),
+		'supervisor_permissions' => Permissions::listByProfile('SUPERVISOR'),
+		'assessor_permissions' => Permissions::listByProfile('ASSESSOR')
+	]);
+});
+
+$app->post('/admin/seguranca/permissoes', function () {
+	Funcionarios::checkPermission('ACL_PROFILES_MANAGE');
+
+	foreach (['ADMIN', 'SUPERVISOR', 'ASSESSOR'] as $perfil) {
+		Permissions::saveProfilePermissions($perfil, $_POST['permissions'][$perfil] ?? []);
+	}
+
+	Permissions::clearSessionCache();
+
+	Funcionarios::audit(
+		'ACL_PERMISSION_UPDATE',
+		'SEGURANCA',
+		null,
+		'Permissões por perfil foram atualizadas'
+	);
+
+	header('Location: /admin/seguranca/permissoes');
+	exit;
+});
+
+$app->get('/admin/seguranca/acessos-negados', function () {
+	Funcionarios::checkPermission('ACL_DENIED_VIEW');
+
+	$sql = new Sql();
+	$rows = $sql->select("SELECT * FROM tb_access_denied ORDER BY created_at DESC LIMIT 300");
+
+	$page = new PageAdmin();
+	$page->setTpl('seguranca-acessos-negados', ['rows' => $rows]);
+});
+
+$app->get('/admin/usuarios/seguranca', function () {
+	Funcionarios::checkPermission('USUARIOS_SECURITY_MANAGE');
+
+	$page = new PageAdmin();
+	$page->setTpl('usuarios-seguranca', ['usuarios' => Funcionarios::listAllSecurity()]);
+});
+
+$app->post('/admin/usuarios/:id_usuario/status', function ($id_usuario) {
+	Funcionarios::checkPermission('USUARIOS_SECURITY_MANAGE');
+
+	Funcionarios::setUserActive((int)$id_usuario, (int)($_POST['ativo'] ?? 0));
+
+	header('Location: /admin/usuarios/seguranca');
+	exit;
+});
+
+$app->post('/admin/funcionarios/:id_pessoa/status-funcionario', function ($id_pessoa) {
+	Funcionarios::checkPermission('USUARIOS_SECURITY_MANAGE');
+
+	Funcionarios::setFuncionarioActive((int)$id_pessoa, (int)($_POST['ativo'] ?? 0));
+
+	header('Location: /admin/usuarios/seguranca');
+	exit;
+});
+
+$app->get('/admin/debug-permissoes', function () {
+	header('Content-Type: application/json; charset=utf-8');
+	echo json_encode($_SESSION['User']['permissions'] ?? [], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
+});
+
+$app->get('/admin/seguranca/auditoria', function () {
+
+	Funcionarios::checkPermission('ACL_DENIED_VIEW');
+
+	$sql = new Sql();
+
+	$logs = $sql->select("
+        SELECT *
+        FROM tb_userlogs
+        ORDER BY created_at DESC
+        LIMIT 300
+    ");
+
+	$page = new PageAdmin();
+
+	$page->setTpl('seguranca-auditoria', [
+		'logs' => $logs
+	]);
 });

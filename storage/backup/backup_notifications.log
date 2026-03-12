@@ -1,0 +1,6 @@
+2026-03-12 21:33:13|DEBUG: backupAutomatico() foi chamado
+2026-03-12 21:33:13|DEBUG: passou no lock, vai executar
+2026-03-12 21:33:13|DEBUG: antes do createBackup()
+2026-03-12 21:33:13|Backup OK: prato_cheio_2026-03-12.sql
+2026-03-12 21:33:13|DEBUG: antes do send()
+2026-03-12 21:33:13|Upload realizado com sucesso

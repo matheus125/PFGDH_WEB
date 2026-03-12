@@ -47,20 +47,20 @@
                 <div class="col-md-2">
                     <label class="form-label">Sexo</label>
                     <select class="form-select form-select-sm" name="genero_cliente">
-                        <option value="M" {if="$clientes.genero=='M'" }selected<?php  ?>>Masculino</option>
-                        <option value="F" {if="$clientes.genero=='F'" }selected<?php  ?>>Feminino</option>
-                        <option value="Outro" {if="$clientes.genero=='Outro'" }selected<?php  ?>>Outro</option>
+                        <option value="M" {if="$clientes.genero=='M'" }selected<?php } ?>>Masculino</option>
+                        <option value="F" {if="$clientes.genero=='F'" }selected<?php } ?>>Feminino</option>
+                        <option value="Outro" {if="$clientes.genero=='Outro'" }selected<?php } ?>>Outro</option>
                     </select>
                 </div>
 
                 <div class="col-md-2">
                     <label class="form-label">Estado Civil</label>
                     <select class="form-select form-select-sm" name="estado_civil">
-                        <option {if="$clientes.estado_civil=='Solteiro(a)'" }selected<?php  ?>>Solteiro(a)</option>
-                        <option {if="$clientes.estado_civil=='Casado(a)'" }selected<?php  ?>>Casado(a)</option>
-                        <option {if="$clientes.estado_civil=='Divorciado(a)'" }selected<?php  ?>>Divorciado(a)</option>
-                        <option {if="$clientes.estado_civil=='Viúvo(a)'" }selected<?php  ?>>Viúvo(a)</option>
-                        <option {if="$clientes.estado_civil=='União Estável'" }selected<?php  ?>>União Estável</option>
+                        <option {if="$clientes.estado_civil=='Solteiro(a)'" }selected<?php } ?>>Solteiro(a)</option>
+                        <option {if="$clientes.estado_civil=='Casado(a)'" }selected<?php } ?>>Casado(a)</option>
+                        <option {if="$clientes.estado_civil=='Divorciado(a)'" }selected<?php } ?>>Divorciado(a)</option>
+                        <option {if="$clientes.estado_civil=='Viúvo(a)'" }selected<?php } ?>>Viúvo(a)</option>
+                        <option {if="$clientes.estado_civil=='União Estável'" }selected<?php } ?>>União Estável</option>
                     </select>
 
                 </div>

@@ -46,6 +46,7 @@
               </thead>
               <tbody>
                 <?php $counter1=-1;  if( isset($lista_titulares) && ( is_array($lista_titulares) || $lista_titulares instanceof Traversable ) && sizeof($lista_titulares) ) foreach( $lista_titulares as $key1 => $value1 ){ $counter1++; ?>
+
                 <tr>
                   <td><?php echo htmlspecialchars( $value1["id"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                   <td><?php echo htmlspecialchars( $value1["nome_completo"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
@@ -75,20 +76,23 @@
                         <i class="bi bi-eye"></i>
                       </button>
 
-                      <a href="/admin/clientes/<?php echo htmlspecialchars( $value1["id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="btn btn-warning btn-sm" data-bs-toggle="tooltip"
+                      <?php if( canAccess('CLIENTES_UPDATE') ){ ?><a href="/admin/clientes/<?php echo htmlspecialchars( $value1["id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="btn btn-warning btn-sm" data-bs-toggle="tooltip"
                         title="Editar">
                         <i class="bi bi-pencil"></i>
-                      </a>
+                      </a><?php } ?>
 
-                      <a href="/admin/clientes/<?php echo htmlspecialchars( $value1["id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/delete"
+
+                      <?php if( canAccess('CLIENTES_DELETE') ){ ?><a href="/admin/clientes/<?php echo htmlspecialchars( $value1["id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/delete"
                         onclick="return confirm('Deseja realmente excluir este registro?')"
                         class="btn btn-danger btn-sm" data-bs-toggle="tooltip" title="Excluir">
                         <i class="bi bi-trash"></i>
-                      </a>
+                      </a><?php } ?>
+
                     </div>
                   </td>
                 </tr>
                 <?php } ?>
+
               </tbody>
             </table>
 

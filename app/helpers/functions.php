@@ -117,7 +117,6 @@ function backupAutomatico(): void
         backupLog("Upload realizado com sucesso");
 
         limparBackupsAntigos(7);
-
     } catch (\Exception $e) {
         backupLog("Erro: " . $e->getMessage());
     }
@@ -210,25 +209,18 @@ function limparBackupsAntigos(int $dias = 7): void
 
 function currentUserPerfil(): string
 {
-    return $_SESSION[
-        \Hcode\Model\Funcionarios::SESSION
-    ]['perfil'] ?? '';
+    return $_SESSION[\Hcode\Model\Funcionarios::SESSION]['perfil'] ?? '';
 }
 
-function canAccess($permission): bool
+function canAccess($permissionKey)
 {
-    return \Hcode\Model\Funcionarios::hasPermission($permission);
+    return Funcionarios::can($permissionKey);
 }
 
-function canAnyAccess($permissions): bool
+function canAnyAccess($permissions)
 {
-    if (!is_array($permissions)) {
-        $permissions = array_map('trim', explode(',', (string)$permissions));
-    }
-    foreach ($permissions as $permission) {
-        if ($permission !== '' && \Hcode\Model\Funcionarios::hasPermission($permission)) {
-            return true;
-        }
+    foreach ((array)$permissions as $permission) {
+        if (Funcionarios::can($permission)) return true;
     }
     return false;
 }
