@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<?php if(!class_exists('Rain\Tpl')){exit;}?><!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
@@ -635,17 +635,17 @@
             Digite seu CPF para continuar o processo de recuperação de senha.
           </p>
 
-          {if="$error != ''"}
+          <?php if( $error != '' ){ ?>
           <div class="alert alert-danger">
-            {$error}
+            <?php echo htmlspecialchars( $error, ENT_COMPAT, 'UTF-8', FALSE ); ?>
           </div>
-          {/if}
+          <?php } ?>
 
-          {if="$success != ''"}
+          <?php if( $success != '' ){ ?>
           <div class="alert alert-success">
-            {$success}
+            <?php echo htmlspecialchars( $success, ENT_COMPAT, 'UTF-8', FALSE ); ?>
           </div>
-          {/if}
+          <?php } ?>
 
           <form action="/admin/forgot" method="post" id="forgotForm">
 

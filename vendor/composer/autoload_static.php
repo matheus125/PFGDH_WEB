@@ -7,15 +7,19 @@ namespace Composer\Autoload;
 class ComposerStaticInit0b968f58b727f4815ecdee809cf66ddd
 {
     public static $prefixLengthsPsr4 = array (
-        'H' => 
+        'P' =>
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
+        'H' =>
         array (
             'Hcode\\' => 6,
         ),
-        'F' => 
+        'F' =>
         array (
             'Firebase\\JWT\\' => 13,
         ),
-        'A' => 
+        'A' =>
         array (
             'Amadeus\\Travel\\Predictions\\' => 27,
             'Amadeus\\Travel\\' => 15,
@@ -41,107 +45,111 @@ class ComposerStaticInit0b968f58b727f4815ecdee809cf66ddd
     );
 
     public static $prefixDirsPsr4 = array (
-        'Hcode\\' => 
+        'PHPMailer\\PHPMailer\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
+        'Hcode\\' =>
         array (
             0 => __DIR__ . '/..' . '/API/php-classes/src',
         ),
-        'Firebase\\JWT\\' => 
+        'Firebase\\JWT\\' =>
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
-        'Amadeus\\Travel\\Predictions\\' => 
+        'Amadeus\\Travel\\Predictions\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/travel/predictions',
         ),
-        'Amadeus\\Travel\\' => 
+        'Amadeus\\Travel\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/travel',
         ),
-        'Amadeus\\Shopping\\FlightOffers\\' => 
+        'Amadeus\\Shopping\\FlightOffers\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/shopping/flightOffers',
         ),
-        'Amadeus\\Shopping\\Availability\\' => 
+        'Amadeus\\Shopping\\Availability\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/shopping/availability',
         ),
-        'Amadeus\\Shopping\\Activities\\' => 
+        'Amadeus\\Shopping\\Activities\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/shopping/activities',
         ),
-        'Amadeus\\Shopping\\' => 
+        'Amadeus\\Shopping\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/shopping',
         ),
-        'Amadeus\\Schedule\\' => 
+        'Amadeus\\Schedule\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/schedule',
         ),
-        'Amadeus\\Resources\\' => 
+        'Amadeus\\Resources\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/resources',
         ),
-        'Amadeus\\ReferenceData\\Locations\\Hotels\\' => 
+        'Amadeus\\ReferenceData\\Locations\\Hotels\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/referenceData/locations/hotels',
         ),
-        'Amadeus\\ReferenceData\\Locations\\' => 
+        'Amadeus\\ReferenceData\\Locations\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/referenceData/locations',
         ),
-        'Amadeus\\ReferenceData\\' => 
+        'Amadeus\\ReferenceData\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/referenceData',
         ),
-        'Amadeus\\Exceptions\\' => 
+        'Amadeus\\Exceptions\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/exceptions',
         ),
-        'Amadeus\\EReputation\\' => 
+        'Amadeus\\EReputation\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/eReputation',
         ),
-        'Amadeus\\DutyOfCare\\Diseases\\' => 
+        'Amadeus\\DutyOfCare\\Diseases\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/dutyOfCare/diseases',
         ),
-        'Amadeus\\DutyOfCare\\' => 
+        'Amadeus\\DutyOfCare\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/dutyOfCare',
         ),
-        'Amadeus\\Client\\' => 
+        'Amadeus\\Client\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/client',
         ),
-        'Amadeus\\Booking\\' => 
+        'Amadeus\\Booking\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/booking',
         ),
-        'Amadeus\\Airport\\Predictions\\' => 
+        'Amadeus\\Airport\\Predictions\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/airport/predictions',
         ),
-        'Amadeus\\Airport\\' => 
+        'Amadeus\\Airport\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src/airport',
         ),
-        'Amadeus\\' => 
+        'Amadeus\\' =>
         array (
             0 => __DIR__ . '/..' . '/amadeus4dev/amadeus-php/src',
         ),
     );
 
     public static $prefixesPsr0 = array (
-        'S' => 
+        'S' =>
         array (
-            'Slim' => 
+            'Slim' =>
             array (
                 0 => __DIR__ . '/..' . '/slim/slim',
             ),
         ),
-        'R' => 
+        'R' =>
         array (
-            'Rain' => 
+            'Rain' =>
             array (
                 0 => __DIR__ . '/..' . '/rain/raintpl/library',
             ),

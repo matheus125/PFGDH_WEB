@@ -15,8 +15,15 @@ class PerfilMiddleware extends Middleware
         $path = strtok($app->request()->getPathInfo(), '?');
 
         $rotasPublicas = [
+            '/',
+            '/login',
             '/admin/login',
-            '/login'
+            '/admin/forgot',
+            '/admin/forgot/reset',
+            '/admin/test-email',
+            '/forgot',
+            '/forgot/reset'
+
         ];
 
         if (in_array($path, $rotasPublicas, true)) {

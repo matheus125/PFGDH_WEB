@@ -1,102 +1,108 @@
-<?php 
+<?php
 
 namespace Hcode;
 
-use Rain\Tpl;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-class Mailer {
-	
-	const USERNAME = "cursophp7hcode@gmail.com";
-	const PASSWORD = "<?password?>";
-	const NAME_FROM = "Hcode Store";
-
+class Mailer
+{
 	private $mail;
 
-	public function __construct($toAddress, $toName, $subject, $tplName, $data = array())
+	// ===== CONFIG SMTP =====
+	private const SMTP_HOST = 'mail.ms-tecnologia.app.br';
+	private const SMTP_USER = 'prato@ms-tecnologia.app.br';
+	private const SMTP_PASS = ']&&i]ku%?c=('; // ⚠️ troque
+	private const SMTP_PORT = 465;
+	private const SMTP_SECURE = PHPMailer::ENCRYPTION_SMTPS;
+
+	private const FROM_NAME = 'Prato Cheio';
+	private const FROM_EMAIL = 'prato@ms-tecnologia.app.br';
+
+	public function __construct()
 	{
+		$this->mail = new PHPMailer(true);
 
-		$config = array(
-			"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"]."/views/email/",
-			"cache_dir"     => $_SERVER["DOCUMENT_ROOT"]."/views-cache/",
-			"debug"         => false
-	    );
+		try {
 
-		Tpl::configure( $config );
+			$this->mail->isSMTP();
 
-		$tpl = new Tpl;
+			// FORÇA IPv4
+			$this->mail->Host = gethostbyname(self::SMTP_HOST);
 
-		foreach ($data as $key => $value) {
-			$tpl->assign($key, $value);
+			$this->mail->SMTPAuth   = true;
+			$this->mail->Username   = self::SMTP_USER;
+			$this->mail->Password   = self::SMTP_PASS;
+			$this->mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+			$this->mail->Port       = 465;
+			$this->mail->CharSet    = 'UTF-8';
+			$this->mail->Timeout    = 30;
+
+			// DEBUG (deixe ligado agora)
+			$this->mail->SMTPDebug  = 2;
+
+			// evita erro SSL local
+			$this->mail->SMTPOptions = [
+				'ssl' => [
+					'verify_peer' => false,
+					'verify_peer_name' => false,
+					'allow_self_signed' => true
+				]
+			];
+
+			// ===== REMETENTE =====
+			$this->mail->setFrom(self::FROM_EMAIL, self::FROM_NAME);
+		} catch (Exception $e) {
+			throw new \Exception("Erro ao configurar e-mail: " . $e->getMessage());
 		}
-
-		$html = $tpl->draw($tplName, true);
-
-		$this->mail = new \PHPMailer;
-
-		//Tell PHPMailer to use SMTP
-		$this->mail->isSMTP();
-
-		//Enable SMTP debugging
-		// 0 = off (for production use)
-		// 1 = client messages
-		// 2 = client and server messages
-		$this->mail->SMTPDebug = 0;
-
-		//Ask for HTML-friendly debug output
-		$this->mail->Debugoutput = 'html';
-
-		//Set the hostname of the mail server
-		$this->mail->Host = 'smtp.gmail.com';
-		// use
-		// $this->mail->Host = gethostbyname('smtp.gmail.com');
-		// if your network does not support SMTP over IPv6
-
-		//Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
-		$this->mail->Port = 587;
-
-		//Set the encryption system to use - ssl (deprecated) or tls
-		$this->mail->SMTPSecure = 'tls';
-
-		//Whether to use SMTP authentication
-		$this->mail->SMTPAuth = true;
-
-		//Username to use for SMTP authentication - use full email address for gmail
-		$this->mail->Username = Mailer::USERNAME;
-
-		//Password to use for SMTP authentication
-		$this->mail->Password = Mailer::PASSWORD;
-
-		//Set who the message is to be sent from
-		$this->mail->setFrom(Mailer::USERNAME, Mailer::NAME_FROM);
-
-		//Set an alternative reply-to address
-		//$this->mail->addReplyTo('replyto@example.com', 'First Last');
-
-		//Set who the message is to be sent to
-		$this->mail->addAddress($toAddress, $toName);
-
-		//Set the subject line
-		$this->mail->Subject = $subject;
-
-		//Read an HTML message body from an external file, convert referenced images to embedded,
-		//convert HTML into a basic plain-text alternative body
-		$this->mail->msgHTML($html);
-
-		//Replace the plain text body with one created manually
-		$this->mail->AltBody = 'This is a plain-text message body';
-
-		//Attach an image file
-		//$mail->addAttachment('images/phpmailer_mini.png');
-
 	}
 
-	public function send()
-	{
+	public function send(
+		string $toAddress,
+		string $toName,
+		string $subject,
+		string $htmlBody,
+		string $altBody = ''
+	): bool {
 
-		return $this->mail->send();
+		try {
 
+			$this->mail->clearAddresses();
+			$this->mail->clearAttachments();
+
+			$this->mail->addAddress($toAddress, $toName);
+
+			$this->mail->isHTML(true);
+			$this->mail->Subject = $subject;
+			$this->mail->Body    = $htmlBody;
+			$this->mail->AltBody = $altBody !== '' ? $altBody : strip_tags($htmlBody);
+
+			if (!$this->mail->send()) {
+				throw new \Exception($this->mail->ErrorInfo);
+			}
+
+			return true;
+		} catch (Exception $e) {
+			throw new \Exception("Erro ao enviar e-mail: " . $e->getMessage());
+		}
 	}
 
+	public static function quickSend(
+		string $toAddress,
+		string $toName,
+		string $subject,
+		string $htmlBody,
+		string $altBody = ''
+	): bool {
+
+		$mailer = new self();
+
+		return $mailer->send(
+			$toAddress,
+			$toName,
+			$subject,
+			$htmlBody,
+			$altBody
+		);
+	}
 }
-
- ?>

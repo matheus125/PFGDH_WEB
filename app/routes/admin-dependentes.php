@@ -29,8 +29,8 @@ $app->get("/admin/titulares/json", function () {
         ORDER BY nome_completo
     ");
 
-    header('Content-Type: application/json');
-    echo json_encode($results);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($results, JSON_UNESCAPED_UNICODE);
     exit;
 });
 
@@ -56,7 +56,7 @@ $app->post('/admin/dependentes/create-json', function () {
             throw new Exception('Nenhum dependente informado');
         }
 
-        $idTitular = (int) $body['id_titular'];
+        $idTitular = (int)$body['id_titular'];
         $dependentes = $body['dependentes'];
 
         $sql = new Sql();
@@ -66,6 +66,15 @@ $app->post('/admin/dependentes/create-json', function () {
 
             if (empty($dep['nome'])) {
                 throw new Exception('Nome do dependente é obrigatório');
+            }
+
+            $generoRaw = trim($dep['genero'] ?? '');
+            $genero = 'Outro';
+
+            if (in_array($generoRaw, ['M', 'Masculino', 'masculino'])) {
+                $genero = 'M';
+            } elseif (in_array($generoRaw, ['F', 'Feminino', 'feminino'])) {
+                $genero = 'F';
             }
 
             $sql->query("
@@ -86,17 +95,17 @@ $app->post('/admin/dependentes/create-json', function () {
                     :data_nascimento,
                     :idade,
                     :genero,
-                    :dependencia_cliente                    
+                    :dependencia_cliente
                 )
             ", [
-                ':id_titular'   => $idTitular,
-                ':nome'         => $dep['nome'],
-                ':rg'           => $dep['rg'] ?? null,
-                ':cpf'          => $dep['cpf'] ?? null,
+                ':id_titular' => $idTitular,
+                ':nome' => trim($dep['nome']),
+                ':rg' => $dep['rg'] ?? null,
+                ':cpf' => $dep['cpf'] ?? null,
                 ':data_nascimento' => $dep['data_nascimento'] ?? null,
-                ':idade'        => $dep['idade'] ?? null,
-                ':genero'       => $dep['genero'] ?? null,
-                ':dependencia_cliente'   => $dep['dependencia_cliente'] ?? null
+                ':idade' => !empty($dep['idade']) ? (int)$dep['idade'] : null,
+                ':genero' => $genero,
+                ':dependencia_cliente' => $dep['dependencia_cliente'] ?? null
             ]);
         }
 
@@ -104,10 +113,10 @@ $app->post('/admin/dependentes/create-json', function () {
 
         echo json_encode([
             'success' => true,
-            'message' => 'Dependentes salvos com sucesso'
-        ]);
-
+            'message' => 'Dependentes salvos com sucesso.'
+        ], JSON_UNESCAPED_UNICODE);
         exit;
+
     } catch (Exception $e) {
 
         if (isset($sql)) {
@@ -119,84 +128,238 @@ $app->post('/admin/dependentes/create-json', function () {
         echo json_encode([
             'success' => false,
             'message' => $e->getMessage()
-        ]);
-
+        ], JSON_UNESCAPED_UNICODE);
         exit;
     }
 });
 
-// Retorna dependentes de um titular em JSON
 $app->get("/admin/dependentes/ajax/:id", function ($id) {
 
-    Funcionarios::checkPermission('DEPENDENTES_VIEW');
+    header('Content-Type: application/json; charset=utf-8');
 
-    $sql = new Sql();
+    try {
+        Funcionarios::checkPermission('CLIENTES_VIEW');
 
-    $dependentes = $sql->select("
-        SELECT 
-            id,
-            nome,
-            dependencia_cliente,
-            TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) AS idade,
-            genero
-        FROM tb_dependentes
-        WHERE id_titular = :id
-        ORDER BY nome
-    ", [
-        ":id" => $id
-    ]);
+        $id = (int)$id;
 
-    header('Content-Type: application/json');
-    echo json_encode($dependentes);
-    exit;
-});
+        if ($id <= 0) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'ID do titular inválido.',
+                'data' => []
+            ], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
 
-// Rota para editar/atualizar dependente via AJAX
-$app->post("/admin/dependentes/editar/:id", function ($id) {
+        $sql = new Sql();
 
-    Funcionarios::checkPermission('DEPENDENTES_UPDATE');
+        $dependentes = $sql->select("
+            SELECT 
+                id,
+                nome,
+                dependencia_cliente,
+                idade,
+                genero
+            FROM tb_dependentes
+            WHERE id_titular = :id
+            ORDER BY nome
+        ", [
+            ":id" => $id
+        ]);
 
-    $body = json_decode(file_get_contents('php://input'), true);
+        echo json_encode([
+            'success' => true,
+            'message' => count($dependentes) ? 'Dependentes encontrados.' : 'Nenhum dependente encontrado.',
+            'data' => $dependentes
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
 
-    if (!$body) {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'Dados inválidos']);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Erro ao carregar dependentes.',
+            'error' => $e->getMessage(),
+            'data' => []
+        ], JSON_UNESCAPED_UNICODE);
         exit;
     }
-
-    $sql = new Sql();
-
-    $sql->query("
-        UPDATE tb_dependentes SET
-            nome = :nome,
-            dependencia_cliente = :dependencia_cliente,
-            idade = :idade,
-            genero = :genero
-        WHERE id = :id
-    ", [
-        ':nome' => $body['nome'] ?? '',
-        ':dependencia_cliente' => $body['dependencia_cliente'] ?? null,
-        ':idade' => $body['idade'] ?? null,
-        ':genero' => $body['genero'] ?? null,
-        ':id' => $id
-    ]);
-
-    header('Content-Type: application/json');
-    echo json_encode(['success' => true, 'message' => 'Dependente atualizado com sucesso']);
-    exit;
 });
 
-$app->get('/admin/dependentes/get/{id}', function ($request, $response, $args) {
-    $id = $args['id'];
+$app->get("/admin/dependentes/get/:id", function ($id) {
 
-    // Buscar dependente no banco
-    $sql = new Sql();
-    $dependente = $sql->select("SELECT * FROM tb_dependentes WHERE id = :id", [':id' => $id]);
+    header('Content-Type: application/json; charset=utf-8');
 
-    if (empty($dependente)) {
-        return $response->withStatus(404)->write('Dependente não encontrado');
+    try {
+        Funcionarios::checkPermission('CLIENTES_VIEW');
+
+        $id = (int)$id;
+
+        if ($id <= 0) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'ID do dependente inválido.'
+            ], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        $sql = new Sql();
+        $rows = $sql->select("
+            SELECT id, nome, dependencia_cliente, idade, genero
+            FROM tb_dependentes
+            WHERE id = :id
+            LIMIT 1
+        ", [
+            ':id' => $id
+        ]);
+
+        if (count($rows) === 0) {
+            http_response_code(404);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Dependente não encontrado.'
+            ], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        echo json_encode([
+            'success' => true,
+            'data' => $rows[0]
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Erro ao buscar dependente.',
+            'error' => $e->getMessage()
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
     }
+});
 
-    return $response->withHeader('Content-Type', 'application/json')
-        ->write(json_encode($dependente[0]));
+$app->post("/admin/dependentes/editar/:id", function ($id) {
+
+    header('Content-Type: application/json; charset=utf-8');
+
+    try {
+        Funcionarios::checkPermission('DEPENDENTES_UPDATE');
+
+        $id = (int)$id;
+
+        if ($id <= 0) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'ID do dependente inválido.'
+            ], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        $body = json_decode(file_get_contents('php://input'), true);
+
+        if (!$body) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Dados inválidos.'
+            ], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        $nome = trim($body['nome'] ?? '');
+        $dependencia = trim($body['dependencia_cliente'] ?? '');
+        $idade = is_numeric($body['idade'] ?? null) ? (int)$body['idade'] : null;
+
+        $generoRaw = trim($body['genero'] ?? '');
+        $genero = 'Outro';
+
+        if (in_array($generoRaw, ['M', 'Masculino', 'masculino'])) {
+            $genero = 'M';
+        } elseif (in_array($generoRaw, ['F', 'Feminino', 'feminino'])) {
+            $genero = 'F';
+        } elseif (in_array($generoRaw, ['Outro', 'outro'])) {
+            $genero = 'Outro';
+        }
+
+        $sql = new Sql();
+
+        $sql->query("
+            UPDATE tb_dependentes
+            SET
+                nome = :nome,
+                dependencia_cliente = :dependencia_cliente,
+                idade = :idade,
+                genero = :genero
+            WHERE id = :id
+        ", [
+            ':nome' => $nome,
+            ':dependencia_cliente' => $dependencia,
+            ':idade' => $idade,
+            ':genero' => $genero,
+            ':id' => $id
+        ]);
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Dependente atualizado com sucesso.'
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Erro ao atualizar dependente.',
+            'error' => $e->getMessage()
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+});
+
+$app->delete("/admin/dependentes/excluir/:id", function ($id) {
+
+    header('Content-Type: application/json; charset=utf-8');
+
+    try {
+        Funcionarios::checkPermission('CLIENTES_DELETE');
+
+        $id = (int)$id;
+
+        if ($id <= 0) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'ID do dependente inválido.'
+            ], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        $sql = new Sql();
+
+        $sql->query("
+            DELETE FROM tb_dependentes
+            WHERE id = :id
+        ", [
+            ':id' => $id
+        ]);
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Dependente excluído com sucesso.'
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Erro ao excluir dependente.',
+            'error' => $e->getMessage()
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
 });

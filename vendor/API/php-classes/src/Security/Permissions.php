@@ -11,7 +11,7 @@ class Permissions
             'FUNCIONARIOS_VIEW' => 'Visualizar funcionários',
             'FUNCIONARIOS_CREATE' => 'Cadastrar funcionários',
             'FUNCIONARIOS_UPDATE' => 'Editar funcionários',
-            'FUNCIONARIOS_DELETE' => 'Excluir funcionários',
+            'FUNCIONARIOS_DELETE' => 'Excluir/inativar funcionários',
             'FUNCIONARIOS_PASSWORD' => 'Alterar senha de funcionários',
             'CLIENTES_VIEW' => 'Visualizar clientes',
             'CLIENTES_CREATE' => 'Cadastrar clientes',
@@ -20,11 +20,15 @@ class Permissions
             'DEPENDENTES_VIEW' => 'Visualizar dependentes',
             'DEPENDENTES_CREATE' => 'Cadastrar dependentes',
             'DEPENDENTES_UPDATE' => 'Editar dependentes',
-            'VENDAS_VIEW' => 'Acessar vendas',
+            'VENDAS_VIEW' => 'Visualizar vendas',
             'RELATORIOS_VIEW' => 'Visualizar relatórios',
-            'BACKUP_RUN' => 'Executar backup manual',
+            'BACKUP_RUN' => 'Executar backup',
             'NOTIFICACOES_VIEW' => 'Visualizar notificações',
             'NOTIFICACOES_CLEAR' => 'Limpar notificações',
+            'NOTIFICACAO_TESTE_CREATE' => 'Gerar notificação de teste',
+            'ACL_PROFILES_MANAGE' => 'Gerenciar permissões por perfil',
+            'ACL_DENIED_VIEW' => 'Visualizar acessos negados',
+            'USUARIOS_SECURITY_MANAGE' => 'Gerenciar status/bloqueio de usuários',
             'SISTEMA_DEBUG' => 'Acessar rotas de debug'
         ];
     }
@@ -49,7 +53,7 @@ class Permissions
             '/admin/dependentes/create-json' => 'DEPENDENTES_CREATE',
             '/admin/dependentes/ajax/:id' => 'DEPENDENTES_VIEW',
             '/admin/dependentes/editar/:id' => 'DEPENDENTES_UPDATE',
-            '/admin/dependentes/get/{id}' => 'DEPENDENTES_VIEW',
+            '/admin/dependentes/get/:id' => 'DEPENDENTES_VIEW',
             '/admin/titulares/json' => 'DEPENDENTES_VIEW',
             '/admin/vendas' => 'VENDAS_VIEW',
             '/admin/api/senhas' => 'VENDAS_VIEW',
@@ -73,7 +77,10 @@ class Permissions
             '/admin/ping' => 'SISTEMA_DEBUG',
             '/admin/notificacoes' => 'NOTIFICACOES_VIEW',
             '/admin/notificacoes/limpar' => 'NOTIFICACOES_CLEAR',
-            '/admin/notificacoes/add-teste' => 'NOTIFICACOES_CLEAR',
+            '/admin/notificacoes/add-teste' => 'NOTIFICACAO_TESTE_CREATE',
+            '/admin/seguranca/permissoes' => 'ACL_PROFILES_MANAGE',
+            '/admin/seguranca/acessos-negados' => 'ACL_DENIED_VIEW',
+            '/admin/usuarios/seguranca' => 'USUARIOS_SECURITY_MANAGE',
         ];
     }
 

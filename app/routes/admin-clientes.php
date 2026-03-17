@@ -26,26 +26,33 @@ $app->get("/admin/clientes/create", function () {
 
 	$page = new PageAdmin();
 
-	$page->setTpl("clientes-create");
+	$page->setTpl("clientes-create", [
+		"msgError" => Clientes::getError(),
+		"msgSuccess" => Clientes::getSuccess()
+	]);
 });
 
 $app->post("/admin/clientes/create", function () {
 
 	Funcionarios::checkPermission('CLIENTES_CREATE');
 
-	$clientes = new Clientes();
+	try {
+		$clientes = new Clientes();
+		$clientes->setData($_POST);
+		$clientes->salvar_cliente_titular();
 
-	$clientes->setData($_POST);
-
-	$clientes->salvar_cliente_titular();
-
-	header("Location: /admin/clientes");
-	exit;
+		Clientes::setSuccess("Cliente cadastrado com sucesso.");
+		header("Location: /admin/clientes");
+		exit;
+	} catch (Exception $e) {
+		Clientes::setError($e->getMessage());
+		header("Location: /admin/clientes/create");
+		exit;
+	}
 });
 
 $app->get("/admin/index", function () {
 
-	// pega lista e total
 	$lista_titulares = Clientes::lista_titulares();
 
 	$page = new PageAdmin();
@@ -57,6 +64,179 @@ $app->get("/admin/index", function () {
 	]);
 });
 
+/*
+|--------------------------------------------------------------------------
+| ROTAS AJAX DE VERIFICAÇÃO
+| IMPORTANTE: DEVEM VIR ANTES DE /admin/clientes/:id
+|--------------------------------------------------------------------------
+*/
+
+$app->get('/admin/clientes/verificar-cpf', function () {
+	header('Content-Type: application/json; charset=utf-8');
+
+	try {
+		$valor = trim($_GET['valor'] ?? '');
+		$idsB64 = $_GET['ids_b64'] ?? '';
+
+		$idTitular = 0;
+
+		if (!empty($idsB64)) {
+			$ids = json_decode(base64_decode($idsB64), true);
+			$idTitular = (int)($ids['id_titular'] ?? 0);
+		}
+
+		$sql = new Sql();
+		$rows = $sql->select("
+			SELECT id
+			FROM tb_titular
+			WHERE cpf = :cpf
+			AND id != :id
+			LIMIT 1
+		", [
+			':cpf' => $valor,
+			':id' => $idTitular
+		]);
+
+		echo json_encode([
+			'exists' => count($rows) > 0
+		], JSON_UNESCAPED_UNICODE);
+	} catch (Exception $e) {
+		http_response_code(500);
+		echo json_encode([
+			'exists' => false,
+			'error' => $e->getMessage()
+		], JSON_UNESCAPED_UNICODE);
+	}
+
+	exit;
+});
+
+$app->get('/admin/clientes/verificar-rg', function () {
+	header('Content-Type: application/json; charset=utf-8');
+
+	try {
+		$valor = trim($_GET['valor'] ?? '');
+		$idsB64 = $_GET['ids_b64'] ?? '';
+
+		$idTitular = 0;
+
+		if (!empty($idsB64)) {
+			$ids = json_decode(base64_decode($idsB64), true);
+			$idTitular = (int)($ids['id_titular'] ?? 0);
+		}
+
+		$sql = new Sql();
+		$rows = $sql->select("
+			SELECT id
+			FROM tb_titular
+			WHERE rg = :rg
+			AND id != :id
+			LIMIT 1
+		", [
+			':rg' => $valor,
+			':id' => $idTitular
+		]);
+
+		echo json_encode([
+			'exists' => count($rows) > 0
+		], JSON_UNESCAPED_UNICODE);
+	} catch (Exception $e) {
+		http_response_code(500);
+		echo json_encode([
+			'exists' => false,
+			'error' => $e->getMessage()
+		], JSON_UNESCAPED_UNICODE);
+	}
+
+	exit;
+});
+
+$app->get('/admin/clientes/verificar-nis', function () {
+	header('Content-Type: application/json; charset=utf-8');
+
+	try {
+		$valor = trim($_GET['valor'] ?? '');
+		$idsB64 = $_GET['ids_b64'] ?? '';
+
+		$idTitular = 0;
+
+		if (!empty($idsB64)) {
+			$ids = json_decode(base64_decode($idsB64), true);
+			$idTitular = (int)($ids['id_titular'] ?? 0);
+		}
+
+		$sql = new Sql();
+		$rows = $sql->select("
+			SELECT id
+			FROM tb_titular
+			WHERE nis = :nis
+			AND id != :id
+			LIMIT 1
+		", [
+			':nis' => $valor,
+			':id' => $idTitular
+		]);
+
+		echo json_encode([
+			'exists' => count($rows) > 0
+		], JSON_UNESCAPED_UNICODE);
+	} catch (Exception $e) {
+		http_response_code(500);
+		echo json_encode([
+			'exists' => false,
+			'error' => $e->getMessage()
+		], JSON_UNESCAPED_UNICODE);
+	}
+
+	exit;
+});
+
+$app->get('/admin/clientes/verificar-telefone', function () {
+	header('Content-Type: application/json; charset=utf-8');
+
+	try {
+		$valor = preg_replace('/\D/', '', $_GET['valor'] ?? '');
+		$idsB64 = $_GET['ids_b64'] ?? '';
+
+		$idTitular = 0;
+
+		if (!empty($idsB64)) {
+			$ids = json_decode(base64_decode($idsB64), true);
+			$idTitular = (int)($ids['id_titular'] ?? 0);
+		}
+
+		$sql = new Sql();
+		$rows = $sql->select("
+			SELECT id
+			FROM tb_titular
+			WHERE REPLACE(REPLACE(REPLACE(REPLACE(telefone, '(', ''), ')', ''), '-', ''), ' ', '') = :telefone
+			AND id != :id
+			LIMIT 1
+		", [
+			':telefone' => $valor,
+			':id' => $idTitular
+		]);
+
+		echo json_encode([
+			'exists' => count($rows) > 0
+		], JSON_UNESCAPED_UNICODE);
+	} catch (Exception $e) {
+		http_response_code(500);
+		echo json_encode([
+			'exists' => false,
+			'error' => $e->getMessage()
+		], JSON_UNESCAPED_UNICODE);
+	}
+
+	exit;
+});
+
+/*
+|--------------------------------------------------------------------------
+| ROTAS DINÂMICAS
+|--------------------------------------------------------------------------
+*/
+
 $app->get("/admin/clientes/:id", function ($id) {
 
 	Funcionarios::checkPermission('CLIENTES_UPDATE');
@@ -67,7 +247,6 @@ $app->get("/admin/clientes/:id", function ($id) {
 
 	$values = $clientes->getValues();
 
-	// IDs em JSON (base64) para enviar no form de update
 	$ids = [
 		"id_titular"  => (int)($values["id"] ?? 0),
 		"id_familia"  => (int)($values["id_familia"] ?? 0),
@@ -86,14 +265,11 @@ $app->get("/admin/clientes/:id", function ($id) {
 	));
 });
 
-
 $app->post("/admin/clientes/update", function () {
 
 	Funcionarios::checkPermission('CLIENTES_UPDATE');
 
-	// DEBUG rápido: adicione ?debug=1 na URL do POST (ou inclua <input name="debug" value="1"> no form)
 	$debug = (isset($_GET["debug"]) && $_GET["debug"] == "1") || (isset($_POST["debug"]) && $_POST["debug"] == "1");
-
 
 	$raw = base64_decode($_POST["ids_b64"] ?? "", true);
 	$ids = json_decode($raw ?: "{}", true);
@@ -104,7 +280,14 @@ $app->post("/admin/clientes/update", function () {
 
 	if ($debug) {
 		echo "<pre>";
-		var_dump(["_POST" => $_POST, "ids_raw" => $raw, "ids" => $ids, "id_titular" => $id_titular, "id_familia" => $id_familia, "id_endereco" => $id_endereco]);
+		var_dump([
+			"_POST" => $_POST,
+			"ids_raw" => $raw,
+			"ids" => $ids,
+			"id_titular" => $id_titular,
+			"id_familia" => $id_familia,
+			"id_endereco" => $id_endereco
+		]);
 		echo "</pre>";
 		die();
 	}
@@ -125,14 +308,14 @@ $app->post("/admin/clientes/update", function () {
 
 	try {
 
-		$result = $sql->select("
-        CALL sp_atualizar_titular_familia_endereco(
-            :id_titular, :id_familia, :id_endereco,
-            :cep, :bairro, :rua, :numero, :referencia, :nacionalidade, :naturalidade, :cidade, :tempo_moradia_anos,
-            :nome_familia,
-            :nome_completo, :nome_social, :cor_cliente, :nome_mae, :telefone, :data_nascimento, :genero, :estado_civil, :rg, :cpf, :nis, :status_cliente
-        )
-    ", [
+		$sql->select("
+			CALL sp_atualizar_titular_familia_endereco(
+				:id_titular, :id_familia, :id_endereco,
+				:cep, :bairro, :rua, :numero, :referencia, :nacionalidade, :naturalidade, :cidade, :tempo_moradia_anos,
+				:nome_familia,
+				:nome_completo, :nome_social, :cor_cliente, :nome_mae, :telefone, :data_nascimento, :genero, :estado_civil, :rg, :cpf, :nis, :status_cliente
+			)
+		", [
 			":id_titular" => $id_titular,
 			":id_familia" => $id_familia,
 			":id_endereco" => $id_endereco,
@@ -172,7 +355,6 @@ $app->post("/admin/clientes/update", function () {
 		exit;
 	}
 });
-
 
 $app->get("/admin/clientes/:id/delete", function ($id) {
 

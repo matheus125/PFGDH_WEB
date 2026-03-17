@@ -149,7 +149,8 @@ $app->get('/admin/login', function () {
 	]);
 
 	$page->setTpl("login", [
-		'error' => Funcionarios::getError()
+		'error' => Funcionarios::getError(),
+		'attempts' => Funcionarios::getLoginAttempts()
 	]);
 });
 
@@ -189,35 +190,48 @@ $app->get('/admin/test-tb-usuario', function () {
 */
 $app->post('/admin/login', function () {
 
-	header('Content-Type: application/json; charset=utf-8');
-
 	try {
+
+		if (!isset($_POST["cpf"]) || trim($_POST["cpf"]) === '') {
+			throw new Exception("Informe o CPF.");
+		}
+
+		if (!isset($_POST["senha"]) || trim($_POST["senha"]) === '') {
+			throw new Exception("Informe a senha.");
+		}
+
+		if (Funcionarios::getLoginAttempts() >= 5) {
+			throw new Exception("Muitas tentativas inválidas. Aguarde um momento antes de tentar novamente.");
+		}
 
 		$funcionarios = Funcionarios::login($_POST["cpf"], $_POST["senha"]);
 		$_SESSION[Funcionarios::SESSION] = $funcionarios->getValues();
+
+		Funcionarios::clearError();
+		Funcionarios::clearLoginAttempts();
 		Funcionarios::registerAccess($funcionarios, 'LOGIN');
-
-		echo json_encode(["success" => true]);
-
-		if (function_exists('fastcgi_finish_request')) {
-			fastcgi_finish_request();
-		} else {
-			@ob_end_flush();
-			@ob_flush();
-			@flush();
-		}
 
 		if (function_exists('backupAutomatico')) {
 			backupAutomatico();
 		}
 
+		header("Location: /admin");
 		exit;
 	} catch (Exception $e) {
 
-		echo json_encode([
-			"success" => false,
-			"error"   => $e->getMessage()
-		]);
+		Funcionarios::addLoginAttempt();
+		$tentativas = Funcionarios::getLoginAttempts();
+		$msg = $e->getMessage();
+
+		if (
+			$tentativas < 5 &&
+			$msg !== "Muitas tentativas inválidas. Aguarde um momento antes de tentar novamente."
+		) {
+			$msg .= " Tentativa " . $tentativas . " de 5.";
+		}
+
+		Funcionarios::setError($msg);
+		header("Location: /admin/login");
 		exit;
 	}
 });
@@ -240,6 +254,151 @@ $app->get('/admin/logout', function () {
 	header("Location: /admin/login");
 	exit;
 });
+
+/*
+|--------------------------------------------------------------------------
+| FORGOT PASSWORD
+|--------------------------------------------------------------------------
+*/
+
+$app->get('/admin/forgot', function () {
+
+	$page = new PageAdmin([
+		"header" => false,
+		"footer" => false
+	]);
+
+	$page->setTpl("forgot", [
+		'error' => Funcionarios::getError(),
+		'success' => Funcionarios::getSuccess()
+	]);
+});
+
+$app->post('/admin/forgot', function () {
+
+	try {
+
+		if (!isset($_POST["cpf"]) || trim($_POST["cpf"]) === '') {
+			throw new Exception("Informe o CPF.");
+		}
+
+		$cpf = preg_replace('/\D/', '', $_POST["cpf"]);
+
+		if (!Funcionarios::validaCPF($cpf)) {
+			throw new Exception("Informe um CPF válido.");
+		}
+
+		Funcionarios::getForgot($cpf);
+
+		Funcionarios::setSuccess("Se o CPF estiver cadastrado e possuir e-mail válido, você receberá um link de recuperação.");
+		header("Location: /admin/forgot");
+		exit;
+	} catch (Exception $e) {
+		Funcionarios::setError($e->getMessage());
+		header("Location: /admin/forgot");
+		exit;
+	}
+});
+
+$app->get('/admin/forgot/reset', function () {
+
+	try {
+
+		if (!isset($_GET["code"]) || trim($_GET["code"]) === '') {
+			throw new Exception("Código inválido.");
+		}
+
+		Funcionarios::validForgotDecrypt($_GET["code"]);
+
+		$page = new PageAdmin([
+			"header" => false,
+			"footer" => false
+		]);
+
+		$page->setTpl("forgot-reset", [
+			"code" => $_GET["code"],
+			"error" => Funcionarios::getError(),
+			"success" => Funcionarios::getSuccess()
+		]);
+	} catch (Exception $e) {
+		Funcionarios::setError($e->getMessage());
+		header("Location: /admin/forgot");
+		exit;
+	}
+});
+
+$app->post('/admin/forgot/reset', function () {
+
+	try {
+
+		if (!isset($_POST["code"]) || trim($_POST["code"]) === '') {
+			throw new Exception("Código inválido.");
+		}
+
+		if (!isset($_POST["password"]) || trim($_POST["password"]) === '') {
+			throw new Exception("Informe a nova senha.");
+		}
+
+		if (!isset($_POST["password_confirm"]) || trim($_POST["password_confirm"]) === '') {
+			throw new Exception("Confirme a nova senha.");
+		}
+
+		if (strlen(trim($_POST["password"])) < 6) {
+			throw new Exception("A senha deve ter pelo menos 6 caracteres.");
+		}
+
+		if ($_POST["password"] !== $_POST["password_confirm"]) {
+			throw new Exception("As senhas não coincidem.");
+		}
+
+		$recovery = Funcionarios::validForgotDecrypt($_POST["code"]);
+
+		$funcionario = new Funcionarios();
+		$funcionario->get((int)$recovery["id_usuario"]);
+		$funcionario->setPassword($_POST["password"]);
+
+		Funcionarios::setForgotUsed((int)$recovery["id_recovery"]);
+
+		Funcionarios::audit(
+			'PASSWORD_RECOVERY_SUCCESS',
+			'AUTH',
+			(int)$recovery["id_usuario"],
+			'Senha redefinida via token de recuperação'
+		);
+
+		Funcionarios::setSuccess("Senha alterada com sucesso.");
+		header("Location: /admin/login");
+		exit;
+	} catch (Exception $e) {
+		Funcionarios::setError($e->getMessage());
+		header("Location: /admin/forgot/reset?code=" . urlencode($_POST["code"] ?? ""));
+		exit;
+	}
+});
+
+
+
+$app->get('/admin/test-email', function () {
+
+	try {
+
+		\Hcode\Mailer::quickSend(
+			"mmota350@gmail.com", // <-- coloque seu email aqui
+			"Teste",
+			"Teste SMTP Prato Cheio",
+			"<h1>🔥 Funcionando!</h1><p>Seu sistema de e-mail está OK.</p>"
+		);
+
+		echo "✅ E-mail enviado com sucesso!";
+		exit;
+	} catch (Exception $e) {
+
+		echo "❌ Erro: " . $e->getMessage();
+		exit;
+	}
+});
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -478,7 +637,6 @@ $app->get('/admin/api/notificacoes', function () {
 
 	exit;
 });
-
 
 $app->get('/admin/seguranca/permissoes', function () {
 	Funcionarios::checkPermission('ACL_PROFILES_MANAGE');
