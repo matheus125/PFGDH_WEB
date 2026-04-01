@@ -3,6 +3,9 @@
 use \Hcode\PageAdmin;
 use \Hcode\Model\Funcionarios;
 use \Hcode\DB\Sql;
+use Dompdf\Dompdf;
+
+date_default_timezone_set('America/Manaus');
 
 
 /**
@@ -106,18 +109,95 @@ function gerarRelatorioDia($sql, $dataRef)
 {
     relatorioLog("Iniciando gerarRelatorioDia | data={$dataRef}");
 
-    // Executa a procedure
     try {
-        $sql->query("CALL sp_gerar_relatorio_dia(:data_ref)", [
+        $sql->query("
+            INSERT INTO tb_relatorios (
+                Idade_3a17Masculino,
+                Idade_3a17Masculino_PCD,
+                Idade_3a17Feminino,
+                Idade_3a17Feminino_PCD,
+                Idade_18a59Masculino,
+                Idade_18a59Masculino_PCD,
+                Idade_17a59Feminino,
+                Idade_17a59Feminino_PCD,
+                Idade_60Masculino,
+                Idade_60Masculino_PCD,
+                Idade_60Feminino,
+                Idade_60Feminino_PCD,
+                Situacao_risco_masculino,
+                Situacao_risco_Feminino,
+                Deficientes,
+                senhas_genericas,
+                Total_pessoas_atendidas,
+                data
+            )
+            SELECT
+                SUM(CASE WHEN sexo='M' AND pcd=0 AND idade BETWEEN 3 AND 17 THEN 1 ELSE 0 END),
+                SUM(CASE WHEN sexo='M' AND pcd=1 AND idade BETWEEN 3 AND 17 THEN 1 ELSE 0 END),
+                SUM(CASE WHEN sexo='F' AND pcd=0 AND idade BETWEEN 3 AND 17 THEN 1 ELSE 0 END),
+                SUM(CASE WHEN sexo='F' AND pcd=1 AND idade BETWEEN 3 AND 17 THEN 1 ELSE 0 END),
+                SUM(CASE WHEN sexo='M' AND pcd=0 AND idade BETWEEN 18 AND 59 THEN 1 ELSE 0 END),
+                SUM(CASE WHEN sexo='M' AND pcd=1 AND idade BETWEEN 18 AND 59 THEN 1 ELSE 0 END),
+                SUM(CASE WHEN sexo='F' AND pcd=0 AND idade BETWEEN 18 AND 59 THEN 1 ELSE 0 END),
+                SUM(CASE WHEN sexo='F' AND pcd=1 AND idade BETWEEN 18 AND 59 THEN 1 ELSE 0 END),
+                SUM(CASE WHEN sexo='M' AND pcd=0 AND idade >= 60 THEN 1 ELSE 0 END),
+                SUM(CASE WHEN sexo='M' AND pcd=1 AND idade >= 60 THEN 1 ELSE 0 END),
+                SUM(CASE WHEN sexo='F' AND pcd=0 AND idade >= 60 THEN 1 ELSE 0 END),
+                SUM(CASE WHEN sexo='F' AND pcd=1 AND idade >= 60 THEN 1 ELSE 0 END),
+                SUM(CASE WHEN status_norm = 'PESSOA EM SITUACAO DE RUA' AND sexo='M' THEN 1 ELSE 0 END),
+                SUM(CASE WHEN status_norm = 'PESSOA EM SITUACAO DE RUA' AND sexo='F' THEN 1 ELSE 0 END),
+                SUM(CASE WHEN pcd=1 THEN 1 ELSE 0 END),
+                SUM(CASE WHEN UPPER(tipoSenha)='GENERICA' THEN 1 ELSE 0 END),
+                COUNT(*),
+                :data_ref
+            FROM (
+                SELECT
+                    CAST(NULLIF(REGEXP_SUBSTR(IFNULL(Idade,''), '[0-9]+'), '') AS UNSIGNED) AS idade,
+                    CASE
+                        WHEN UPPER(TRIM(IFNULL(Genero,''))) IN ('M','MASCULINO') THEN 'M'
+                        WHEN UPPER(TRIM(IFNULL(Genero,''))) IN ('F','FEMININO') THEN 'F'
+                        ELSE 'N'
+                    END AS sexo,
+                    CASE
+                        WHEN UPPER(TRIM(IFNULL(Deficiente,''))) IN ('SIM','S','1','TRUE','YES','PCD','DEFICIENTE') THEN 1
+                        ELSE 0
+                    END AS pcd,
+                    UPPER(TRIM(
+                        REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+                            IFNULL(status_cliente,''),
+                            'Á','A'),'À','A'),'Â','A'),'Ã','A'),'É','E'),'Ç','C')
+                    )) AS status_norm,
+                    IFNULL(tipoSenha,'') AS tipoSenha
+                FROM tb_senhas
+                WHERE data_refeicao = :data_ref
+            ) X
+            ON DUPLICATE KEY UPDATE
+                Idade_3a17Masculino      = VALUES(Idade_3a17Masculino),
+                Idade_3a17Masculino_PCD  = VALUES(Idade_3a17Masculino_PCD),
+                Idade_3a17Feminino       = VALUES(Idade_3a17Feminino),
+                Idade_3a17Feminino_PCD   = VALUES(Idade_3a17Feminino_PCD),
+                Idade_18a59Masculino     = VALUES(Idade_18a59Masculino),
+                Idade_18a59Masculino_PCD = VALUES(Idade_18a59Masculino_PCD),
+                Idade_17a59Feminino      = VALUES(Idade_17a59Feminino),
+                Idade_17a59Feminino_PCD  = VALUES(Idade_17a59Feminino_PCD),
+                Idade_60Masculino        = VALUES(Idade_60Masculino),
+                Idade_60Masculino_PCD    = VALUES(Idade_60Masculino_PCD),
+                Idade_60Feminino         = VALUES(Idade_60Feminino),
+                Idade_60Feminino_PCD     = VALUES(Idade_60Feminino_PCD),
+                Situacao_risco_masculino = VALUES(Situacao_risco_masculino),
+                Situacao_risco_Feminino  = VALUES(Situacao_risco_Feminino),
+                Deficientes              = VALUES(Deficientes),
+                senhas_genericas         = VALUES(senhas_genericas),
+                Total_pessoas_atendidas  = VALUES(Total_pessoas_atendidas)
+        ", [
             ":data_ref" => $dataRef
         ]);
-        relatorioLog("Procedure sp_gerar_relatorio_dia executada | data={$dataRef}");
+        relatorioLog("UPSERT tb_relatorios executado | data={$dataRef}");
     } catch (\Exception $e) {
-        relatorioLog("ERRO ao executar procedure sp_gerar_relatorio_dia | data={$dataRef} | msg=" . $e->getMessage());
-        throw new \Exception("Falha na procedure sp_gerar_relatorio_dia: " . $e->getMessage());
+        relatorioLog("ERRO ao atualizar tb_relatorios | data={$dataRef} | msg=" . $e->getMessage());
+        throw new \Exception("Falha ao atualizar tb_relatorios: " . $e->getMessage());
     }
 
-    // Verifica se criou/atualizou registro em tb_relatorios
     $colData = getColunaDataRelatorio($sql);
 
     try {
@@ -135,13 +215,173 @@ function gerarRelatorioDia($sql, $dataRef)
     }
 
     if ($total <= 0) {
-        $msg = "Procedure executada, mas nenhum registro encontrado em tb_relatorios para a data {$dataRef} (coluna {$colData}).";
+        $msg = "UPSERT executado, mas nenhum registro encontrado em tb_relatorios para a data {$dataRef} (coluna {$colData}).";
         relatorioLog("ERRO: " . $msg);
         throw new \Exception($msg);
     }
 
     relatorioLog("OK gerarRelatorioDia | data={$dataRef} | coluna={$colData} | total_encontrado={$total}");
     return true;
+}
+
+function obterNomeBancoAtual($sql)
+{
+    try {
+        $res = $sql->select("SELECT DATABASE() AS nome_banco");
+        if ($res && isset($res[0]['nome_banco'])) {
+            return (string)$res[0]['nome_banco'];
+        }
+    } catch (\Exception $e) {
+        relatorioLog("Falha ao obter nome do banco atual | msg=" . $e->getMessage());
+    }
+
+    return '';
+}
+
+function salvarInformacoesFechamentoRelatorio($sql, $dataRef, $qtdRefeicoesServidas, $ocorrencias, $cardapio)
+{
+    $dataRef = trim((string)$dataRef);
+    if ($dataRef === '') {
+        $dataRef = date('Y-m-d');
+    }
+
+    $qtdRefeicoesServidas = (int)$qtdRefeicoesServidas;
+    if ($qtdRefeicoesServidas < 0) {
+        $qtdRefeicoesServidas = 0;
+    }
+
+    $ocorrencias = trim((string)$ocorrencias);
+    if ($ocorrencias === '') {
+        $ocorrencias = 'NÃO HOUVE NENHUMA OCORRÊNCIA.';
+    }
+
+    $cardapio = trim((string)$cardapio);
+    $nomeBanco = obterNomeBancoAtual($sql);
+    $refeicoesOfertadas = 5;
+
+    gerarRelatorioDia($sql, $dataRef);
+
+    $colData = getColunaDataRelatorio($sql);
+
+    $resBase = $sql->select("
+        SELECT
+            Total_pessoas_atendidas
+        FROM tb_relatorios
+        WHERE DATE(`{$colData}`) = :data_ref
+        LIMIT 1
+    ", [
+        ':data_ref' => $dataRef
+    ]);
+
+    $totalPessoasAtendidas = isset($resBase[0]['Total_pessoas_atendidas']) && $resBase[0]['Total_pessoas_atendidas'] !== null
+        ? (int)$resBase[0]['Total_pessoas_atendidas']
+        : 0;
+
+    $sobraRefeicoes = $totalPessoasAtendidas - $qtdRefeicoesServidas;
+    $sobraSenhas = $qtdRefeicoesServidas - $refeicoesOfertadas;
+
+    $sql->query("
+        UPDATE tb_relatorios
+        SET
+            qtd_refeicoes_servidas = :qtd,
+            ocorrencias = :ocorrencias,
+            cardapio = :cardapio,
+            nome_banco = :nome_banco,
+            refeicoes_ofertadas = :refeicoes_ofertadas,
+            sobra_refeicoes = :sobra_refeicoes,
+            sobra_senhas = :sobra_senhas
+        WHERE DATE(`{$colData}`) = :data_ref
+    ", [
+        ':qtd' => $qtdRefeicoesServidas,
+        ':ocorrencias' => $ocorrencias,
+        ':cardapio' => $cardapio,
+        ':nome_banco' => $nomeBanco,
+        ':refeicoes_ofertadas' => $refeicoesOfertadas,
+        ':sobra_refeicoes' => $sobraRefeicoes,
+        ':sobra_senhas' => $sobraSenhas,
+        ':data_ref' => $dataRef
+    ]);
+
+    $res = $sql->select("
+        SELECT
+            qtd_refeicoes_servidas,
+            ocorrencias,
+            cardapio,
+            nome_banco,
+            refeicoes_ofertadas,
+            sobra_refeicoes,
+            sobra_senhas
+        FROM tb_relatorios
+        WHERE DATE(`{$colData}`) = :data_ref
+        LIMIT 1
+    ", [
+        ':data_ref' => $dataRef
+    ]);
+
+    return [
+        'data' => $dataRef,
+        'qtd_refeicoes_servidas' => isset($res[0]['qtd_refeicoes_servidas']) && $res[0]['qtd_refeicoes_servidas'] !== null ? (int)$res[0]['qtd_refeicoes_servidas'] : 0,
+        'ocorrencias' => isset($res[0]['ocorrencias']) ? (string)$res[0]['ocorrencias'] : $ocorrencias,
+        'cardapio' => isset($res[0]['cardapio']) ? (string)$res[0]['cardapio'] : $cardapio,
+        'nome_banco' => isset($res[0]['nome_banco']) ? (string)$res[0]['nome_banco'] : $nomeBanco,
+        'refeicoes_ofertadas' => isset($res[0]['refeicoes_ofertadas']) && $res[0]['refeicoes_ofertadas'] !== null ? (int)$res[0]['refeicoes_ofertadas'] : $refeicoesOfertadas,
+        'sobra_refeicoes' => isset($res[0]['sobra_refeicoes']) && $res[0]['sobra_refeicoes'] !== null ? (int)$res[0]['sobra_refeicoes'] : $sobraRefeicoes,
+        'sobra_senhas' => isset($res[0]['sobra_senhas']) && $res[0]['sobra_senhas'] !== null ? (int)$res[0]['sobra_senhas'] : $sobraSenhas
+    ];
+}
+
+/**
+ * Busca dados do titular para gravar corretamente em tb_senhas.
+ * Prioriza id_titular e usa CPF como fallback.
+ */
+function buscarDadosTitularParaSenha($sql, $idTitular = null, $cpf = '')
+{
+    $idTitular = $idTitular !== null ? (int)$idTitular : 0;
+    $cpf = preg_replace("/\D+/", "", (string)$cpf);
+
+    if ($idTitular > 0) {
+        $res = $sql->select("
+            SELECT
+                id,
+                nome_completo,
+                cpf,
+                genero,
+                idade,
+                status_cliente
+            FROM tb_titular
+            WHERE id = :id
+            LIMIT 1
+        ", [
+            ":id" => $idTitular
+        ]);
+
+        if ($res && isset($res[0])) {
+            return $res[0];
+        }
+    }
+
+    if ($cpf !== '') {
+        $res = $sql->select("
+            SELECT
+                id,
+                nome_completo,
+                cpf,
+                genero,
+                idade,
+                status_cliente
+            FROM tb_titular
+            WHERE REPLACE(REPLACE(REPLACE(cpf, '.', ''), '-', ''), '/', '') = :cpf
+            LIMIT 1
+        ", [
+            ":cpf" => $cpf
+        ]);
+
+        if ($res && isset($res[0])) {
+            return $res[0];
+        }
+    }
+
+    return null;
 }
 
 /**
@@ -182,6 +422,96 @@ $app->get("/admin/api/relatorios/gerar", function () use ($app) {
     } catch (\Exception $e) {
         relatorioLog("ERRO rota /admin/api/relatorios/gerar | data={$data} | msg=" . $e->getMessage());
         jsonResponse($app, 500, ["ok" => false, "error" => "Erro ao gerar relatório", "details" => $e->getMessage()]);
+    }
+});
+
+$app->get("/admin/api/relatorio/fechamento-info", function () use ($app) {
+
+    $req  = $app->request();
+    $data = trim((string)$req->get('data'));
+    if ($data === '') $data = date('Y-m-d');
+
+    $sql = new Sql();
+
+    try {
+        gerarRelatorioDia($sql, $data);
+
+        $colData = getColunaDataRelatorio($sql);
+        $res = $sql->select("
+            SELECT
+                qtd_refeicoes_servidas,
+                ocorrencias,
+                cardapio,
+                nome_banco,
+                refeicoes_ofertadas,
+                sobra_refeicoes,
+                sobra_senhas
+            FROM tb_relatorios
+            WHERE DATE(`{$colData}`) = :data_ref
+            LIMIT 1
+        ", [
+            ':data_ref' => $data
+        ]);
+
+        $dados = isset($res[0]) ? $res[0] : [];
+        $ocorrencias = isset($dados['ocorrencias']) ? trim((string)$dados['ocorrencias']) : '';
+
+        jsonResponse($app, 200, [
+            'ok' => true,
+            'dados' => [
+                'data' => $data,
+                'qtd_refeicoes_servidas' => isset($dados['qtd_refeicoes_servidas']) && $dados['qtd_refeicoes_servidas'] !== null ? (int)$dados['qtd_refeicoes_servidas'] : 0,
+                'ocorrencias' => $ocorrencias !== '' ? $ocorrencias : 'NÃO HOUVE NENHUMA OCORRÊNCIA.',
+                'cardapio' => isset($dados['cardapio']) ? (string)$dados['cardapio'] : '',
+                'nome_banco' => isset($dados['nome_banco']) ? (string)$dados['nome_banco'] : obterNomeBancoAtual($sql),
+                'refeicoes_ofertadas' => isset($dados['refeicoes_ofertadas']) && $dados['refeicoes_ofertadas'] !== null ? (int)$dados['refeicoes_ofertadas'] : 5,
+                'sobra_refeicoes' => isset($dados['sobra_refeicoes']) && $dados['sobra_refeicoes'] !== null ? (int)$dados['sobra_refeicoes'] : 0,
+                'sobra_senhas' => isset($dados['sobra_senhas']) && $dados['sobra_senhas'] !== null ? (int)$dados['sobra_senhas'] : 0
+            ]
+        ]);
+    } catch (\Exception $e) {
+        relatorioLog("ERRO rota /admin/api/relatorio/fechamento-info [GET] | data={$data} | msg=" . $e->getMessage());
+        jsonResponse($app, 500, [
+            'ok' => false,
+            'error' => 'Erro ao carregar informações do fechamento.',
+            'message' => $e->getMessage()
+        ]);
+    }
+});
+
+$app->post("/admin/api/relatorio/fechamento-info", function () use ($app) {
+
+    $sql = new Sql();
+
+    try {
+        $raw = $app->request()->getBody();
+        $input = json_decode($raw, true);
+
+        if (!is_array($input)) {
+            throw new \Exception('JSON inválido.');
+        }
+
+        $data = isset($input['data']) ? trim((string)$input['data']) : date('Y-m-d');
+        if ($data === '') $data = date('Y-m-d');
+
+        $qtdRefeicoesServidas = isset($input['qtd_refeicoes_servidas']) ? (int)$input['qtd_refeicoes_servidas'] : 0;
+        $ocorrencias = isset($input['ocorrencias']) ? (string)$input['ocorrencias'] : '';
+        $cardapio = isset($input['cardapio']) ? (string)$input['cardapio'] : '';
+
+        $dados = salvarInformacoesFechamentoRelatorio($sql, $data, $qtdRefeicoesServidas, $ocorrencias, $cardapio);
+
+        jsonResponse($app, 200, [
+            'ok' => true,
+            'message' => 'Informações do fechamento salvas com sucesso.',
+            'dados' => $dados
+        ]);
+    } catch (\Exception $e) {
+        relatorioLog("ERRO rota /admin/api/relatorio/fechamento-info [POST] | msg=" . $e->getMessage());
+        jsonResponse($app, 500, [
+            'ok' => false,
+            'error' => 'Erro ao salvar informações do fechamento.',
+            'message' => $e->getMessage()
+        ]);
     }
 });
 
@@ -236,7 +566,9 @@ $app->get("/admin/api/relatorio/senhas/resumo", function () use ($app) {
                 ELSE NULL
             END) AS total_titular,
             SUM(CASE WHEN id_dependente IS NOT NULL THEN 1 ELSE 0 END) AS total_dependente,
-            SUM(CASE WHEN UPPER(TRIM(Deficiente)) IN ('SIM','S','1','TRUE','YES') THEN 1 ELSE 0 END) AS total_deficiente
+            SUM(CASE WHEN UPPER(TRIM(Deficiente)) IN ('SIM','S','1','TRUE','YES','PCD','DEFICIENTE') THEN 1 ELSE 0 END) AS total_deficiente,
+            SUM(CASE WHEN UPPER(TRIM(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(IFNULL(status_cliente,''),'Á','A'),'À','A'),'Â','A'),'Ã','A'),'É','E'),'Ç','C'))) = 'PESSOA EM SITUACAO DE RUA' AND UPPER(TRIM(Genero)) = 'M' THEN 1 ELSE 0 END) AS total_rua_masculino,
+            SUM(CASE WHEN UPPER(TRIM(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(IFNULL(status_cliente,''),'Á','A'),'À','A'),'Â','A'),'Ã','A'),'É','E'),'Ç','C'))) = 'PESSOA EM SITUACAO DE RUA' AND UPPER(TRIM(Genero)) = 'F' THEN 1 ELSE 0 END) AS total_rua_feminino
         FROM tb_senhas
         WHERE data_refeicao = :data
         {$whereTipo}
@@ -248,7 +580,9 @@ $app->get("/admin/api/relatorio/senhas/resumo", function () use ($app) {
         "total_generica" => 0,
         "total_titular" => 0,
         "total_dependente" => 0,
-        "total_deficiente" => 0
+        "total_deficiente" => 0,
+        "total_rua_masculino" => 0,
+        "total_rua_feminino" => 0
     ];
 
     $app->response()->header("Content-Type", "application/json; charset=utf-8");
@@ -263,6 +597,8 @@ $app->get("/admin/api/relatorio/senhas/resumo", function () use ($app) {
             "titulares" => (int)$row["total_titular"],
             "dependentes" => (int)$row["total_dependente"],
             "deficientes" => (int)$row["total_deficiente"],
+            "situacao_risco_masculino" => (int)$row["total_rua_masculino"],
+            "situacao_risco_feminino" => (int)$row["total_rua_feminino"],
         ]
     ]);
     exit;
@@ -912,6 +1248,33 @@ $app->post("/admin/api/senhas", function () use ($app) {
             $idTitular    = isset($item["id_titular"]) && $item["id_titular"] !== "" ? (int)$item["id_titular"] : null;
             $idDependente = isset($item["id_dependente"]) && $item["id_dependente"] !== "" ? (int)$item["id_dependente"] : null;
 
+            $statusClienteBanco = $status_cliente;
+
+            if (strtoupper($tipoSenha) !== "GENERICA") {
+                $dadosTitularBanco = buscarDadosTitularParaSenha($sql, $idTitular, $cpf);
+
+                if ($dadosTitularBanco) {
+                    if ($cpf === '' && !empty($dadosTitularBanco['cpf'])) {
+                        $cpf = preg_replace("/\D+/", "", (string)$dadosTitularBanco['cpf']);
+                    }
+
+                    if (($idade === '' || $idade === null) && isset($dadosTitularBanco['idade'])) {
+                        $idade = $dadosTitularBanco['idade'];
+                    }
+
+                    if (($genero === '' || $genero === null) && isset($dadosTitularBanco['genero'])) {
+                        $genero = $dadosTitularBanco['genero'];
+                    }
+
+                    if (isset($dadosTitularBanco['status_cliente']) && trim((string)$dadosTitularBanco['status_cliente']) !== '') {
+                        $statusClienteBanco = trim((string)$dadosTitularBanco['status_cliente']);
+                    }
+                }
+            }
+
+            if ($statusClienteBanco === '' || $statusClienteBanco === null) {
+                $statusClienteBanco = 'ATIVO';
+            }
 
             $sql->query("
                 INSERT INTO tb_senhas
@@ -925,7 +1288,7 @@ $app->post("/admin/api/senhas", function () use ($app) {
                 ":genero"         => $genero,
                 ":deficiente"     => $deficiente,
                 ":tipoSenha"      => $tipoSenha,
-                ":status_cliente" => $status_cliente,
+                ":status_cliente" => $statusClienteBanco,
                 ":data_refeicao" => $data_refeicao,
                 ":id_titular" => $idTitular,
                 ":id_dependente" => $idDependente
@@ -974,3 +1337,6 @@ $app->post("/admin/api/senhas", function () use ($app) {
         exit;
     }
 });
+
+
+

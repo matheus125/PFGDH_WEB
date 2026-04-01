@@ -22,7 +22,9 @@ class PerfilMiddleware extends Middleware
             '/admin/forgot/reset',
             '/admin/test-email',
             '/forgot',
-            '/forgot/reset'
+            '/forgot/reset',
+            '/admin/api/relatorio/pdf',
+            '/admin/teste-pdf'
 
         ];
 

@@ -11,20 +11,30 @@
 
   <style>
     :root {
-      --bg-dark: #0f172a;
+      --bg-dark: #0b1220;
       --bg-dark-2: #111827;
-      --panel-dark: rgba(17, 24, 39, 0.92);
-      --brand: #ff6b35;
-      --brand-dark: #e85a2a;
-      --brand-light: #ff8a5c;
+      --panel-dark: rgba(15, 23, 42, 0.82);
+
+      --brand: #3b82f6;
+      --brand-dark: #2563eb;
+      --brand-light: #93c5fd;
+      --brand-soft: #dbeafe;
+      --brand-soft-2: #eff6ff;
+
       --text-white: #f8fafc;
       --text-soft: #cbd5e1;
       --text-muted: #94a3b8;
-      --input-bg: rgba(255, 255, 255, 0.04);
+      --text-dark: #0f172a;
+
+      --input-bg: rgba(255, 255, 255, 0.05);
       --input-border: rgba(255, 255, 255, 0.10);
-      --shadow-main: 0 30px 80px rgba(0, 0, 0, 0.45);
-      --shadow-brand: 0 18px 38px rgba(255, 107, 53, 0.28);
-      --radius-xl: 30px;
+
+      --shadow-main: 0 30px 80px rgba(2, 6, 23, 0.50);
+      --shadow-brand: 0 18px 38px rgba(59, 130, 246, 0.20);
+
+      --radius-xl: 32px;
+      --radius-lg: 22px;
+      --radius-md: 18px;
       --transition: all 0.25s ease;
     }
 
@@ -32,19 +42,26 @@
       box-sizing: border-box;
     }
 
-    html, body {
+    html,
+    body {
       margin: 0;
       padding: 0;
       min-height: 100%;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
     }
 
     body {
       min-height: 100vh;
       background:
-        radial-gradient(circle at top left, rgba(255, 107, 53, 0.16), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.10), transparent 30%),
-        linear-gradient(135deg, rgba(2, 6, 23, 0.92), rgba(15, 23, 42, 0.96)),
+        radial-gradient(circle at 12% 18%, rgba(59, 130, 246, 0.14), transparent 22%),
+        radial-gradient(circle at 88% 82%, rgba(147, 197, 253, 0.10), transparent 24%),
+        linear-gradient(135deg, rgba(2, 6, 23, 0.97), rgba(15, 23, 42, 0.98)),
         url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1800&q=80');
       background-size: cover;
       background-position: center;
@@ -55,33 +72,54 @@
       padding: 28px;
       color: var(--text-white);
       overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(2, 6, 23, 0.20), rgba(2, 6, 23, 0.45));
+      pointer-events: none;
     }
 
     .page-shell {
       width: 100%;
       max-width: 1180px;
       animation: fadeUp 0.8s ease;
+      position: relative;
+      z-index: 2;
     }
 
     .login-wrapper {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.08fr 0.92fr;
       width: 100%;
       border-radius: var(--radius-xl);
       overflow: hidden;
       background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       box-shadow: var(--shadow-main);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       position: relative;
+    }
+
+    .login-wrapper::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 
     .login-brand {
       position: relative;
-      padding: 54px 46px;
+      padding: 56px 48px;
       background:
-        linear-gradient(160deg, rgba(255, 107, 53, 0.96), rgba(232, 90, 42, 0.86)),
-        linear-gradient(45deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
+        linear-gradient(160deg, rgba(219, 234, 254, 0.96), rgba(239, 246, 255, 0.88)),
+        linear-gradient(45deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -93,25 +131,25 @@
     .login-brand::after {
       content: "";
       position: absolute;
-      border-radius: 50%;
+      border-radius: 999px;
       pointer-events: none;
     }
 
     .login-brand::before {
-      width: 340px;
-      height: 340px;
-      right: -110px;
-      top: -110px;
-      background: rgba(255, 255, 255, 0.08);
+      width: 360px;
+      height: 360px;
+      right: -120px;
+      top: -120px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.16), rgba(255, 255, 255, 0));
       filter: blur(8px);
     }
 
     .login-brand::after {
-      width: 220px;
-      height: 220px;
-      left: -60px;
-      bottom: -60px;
-      background: rgba(255, 255, 255, 0.08);
+      width: 240px;
+      height: 240px;
+      left: -80px;
+      bottom: -80px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0));
       filter: blur(8px);
     }
 
@@ -122,40 +160,43 @@
     }
 
     .logo-brand {
-      margin-bottom: 22px;
+      margin-bottom: 24px;
       animation: floating 3s ease-in-out infinite;
     }
 
     .logo-brand img {
-      width: 190px;
-      max-width: 100%;
-      height: auto;
-      display: block;
-      background: rgba(255, 255, 255, 0.12);
-      padding: 10px;
-      border-radius: 20px;
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.18);
+      width: 168px;
+      object-fit: contain;
+      background: rgba(255, 255, 255, 0.52);
+      padding: 12px;
+      border-radius: 22px;
+      box-shadow: 0 14px 28px rgba(15, 23, 42, 0.10);
     }
 
     .brand-badge {
       display: inline-flex;
       align-items: center;
       gap: 10px;
+      width: fit-content;
       padding: 11px 18px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.16);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      font-size: 14px;
-      font-weight: bold;
+      background: rgba(255, 255, 255, 0.68);
+      border: 1px solid rgba(255, 255, 255, 0.48);
+      color: #1e293b;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
       margin-bottom: 24px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
     }
 
     .brand-title {
-      margin: 0 0 16px;
+      margin: 0 0 14px;
       font-size: 50px;
-      line-height: 1.02;
-      font-weight: bold;
-      letter-spacing: -1px;
+      line-height: 0.98;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      color: var(--text-dark);
     }
 
     .brand-text {
@@ -163,7 +204,7 @@
       max-width: 500px;
       font-size: 16px;
       line-height: 1.8;
-      color: rgba(255, 255, 255, 0.95);
+      color: #334155;
     }
 
     .brand-stats {
@@ -174,34 +215,37 @@
     }
 
     .brand-stat {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.56);
+      border: 1px solid rgba(255, 255, 255, 0.46);
+      border-radius: 20px;
       padding: 18px 16px;
       text-align: left;
       transition: var(--transition);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
     }
 
     .brand-stat:hover {
       transform: translateY(-3px);
-      background: rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.72);
     }
 
     .brand-stat strong {
       display: block;
-      font-size: 24px;
+      font-size: 22px;
       margin-bottom: 6px;
+      color: var(--text-dark);
+      font-weight: 800;
     }
 
     .brand-stat span {
       font-size: 13px;
-      color: rgba(255, 255, 255, 0.92);
+      color: #334155;
       line-height: 1.5;
     }
 
     .login-panel {
       background: var(--panel-dark);
-      padding: 54px 42px;
+      padding: 56px 44px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -226,7 +270,7 @@
     .logo-icon {
       width: 64px;
       height: 64px;
-      border-radius: 18px;
+      border-radius: 20px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -244,8 +288,9 @@
 
     .logo-text {
       font-size: 30px;
-      font-weight: bold;
-      line-height: 1.1;
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.8px;
       color: var(--text-white);
     }
 
@@ -253,7 +298,7 @@
       margin: 0 0 28px;
       color: var(--text-soft);
       font-size: 15px;
-      line-height: 1.7;
+      line-height: 1.75;
     }
 
     .login-alert {
@@ -321,8 +366,9 @@
       display: block;
       margin-bottom: 8px;
       color: #e2e8f0;
-      font-size: 14px;
-      font-weight: bold;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
     }
 
     .input-group-custom {
@@ -351,6 +397,8 @@
       outline: none;
       transition: var(--transition);
       color: var(--text-white);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
 
     .form-control-custom::placeholder {
@@ -358,9 +406,9 @@
     }
 
     .form-control-custom:focus {
-      border-color: rgba(255, 107, 53, 0.9);
-      box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.15);
-      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(59, 130, 246, 0.85);
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+      background: rgba(255, 255, 255, 0.07);
     }
 
     .input-group-custom:focus-within .input-icon {
@@ -422,8 +470,8 @@
 
     .toggle-password:hover,
     .toggle-password:focus {
+      background: rgba(59, 130, 246, 0.10);
       color: var(--brand-light);
-      background: rgba(255, 107, 53, 0.10);
       outline: none;
     }
 
@@ -487,8 +535,9 @@
       border-radius: 18px;
       background: linear-gradient(135deg, var(--brand), var(--brand-dark));
       color: #fff;
-      font-size: 18px;
-      font-weight: bold;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
       box-shadow: var(--shadow-brand);
       cursor: pointer;
       transition: var(--transition);
@@ -504,14 +553,14 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+      background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.20), transparent);
       transform: translateX(-100%);
       transition: transform 0.7s ease;
     }
 
     .btn-login:hover {
       transform: translateY(-2px);
-      box-shadow: 0 22px 36px rgba(255, 107, 53, 0.34);
+      box-shadow: 0 22px 36px rgba(59, 130, 246, 0.28);
     }
 
     .btn-login:hover::before {
@@ -526,7 +575,7 @@
 
     .btn-login.enter-pressed {
       transform: scale(0.985);
-      box-shadow: 0 12px 22px rgba(255, 107, 53, 0.24);
+      box-shadow: 0 12px 22px rgba(59, 130, 246, 0.18);
     }
 
     .btn-text,
@@ -539,8 +588,8 @@
     .btn-loader {
       display: none;
       gap: 10px;
-      font-size: 16px;
-      font-weight: 600;
+      font-size: 15px;
+      font-weight: 700;
     }
 
     .btn-login.loading .btn-text {
@@ -567,14 +616,14 @@
 
     .login-links a {
       color: var(--brand-light);
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       text-decoration: none;
       transition: var(--transition);
     }
 
     .login-links a:hover {
-      color: #fff;
+      color: #ffffff;
       text-decoration: underline;
     }
 
@@ -671,46 +720,99 @@
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes slideInLeft {
-      from { opacity: 0; transform: translateX(-30px); }
-      to { opacity: 1; transform: translateX(0); }
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     @keyframes slideInRight {
-      from { opacity: 0; transform: translateX(30px); }
-      to { opacity: 1; transform: translateX(0); }
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     @keyframes floating {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-4px);
+      }
     }
 
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     @keyframes alertFade {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes fieldShake {
-      0%, 100% { transform: translateX(0); }
-      20% { transform: translateX(-5px); }
-      40% { transform: translateX(5px); }
-      60% { transform: translateX(-4px); }
-      80% { transform: translateX(4px); }
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      20% {
+        transform: translateX(-5px);
+      }
+
+      40% {
+        transform: translateX(5px);
+      }
+
+      60% {
+        transform: translateX(-4px);
+      }
+
+      80% {
+        transform: translateX(4px);
+      }
     }
 
     @media (max-width: 1080px) {
       .login-wrapper {
         grid-template-columns: 1fr;
-        max-width: 580px;
+        max-width: 600px;
       }
 
       .brand-stats {
@@ -781,7 +883,7 @@
       <section class="login-brand">
         <div class="brand-top">
           <div class="logo-brand">
-            <img src="/app/views/assets/img/logo-prato-cheio.png" alt="Logo Prato Cheio">
+            <img src="/res/admin/assets/img/logo-prato-cheio.png" alt="Logo">
           </div>
 
           <div class="brand-badge">
@@ -792,7 +894,8 @@
           <h1 class="brand-title">PRATO CHEIO</h1>
 
           <p class="brand-text">
-            Centralize seu atendimento, gestão e operação em uma experiência profissional, elegante e rápida para o dia a dia do seu restaurante.
+            Centralize seu atendimento, gestão e operação em uma experiência profissional, elegante e rápida para o dia
+            a dia do seu restaurante.
           </p>
         </div>
 
@@ -819,7 +922,7 @@
 
           <a href="/admin/login" class="logo-link">
             <span class="logo-icon">
-              <img src="/app/views/assets/img/logo-prato-cheio.png" alt="Logo">
+              <img src="/res/admin/assets/img/logo-prato-cheio.png" alt="Logo">
             </span>
             <span class="logo-text">Prato Cheio</span>
           </a>
@@ -869,16 +972,8 @@
               <label for="cpf_cliente" class="form-label-title">CPF</label>
               <div class="input-group-custom" id="cpfGroup">
                 <i class="fas fa-id-card input-icon"></i>
-                <input
-                  type="text"
-                  class="form-control-custom"
-                  id="cpf_cliente"
-                  name="cpf"
-                  placeholder="Digite seu CPF"
-                  maxlength="14"
-                  oninput="formatCPF(this); validateCPFField(this)"
-                  autocomplete="username"
-                  required>
+                <input type="text" class="form-control-custom" id="cpf_cliente" name="cpf" placeholder="Digite seu CPF"
+                  maxlength="14" oninput="formatCPF(this); validateCPFField(this)" autocomplete="username" required>
               </div>
 
               <div class="cpf-feedback" id="cpfFeedback">
@@ -891,14 +986,8 @@
               <label for="senha" class="form-label-title">Senha</label>
               <div class="input-group-custom" id="passwordGroup">
                 <i class="fas fa-lock input-icon"></i>
-                <input
-                  type="password"
-                  class="form-control-custom"
-                  id="senha"
-                  name="senha"
-                  placeholder="Digite sua senha"
-                  autocomplete="current-password"
-                  required>
+                <input type="password" class="form-control-custom" id="senha" name="senha"
+                  placeholder="Digite sua senha" autocomplete="current-password" required>
                 <button type="button" class="toggle-password" id="togglePassword" aria-label="Mostrar ou ocultar senha">
                   <i class="fas fa-eye"></i>
                 </button>
@@ -1126,4 +1215,5 @@
   </script>
 
 </body>
+
 </html>

@@ -24,6 +24,7 @@ require_once APP_DIR . '/routes/admin-funcionarios.php';
 require_once APP_DIR . '/routes/admin-dependentes.php';
 require_once APP_DIR . '/routes/admin-clientes.php';
 require_once APP_DIR . '/routes/admin-vendas.php';
+require_once APP_DIR . '/routes/admin-relatorio.php';
 
 require_once APP_DIR . '/core/jwt.php';
 

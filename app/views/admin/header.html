@@ -16,6 +16,31 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="stylesheet" href="/res/admin/dist/css/adminlte.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css" />
+
+  <style>
+    /* GARANTE QUE O TOPO FIQUE SEMPRE ACIMA */
+    .main-header {
+      position: sticky;
+      top: 0;
+      z-index: 9999 !important;
+    }
+
+    /* DROPDOWN DO USUÁRIO / LOGOUT */
+    .navbar-nav .dropdown-menu {
+      z-index: 10000 !important;
+    }
+
+    /* CORREÇÃO GLOBAL DE BACKDROP TRAVADO */
+    .modal-backdrop {
+      z-index: 1040 !important;
+    }
+
+    /* GARANTE QUE MODAL NÃO FIQUE ACIMA DO HEADER */
+    .modal {
+      z-index: 1050 !important;
+    }
+  </style>
+  
 </head>
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -48,11 +73,12 @@
               </span>
             </a>
 
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-notificacoes shadow-sm">
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-notificacoes shadow-sm"
+              id="dropdownNotificacoes">
               <div class="dropdown-header-notificacao">
                 <div>
                   <strong>Notificações</strong>
-                  <div class="small text-muted">
+                  <div class="small text-muted" id="contadorNotificacoesTexto">
                     {$total} item(ns)
                   </div>
                 </div>
@@ -66,12 +92,12 @@
               <div class="dropdown-divider"></div>
 
               {if="$total == 0"}
-              <div class="dropdown-item text-center text-muted py-3">
+              <div class="dropdown-item text-center text-muted py-3" id="estadoVazioNotificacoes">
                 <i class="bi bi-bell-slash d-block fs-4 mb-2"></i>
                 Nenhuma notificação.
               </div>
               {else}
-              <div class="lista-notificacoes">
+              <div class="lista-notificacoes" id="listaNotificacoes">
                 {loop="$notificacoes"}
                 <a href="#" class="dropdown-item item-notificacao">
                   <div class="d-flex align-items-start">
@@ -251,294 +277,489 @@
       </div>
     </aside>
 
-   <style>
-  body {
-    background: #f4f6f9;
-    font-family: "Source Sans 3", sans-serif;
-  }
+    <style>
+      :root {
+        --bg-page: #f5f7fb;
+        --bg-surface: #ffffff;
+        --bg-surface-soft: #f8fafc;
+        --border-soft: #e2e8f0;
+        --border-mid: #d9e1e7;
 
-  /* HEADER */
-  .painel-header {
-    border-bottom: 1px solid #dcdcdc;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-    background: #fff;
-  }
+        --text-dark: #020617;
+        --text-main: #0f172a;
+        --text-soft: #334155;
+        --text-muted: #64748b;
 
-  .btn-menu,
-  .nav-home-link,
-  .nav-icone-topo,
-  .user-topo {
-    color: #2c3e50 !important;
-  }
+        --primary: #2563eb;
+        --primary-soft: #dbeafe;
+        --primary-soft-2: #eff6ff;
+        --primary-hover: #1f6fb2;
 
-  .btn-menu:hover,
-  .nav-home-link:hover,
-  .nav-icone-topo:hover,
-  .user-topo:hover {
-    color: #2e86c1 !important;
-  }
+        --success: #22c55e;
+        --warning: #f59e0b;
+        --danger: #ef4444;
 
-  /* BADGE NOTIFICAÇÃO */
-  .navbar-badge {
-    font-size: 11px;
-    padding: 4px 6px;
-    border-radius: 50px;
-  }
+        --shadow-xs: 0 1px 4px rgba(0, 0, 0, 0.04);
+        --shadow-sm: 0 4px 16px rgba(15, 23, 42, 0.05);
+        --shadow-md: 0 10px 28px rgba(15, 23, 42, 0.06);
+        --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.12);
 
-  /* DROPDOWN NOTIFICAÇÕES */
-  .dropdown-notificacoes {
-    width: 360px;
-    border: 0;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-  }
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-lg: 12px;
+        --radius-xl: 16px;
 
-  .dropdown-header-notificacao {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 16px 10px 16px;
-    background: #f8f9fa;
-  }
+        --transition: all 0.22s ease;
+      }
 
-  .btn-limpar-notificacoes {
-    border-radius: 6px;
-    font-size: 12px;
-  }
+      * {
+        box-sizing: border-box;
+      }
 
-  .lista-notificacoes {
-    max-height: 320px;
-    overflow-y: auto;
-  }
+      html,
+      body {
+        font-family: "Source Sans 3", sans-serif;
+        background: var(--bg-page) !important;
+        background-image: none !important;
+        color: var(--text-main) !important;
+        min-height: 100vh;
+      }
 
-  .item-notificacao {
-    padding: 12px 14px;
-    transition: background 0.2s ease;
-  }
+      body.layout-fixed .app-wrapper,
+      .app-main,
+      .app-content,
+      .app-content-header,
+      .content-wrapper,
+      .wrapper {
+        background: var(--bg-page) !important;
+      }
 
-  .item-notificacao:hover {
-    background: #f4f8fb;
-  }
+      /* =========================
+     HEADER
+  ========================= */
+      .painel-header {
+        background: rgba(255, 255, 255, 0.95) !important;
+        border-bottom: 1px solid var(--border-soft) !important;
+        box-shadow: var(--shadow-sm) !important;
+      }
 
-  .icone-notificacao {
-    width: 34px;
-    min-width: 34px;
-    text-align: center;
-    margin-right: 10px;
-    font-size: 18px;
-  }
+      .btn-menu,
+      .nav-home-link,
+      .nav-icone-topo,
+      .user-topo,
+      .user-topo span {
+        color: var(--text-main) !important;
+        font-weight: 700 !important;
+      }
 
-  .texto-notificacao {
-    color: #2c3e50;
-    font-size: 14px;
-    line-height: 1.3;
-  }
+      .btn-menu,
+      .nav-icone-topo {
+        width: 42px;
+        height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-lg);
+        transition: var(--transition);
+      }
 
-  .dropdown-footer {
-    text-align: center;
-    font-weight: 600;
-    color: #2e86c1;
-    background: #fafafa;
-  }
+      .btn-menu:hover,
+      .nav-icone-topo:hover {
+        background: #f1f5f9 !important;
+        color: var(--primary) !important;
+      }
 
-  .perfil-header {
-    background: linear-gradient(135deg, #2e86c1, #3c8dbc) !important;
-  }
+      .nav-home-link {
+        font-weight: 700;
+        border-radius: var(--radius-lg);
+        padding: 9px 14px !important;
+        transition: var(--transition);
+      }
 
-  /* SIDEBAR */
-  .sidebar-custom {
-    background: linear-gradient(180deg, #f8fafc 0%, #f2f5f8 100%) !important;
-    border-right: 1px solid #d9e1e7;
-  }
+      .nav-home-link:hover {
+        background: #eef6ff !important;
+        color: var(--primary) !important;
+      }
 
-  .brand-custom {
-    background: #ffffff;
-    border-bottom: 1px solid #e6ebf0;
-    padding-top: 12px;
-    padding-bottom: 12px;
-  }
+      .navbar-badge {
+        font-size: 11px;
+        padding: 4px 6px;
+        border-radius: 50px;
+        box-shadow: 0 6px 14px rgba(245, 158, 11, 0.25);
+      }
 
-  .brand-custom .brand-text {
-    color: #243746;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 0.2px;
-  }
+      /* =========================
+     DROPDOWNS / NOTIFICAÇÕES
+  ========================= */
+      .dropdown-notificacoes,
+      .user-menu .dropdown-menu {
+        width: 360px;
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-xl);
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        background: var(--bg-surface);
+      }
 
-  .titulo-menu {
-    font-size: 12px;
-    font-weight: 800;
-    color: #7c8b98 !important;
-    letter-spacing: 0.9px;
-    margin: 18px 14px 8px 14px;
-    text-transform: uppercase;
-  }
+      .dropdown-header-notificacao {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 16px 10px 16px;
+        background: var(--bg-surface-soft);
+        border-bottom: 1px solid var(--border-soft);
+      }
 
-  /* LINKS DO MENU */
-  .sidebar-menu .nav-item {
-    margin-bottom: 2px;
-  }
+      .dropdown-header-notificacao strong,
+      .dropdown-footer,
+      .texto-notificacao {
+        color: var(--text-main) !important;
+        font-weight: 700 !important;
+      }
 
-  .sidebar-menu .nav-link {
-    position: relative;
-    display: flex;
-    align-items: center;
-    border-radius: 12px;
-    margin: 4px 12px;
-    padding: 11px 14px;
-    color: #42515d !important;
-    font-weight: 600;
-    transition: all 0.22s ease;
-    background: transparent;
-  }
+      .dropdown-header-notificacao .small,
+      .texto-notificacao+small {
+        color: var(--text-soft) !important;
+        font-weight: 600 !important;
+      }
 
-  .sidebar-menu .nav-link:hover {
-    background: #eaf3fb;
-    color: #1f6fb2 !important;
-    transform: translateX(2px);
-  }
+      .btn-limpar-notificacoes {
+        border-radius: var(--radius-sm);
+        font-size: 12px;
+      }
 
-  .sidebar-menu .nav-link:hover .nav-icon,
-  .sidebar-menu .nav-link:hover p,
-  .sidebar-menu .nav-link:hover .nav-arrow {
-    color: #1f6fb2 !important;
-  }
+      .lista-notificacoes {
+        max-height: 320px;
+        overflow-y: auto;
+      }
 
-  /* ITEM ATIVO PRINCIPAL */
-  .sidebar-menu .nav-link.active {
-    background: linear-gradient(90deg, #dff0ff 0%, #edf7ff 100%) !important;
-    color: #156fbf !important;
-    font-weight: 800;
-    box-shadow: inset 4px 0 0 #1f6fb2, 0 2px 8px rgba(31, 111, 178, 0.08);
-  }
+      .item-notificacao {
+        padding: 12px 14px;
+        transition: background 0.2s ease;
+      }
 
-  .sidebar-menu .nav-link.active .nav-icon,
-  .sidebar-menu .nav-link.active p,
-  .sidebar-menu .nav-link.active .nav-arrow {
-    color: #156fbf !important;
-  }
+      .item-notificacao:hover {
+        background: #f4f8fb;
+      }
 
-  /* ITEM PAI ABERTO */
-  .sidebar-menu .menu-open > .nav-link {
-    background: #eef3f7;
-    color: #2f4554 !important;
-    font-weight: 700;
-  }
+      .icone-notificacao {
+        width: 34px;
+        min-width: 34px;
+        text-align: center;
+        margin-right: 10px;
+        font-size: 18px;
+      }
 
-  .sidebar-menu .menu-open > .nav-link .nav-icon,
-  .sidebar-menu .menu-open > .nav-link .nav-arrow,
-  .sidebar-menu .menu-open > .nav-link p {
-    color: #2f4554 !important;
-  }
+      .texto-notificacao {
+        font-size: 14px;
+        line-height: 1.3;
+      }
 
-  /* ÍCONES */
-  .sidebar-menu .nav-icon {
-    margin-right: 10px;
-    font-size: 18px;
-    color: #7d8a97 !important;
-    min-width: 22px;
-    text-align: center;
-    transition: all 0.2s ease;
-  }
+      .dropdown-footer {
+        text-align: center;
+        background: #fafafa;
+      }
 
-  /* TEXTO */
-  .sidebar-menu .nav-link p {
-    margin: 0;
-    color: inherit !important;
-    font-size: 16px;
-    line-height: 1.2;
-  }
+      /* =========================
+     USER MENU
+  ========================= */
+      .perfil-header {
+        background: linear-gradient(135deg, #2e86c1, #3c8dbc) !important;
+      }
 
-  /* SETA */
-  .sidebar-menu .nav-arrow {
-    margin-left: auto;
-    color: #7d8a97 !important;
-    transition: transform 0.2s ease;
-  }
+      .user-footer {
+        padding: 12px 14px;
+      }
 
-  .sidebar-menu .menu-open > .nav-link .nav-arrow {
-    transform: rotate(90deg);
-  }
+      .user-footer .btn {
+        border-radius: var(--radius-sm);
+      }
 
-  /* SUBMENU */
-  .sidebar-menu .nav-treeview {
-    position: relative;
-    margin: 4px 0 10px 0;
-    padding-left: 8px;
-  }
+      /* =========================
+     SIDEBAR
+  ========================= */
+      .sidebar-custom {
+        background: linear-gradient(180deg, #f8fafc 0%, #f2f5f8 100%) !important;
+        border-right: 1px solid var(--border-mid);
+      }
 
-  /* linha vertical do submenu */
-  .sidebar-menu .nav-treeview::before {
-    content: "";
-    position: absolute;
-    top: 2px;
-    bottom: 8px;
-    left: 26px;
-    width: 2px;
-    background: #d9e6f2;
-    border-radius: 2px;
-  }
+      .brand-custom {
+        background: var(--bg-surface);
+        border-bottom: 1px solid #e6ebf0;
+        padding-top: 12px;
+        padding-bottom: 12px;
+      }
 
-  .sidebar-menu .nav-treeview .nav-item {
-    position: relative;
-  }
+      .brand-custom .brand-text {
+        color: #243746;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
 
-  /* linha horizontal ligando submenu */
-  .sidebar-menu .nav-treeview .nav-item::before {
-    content: "";
-    position: absolute;
-    top: 19px;
-    left: 26px;
-    width: 16px;
-    height: 2px;
-    background: #d9e6f2;
-    border-radius: 2px;
-  }
+      .titulo-menu {
+        font-size: 12px;
+        font-weight: 800;
+        color: #7c8b98 !important;
+        letter-spacing: 0.9px;
+        margin: 18px 14px 8px 14px;
+        text-transform: uppercase;
+      }
 
-  .sidebar-menu .nav-treeview .nav-link {
-    margin-left: 36px;
-    padding: 9px 14px;
-    background: transparent;
-    border-radius: 10px;
-    font-size: 15px;
-  }
+      /* =========================
+     MENU LATERAL
+  ========================= */
+      .sidebar-menu .nav-item {
+        margin-bottom: 2px;
+      }
 
-  .sidebar-menu .nav-treeview .nav-link .nav-icon {
-    font-size: 16px;
-    color: #90a0ad !important;
-  }
+      .sidebar-menu .nav-link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        border-radius: var(--radius-lg);
+        margin: 4px 12px;
+        padding: 11px 14px;
+        color: #42515d !important;
+        font-weight: 700 !important;
+        transition: var(--transition);
+        background: transparent;
+      }
 
-  .sidebar-menu .nav-treeview .nav-link:hover {
-    background: #eef6fd;
-  }
+      .sidebar-menu .nav-link:hover {
+        background: #eaf3fb;
+        color: var(--primary-hover) !important;
+        transform: translateX(2px);
+      }
 
-  .sidebar-menu .nav-treeview .nav-link.active {
-    background: #e8f3ff !important;
-    color: #156fbf !important;
-    box-shadow: inset 3px 0 0 #1f6fb2;
-  }
+      .sidebar-menu .nav-link:hover .nav-icon,
+      .sidebar-menu .nav-link:hover p,
+      .sidebar-menu .nav-link:hover .nav-arrow {
+        color: var(--primary-hover) !important;
+      }
 
-  .sidebar-menu .nav-treeview .nav-link.active .nav-icon,
-  .sidebar-menu .nav-treeview .nav-link.active p {
-    color: #156fbf !important;
-  }
+      .sidebar-menu .nav-link.active {
+        background: linear-gradient(90deg, #dff0ff 0%, #edf7ff 100%) !important;
+        color: #156fbf !important;
+        font-weight: 800 !important;
+        box-shadow: inset 4px 0 0 #1f6fb2, 0 2px 8px rgba(31, 111, 178, 0.08);
+      }
 
-  /* USER FOOTER */
-  .user-footer {
-    padding: 12px 14px;
-  }
+      .sidebar-menu .nav-link.active .nav-icon,
+      .sidebar-menu .nav-link.active p,
+      .sidebar-menu .nav-link.active .nav-arrow {
+        color: #156fbf !important;
+      }
 
-  .user-footer .btn {
-    border-radius: 6px;
-  }
+      .sidebar-menu .menu-open>.nav-link {
+        background: #eef3f7;
+        color: #2f4554 !important;
+        font-weight: 700;
+      }
 
-  @media (max-width: 767px) {
-    .dropdown-notificacoes {
-      width: 300px;
-    }
-  }
-</style>
+      .sidebar-menu .menu-open>.nav-link .nav-icon,
+      .sidebar-menu .menu-open>.nav-link .nav-arrow,
+      .sidebar-menu .menu-open>.nav-link p {
+        color: #2f4554 !important;
+      }
+
+      .sidebar-menu .nav-icon {
+        margin-right: 10px;
+        font-size: 18px;
+        color: #7d8a97 !important;
+        min-width: 22px;
+        text-align: center;
+        transition: var(--transition);
+      }
+
+      .sidebar-menu .nav-link p {
+        margin: 0;
+        color: inherit !important;
+        font-size: 16px;
+        line-height: 1.2;
+        font-weight: 700 !important;
+      }
+
+      .sidebar-menu .nav-arrow {
+        margin-left: auto;
+        color: #7d8a97 !important;
+        transition: transform 0.2s ease;
+      }
+
+      .sidebar-menu .menu-open>.nav-link .nav-arrow {
+        transform: rotate(90deg);
+      }
+
+      /* =========================
+     SUBMENU
+  ========================= */
+      .sidebar-menu .nav-treeview {
+        position: relative;
+        margin: 4px 0 10px 0;
+        padding-left: 8px;
+      }
+
+      .sidebar-menu .nav-treeview::before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        bottom: 8px;
+        left: 26px;
+        width: 2px;
+        background: #d9e6f2;
+        border-radius: 2px;
+      }
+
+      .sidebar-menu .nav-treeview .nav-item {
+        position: relative;
+      }
+
+      .sidebar-menu .nav-treeview .nav-item::before {
+        content: "";
+        position: absolute;
+        top: 19px;
+        left: 26px;
+        width: 16px;
+        height: 2px;
+        background: #d9e6f2;
+        border-radius: 2px;
+      }
+
+      .sidebar-menu .nav-treeview .nav-link {
+        margin-left: 36px;
+        padding: 9px 14px;
+        background: transparent;
+        border-radius: var(--radius-md);
+        font-size: 15px;
+      }
+
+      .sidebar-menu .nav-treeview .nav-link .nav-icon {
+        font-size: 16px;
+        color: #90a0ad !important;
+      }
+
+      .sidebar-menu .nav-treeview .nav-link:hover {
+        background: #eef6fd;
+      }
+
+      .sidebar-menu .nav-treeview .nav-link.active {
+        background: #e8f3ff !important;
+        color: #156fbf !important;
+        box-shadow: inset 3px 0 0 #1f6fb2;
+      }
+
+      .sidebar-menu .nav-treeview .nav-link.active .nav-icon,
+      .sidebar-menu .nav-treeview .nav-link.active p {
+        color: #156fbf !important;
+      }
+
+      /* =========================
+     TIPOGRAFIA / LEGIBILIDADE
+  ========================= */
+      body,
+      .app-main,
+      .app-content,
+      .app-content-header,
+      .content-wrapper {
+        color: var(--text-main) !important;
+      }
+
+      .page-title,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      .card-title {
+        color: var(--text-dark) !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.2px;
+      }
+
+      .page-subtitle,
+      .page-eyebrow,
+      .card-subtitle,
+      .card-text,
+      p,
+      .small,
+      .text-muted {
+        color: var(--text-soft) !important;
+        font-weight: 500 !important;
+      }
+
+      /* =========================
+     CARDS / PAINÉIS
+  ========================= */
+      .card,
+      .chart-card,
+      .backup-card,
+      .saas-panel {
+        background: var(--bg-surface) !important;
+        border: 1px solid var(--border-soft) !important;
+        box-shadow: var(--shadow-md) !important;
+      }
+
+      .saas-stat-card .stat-topline,
+      .saas-stat-card .stat-label,
+      .saas-stat-card .stat-meta {
+        color: var(--text-soft) !important;
+        font-weight: 700 !important;
+      }
+
+      .saas-stat-card .stat-number {
+        color: var(--text-dark) !important;
+        font-weight: 900 !important;
+      }
+
+      /* =========================
+     TABELAS
+  ========================= */
+      .table,
+      table {
+        color: var(--text-main) !important;
+      }
+
+      .table thead th,
+      table thead th {
+        color: var(--text-soft) !important;
+        font-weight: 800 !important;
+        background: var(--bg-surface-soft) !important;
+      }
+
+      .table tbody td,
+      table tbody td {
+        color: var(--text-main) !important;
+        font-weight: 600 !important;
+      }
+
+      .table tbody tr:hover,
+      table tbody tr:hover {
+        background: var(--bg-surface-soft) !important;
+      }
+
+      /* =========================
+     GRÁFICOS
+  ========================= */
+      .apexcharts-text,
+      .apexcharts-datalabel-label,
+      .apexcharts-datalabel-value,
+      .apexcharts-legend-text {
+        fill: var(--text-main) !important;
+        color: var(--text-main) !important;
+        font-weight: 700 !important;
+      }
+
+      /* =========================
+     RESPONSIVO
+  ========================= */
+      @media (max-width: 767px) {
+
+        .dropdown-notificacoes,
+        .user-menu .dropdown-menu {
+          width: 300px;
+        }
+      }
+    </style>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -546,7 +767,10 @@
         const btn = document.getElementById("btn-limpar-notificacoes");
         if (!btn) return;
 
-        btn.addEventListener("click", function () {
+        btn.addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+
           Swal.fire({
             title: "Limpar notificações?",
             text: "Todas as notificações serão removidas.",
@@ -560,44 +784,102 @@
 
             fetch("/admin/notificacoes/limpar", {
               method: "POST",
-              headers: { "X-Requested-With": "XMLHttpRequest" }
+              headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "Accept": "application/json"
+              }
             })
-              .then(r => r.json())
-              .then(function (data) {
-                if (data.success) {
-                  Swal.fire({
-                    toast: true,
-                    position: "top-end",
-                    icon: "success",
-                    title: "Notificações limpas com sucesso",
-                    showConfirmButton: false,
-                    timer: 1800,
-                    timerProgressBar: true
-                  });
+              .then(async function (r) {
+                const texto = await r.text();
 
-                  setTimeout(function () {
-                    window.location.reload();
-                  }, 1000);
-                } else {
-                  throw new Error();
+                try {
+                  return JSON.parse(texto);
+                } catch (e) {
+                  throw new Error("A rota /admin/notificacoes/limpar não retornou JSON.");
                 }
               })
-              .catch(function () {
+              .then(function (data) {
+                if (!data.success) {
+                  throw new Error(data.message || "Falha ao limpar notificações.");
+                }
+
+                const badge = document.getElementById("badge-notificacoes");
+                const lista = document.querySelector(".lista-notificacoes");
+                const dropdown = document.getElementById("dropdownNotificacoes");
+                const contadorTexto = dropdown ? dropdown.querySelector(".dropdown-header-notificacao .small") : null;
+
+                if (badge) {
+                  badge.textContent = "0";
+                  badge.style.display = "none";
+                }
+
+                if (contadorTexto) {
+                  contadorTexto.textContent = "0 item(ns)";
+                }
+
+                if (lista) {
+                  lista.remove();
+                }
+
+                const vazioExistente = dropdown ? dropdown.querySelector(".estado-vazio-notificacoes") : null;
+
+                if (dropdown && !vazioExistente) {
+                  const footer = dropdown.querySelector(".dropdown-footer");
+                  const empty = document.createElement("div");
+                  empty.className = "dropdown-item text-center text-muted py-3 estado-vazio-notificacoes";
+                  empty.innerHTML = '<i class="bi bi-bell-slash d-block fs-4 mb-2"></i>Nenhuma notificação.';
+
+                  if (footer) {
+                    footer.insertAdjacentElement("beforebegin", empty);
+                  } else {
+                    dropdown.appendChild(empty);
+                  }
+                }
+
+                dropdown.querySelectorAll(".dropdown-divider").forEach(function (divisor) {
+                  const prev = divisor.previousElementSibling;
+                  const next = divisor.nextElementSibling;
+
+                  if (
+                    !prev ||
+                    !next ||
+                    prev.classList.contains("dropdown-header-notificacao") ||
+                    prev.classList.contains("estado-vazio-notificacoes") ||
+                    next.classList.contains("dropdown-footer")
+                  ) {
+                    divisor.remove();
+                  }
+                });
+
+                Swal.fire({
+                  toast: true,
+                  position: "top-end",
+                  icon: "success",
+                  title: "Notificações limpas com sucesso",
+                  showConfirmButton: false,
+                  timer: 1800,
+                  timerProgressBar: true
+                });
+              })
+              .catch(function (err) {
+                console.error(err);
                 Swal.fire({
                   icon: "error",
                   title: "Erro",
-                  text: "Não foi possível limpar as notificações."
+                  text: err.message || "Não foi possível limpar as notificações."
                 });
               });
           });
         });
       });
 
-      let totalAnterior = 0;
+      let totalAnterior = Number("{$total}") || 0;
       let notificacoesInterval = null;
 
       function atualizarNotificacoes() {
-        fetch("/admin/api/notificacoes")
+        fetch("/admin/api/notificacoes", {
+          headers: { "Accept": "application/json" }
+        })
           .then(async res => {
             const texto = await res.text();
 
@@ -616,10 +898,16 @@
           .then(data => {
             const total = Number(data.total ?? 0);
             const badge = document.getElementById("badge-notificacoes");
+            const dropdown = document.getElementById("dropdownNotificacoes");
+            const contadorTexto = dropdown ? dropdown.querySelector(".dropdown-header-notificacao .small") : null;
 
             if (badge) {
               badge.innerText = total;
               badge.style.display = total > 0 ? "inline-block" : "none";
+            }
+
+            if (contadorTexto) {
+              contadorTexto.textContent = `${total} item(ns)`;
             }
 
             if (total > totalAnterior) {

@@ -605,7 +605,7 @@
             <section class="forgot-brand">
                 <div class="brand-top">
                     <div class="logo-brand">
-                        <img src="/app/views/assets/img/logo-prato-cheio.png" alt="Logo Prato Cheio">
+                        <img src="/res/admin/assets/img/logo-prato-cheio.png" alt="Logo">
                     </div>
 
                     <div class="brand-badge">
@@ -643,7 +643,7 @@
 
                     <a href="/admin/login" class="logo-link">
                         <span class="logo-icon">
-                            <img src="/app/views/assets/img/logo-prato-cheio.png" alt="Logo">
+                            <img src="/res/admin/assets/img/logo-prato-cheio.png" alt="Logo">
                         </span>
                         <span class="logo-text">Prato Cheio</span>
                     </a>

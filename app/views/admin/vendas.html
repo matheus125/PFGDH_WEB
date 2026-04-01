@@ -209,9 +209,13 @@
                         <div class="col-md-3">
                             <button id="btnGerarSenha" class="btn btn-soft w-100 mb-1" onclick="abrirModal()">Gerar
                                 Senha</button>
-                            <button id="btnSenhaGenerica" class="btn btn-outline-soft w-100" type="button"
+                            <button id="btnSenhaGenerica" class="btn btn-outline-soft w-100 mb-1" type="button"
                                 onclick="gerarSenhaGenerica()">Senha Genérica</button>
-                            <div id="statusSenhas" class="small text-muted mt-2"></div>
+                            <div id="statusSenhas" class="small text-muted mt-2"></div> <button id="btnInfoFechamento"
+                                class="btn btn-light w-100 mt-2" type="button" onclick="abrirModalFechamentoLocal()"
+                                style="display:none;">
+                                Informar Refeições / Ocorrências
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -261,12 +265,14 @@
                     <!-- DEPENDENTES -->
                     <div class="col-md-6">
                         <div class="box">
-                            <div class="p-2 border-bottom small d-flex align-items-center justify-content-between" style="gap:10px;">
+                            <div class="p-2 border-bottom small d-flex align-items-center justify-content-between"
+                                style="gap:10px;">
                                 <label class="m-0" style="display:flex;align-items:center;gap:8px;">
                                     <input type="checkbox" id="chk-incluir-titular" class="form-check-input" checked>
                                     <span>Incluir titular na impressão</span>
                                 </label>
-                                <span id="msgTitularJaComprou" class="text-danger" style="font-weight:600;display:none;"></span>
+                                <span id="msgTitularJaComprou" class="text-danger"
+                                    style="font-weight:600;display:none;"></span>
                             </div>
                             <table class="table table-sm mb-0">
                                 <thead>
@@ -314,6 +320,47 @@
                     </div>
                 </div>
 
+                <!-- MODAL FECHAMENTO LOCAL -->
+                <div class="modal fade" id="modalFechamentoLocal" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Fechamento do limite diário</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="qtdRefeicoesServidas" class="form-label">Quantidade de Refeições
+                                        Servidas</label>
+                                    <input type="number" min="0" id="qtdRefeicoesServidas" class="form-control"
+                                        placeholder="Digite a quantidade">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="cardapioFechamento" class="form-label">Cardápio</label>
+                                    <textarea id="cardapioFechamento" class="form-control" rows="3"
+                                        placeholder="Descreva o cardápio do dia..."></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="ocorrenciasFechamento" class="form-label">Ocorrências</label>
+                                    <textarea id="ocorrenciasFechamento" class="form-control" rows="4"
+                                        placeholder="Descreva as ocorrências..."></textarea>
+                                </div>
+
+                                <div class="small text-muted">
+                                    Essas informações serão salvas no banco de dados e exibidas no relatório.
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
+                                <button type="button" class="btn btn-primary" onclick="salvarFechamentoLocal()">Salvar
+                                    informações</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div><!-- row -->
         </div><!-- container -->
     </div><!-- app-content -->
@@ -349,7 +396,9 @@
         titulares: "/admin/api/titulares",
         dependentes: (id) => `/admin/titulares/${id}/dependentes`,
         senhas: "/admin/api/senhas",
-        senhasContagem: "/admin/api/senhas/contagem"
+        senhasContagem: "/admin/api/senhas/contagem",
+        fechamentoInfo: "/admin/api/relatorio/fechamento-info",
+        fecharRelatorio: "/admin/api/relatorio/fechar"
     };
 
 
@@ -359,9 +408,29 @@
     // Verifica no banco se o titular (CPF) já comprou no dia (retorna Promise<{ok,ja_comprou}>)
     function verificarTitularJaComprouHojeBanco(cpfLimpo) {
         var url = "/admin/api/senhas/ja-comprou?data=" + encodeURIComponent(getHojeKey()) + "&cpf=" + encodeURIComponent(cpfLimpo);
+
         return fetch(url, { headers: { "Accept": "application/json" } })
-            .then(function(resp){ return resp.json(); })
-            .catch(function(){
+            .then(function (resp) {
+                return resp.text().then(function (txt) {
+                    let json = null;
+
+                    try {
+                        json = JSON.parse(txt);
+                    } catch (e) {
+                        json = null;
+                    }
+
+                    if (!resp.ok || !json) {
+                        return { ok: false, ja_comprou: false };
+                    }
+
+                    return {
+                        ok: json.ok === true,
+                        ja_comprou: Boolean(json.ja_comprou === true || json.jaComprou === true)
+                    };
+                });
+            })
+            .catch(function () {
                 return { ok: false, ja_comprou: false };
             });
     }
@@ -622,6 +691,17 @@
         titularSelecionado =
             titulares.find(x => Number(x.id) === Number(id)) || null;
 
+        const msgTit = document.getElementById("msgTitularJaComprou");
+        if (msgTit) {
+            msgTit.style.display = "none";
+            msgTit.textContent = "";
+        }
+
+        const chkTitular = document.getElementById("chk-incluir-titular");
+        if (chkTitular) {
+            chkTitular.checked = true;
+        }
+
         document.querySelectorAll("#tbody-titulares tr")
             .forEach(tr => tr.classList.remove("active"));
 
@@ -647,8 +727,8 @@
 
             document.getElementById("tbody-dependentes").innerHTML =
                 `<tr><td colspan="5" class="text-center text-danger">
-                    Erro ao carregar dependentes
-                 </td></tr>`;
+                Erro ao carregar dependentes
+             </td></tr>`;
         }
     }
 
@@ -660,6 +740,20 @@
         valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
         valor = valor.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
         return valor;
+    }
+
+    function mascararCPFPrivado(cpf) {
+        const digits = String(cpf || "").replace(/\D/g, "");
+
+        if (!digits) return "—";
+
+        // mantém o padrão final: ***.***.789-00
+        if (digits.length === 11) {
+            return "***.***." + digits.substring(6, 9) + "-" + digits.substring(9, 11);
+        }
+
+        // fallback para casos fora do padrão
+        return "***.***.***-**";
     }
 
     function debounce(fn, wait) {
@@ -773,6 +867,164 @@
     }
 
     var LIMITE_SENHAS_DIA = 5;
+    const TEXTO_OCORRENCIA_PADRAO = "NÃO HOUVE NENHUMA OCORRÊNCIA.";
+    let modalFechamentoJaExibido = false;
+
+    async function abrirModalFechamentoLocal() {
+        await carregarFechamentoBanco();
+
+        const el = document.getElementById("modalFechamentoLocal");
+        if (!el) return;
+
+        new bootstrap.Modal(el).show();
+    }
+
+    let salvandoFechamento = false;
+
+    async function salvarFechamentoLocal() {
+        if (salvandoFechamento) return;
+
+        const campoQtd = document.getElementById("qtdRefeicoesServidas");
+        const campoCardapio = document.getElementById("cardapioFechamento");
+        const campoOcorrencias = document.getElementById("ocorrenciasFechamento");
+
+        let qtd = campoQtd?.value || "0";
+        let cardapio = campoCardapio?.value || "";
+        let ocorrencias = campoOcorrencias?.value || "";
+
+        qtd = parseInt(qtd, 10);
+        if (isNaN(qtd) || qtd < 0) qtd = 0;
+
+        cardapio = cardapio.trim();
+        ocorrencias = ocorrencias.trim();
+
+        if (!ocorrencias) {
+            ocorrencias = TEXTO_OCORRENCIA_PADRAO;
+        }
+
+        salvandoFechamento = true;
+
+        const btnSalvar = document.querySelector('#modalFechamentoLocal .btn.btn-primary');
+        if (btnSalvar) {
+            btnSalvar.disabled = true;
+            btnSalvar.textContent = "Salvando...";
+        }
+
+        try {
+            const resp = await fetch(API.fechamentoInfo, {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    data: getHojeKey(),
+                    qtd_refeicoes_servidas: qtd,
+                    cardapio: cardapio,
+                    ocorrencias: ocorrencias
+                })
+            });
+
+            const text = await resp.text();
+            let json = null;
+            try { json = JSON.parse(text); } catch (e) { }
+
+            if (!resp.ok || !json || json.ok !== true) {
+                const msg = (json && (json.error || json.message))
+                    ? (json.error || json.message)
+                    : `Falha ao salvar fechamento (HTTP ${resp.status}).`;
+                throw new Error(msg);
+            }
+
+            const respFechar = await fetch(API.fecharRelatorio, {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json"
+                }
+            });
+
+            const textFechar = await respFechar.text();
+            let jsonFechar = null;
+            try { jsonFechar = JSON.parse(textFechar); } catch (e) { }
+
+            if (!respFechar.ok || !jsonFechar || jsonFechar.ok !== true) {
+                throw new Error("As informações foram salvas, mas não foi possível fechar o dia automaticamente.");
+            }
+
+            alert("Informações salvas e dia fechado com sucesso.");
+
+            const el = document.getElementById("modalFechamentoLocal");
+            const modal = bootstrap.Modal.getInstance(el);
+            if (modal) modal.hide();
+
+            const btnGerar = document.getElementById("btnGerarSenha");
+            const btnGenerica = document.getElementById("btnSenhaGenerica");
+            const btnInfo = document.getElementById("btnInfoFechamento");
+
+            if (btnGerar) btnGerar.disabled = true;
+            if (btnGenerica) btnGenerica.disabled = true;
+            if (btnInfo) btnInfo.style.display = "none";
+
+            const status = document.getElementById("statusSenhas");
+            if (status) {
+                status.textContent = "Fechamento realizado. O dia está encerrado.";
+            }
+
+        } catch (e) {
+            console.error(e);
+            alert(e?.message || "Não foi possível salvar as informações do fechamento.");
+        } finally {
+            salvandoFechamento = false;
+
+            if (btnSalvar) {
+                btnSalvar.disabled = false;
+                btnSalvar.textContent = "Salvar informações";
+            }
+        }
+    }
+
+    async function carregarFechamentoBanco() {
+        const campoQtd = document.getElementById("qtdRefeicoesServidas");
+        const campoCardapio = document.getElementById("cardapioFechamento");
+        const campoOcorrencias = document.getElementById("ocorrenciasFechamento");
+
+        if (campoQtd) campoQtd.value = "";
+        if (campoCardapio) campoCardapio.value = "";
+        if (campoOcorrencias) campoOcorrencias.value = TEXTO_OCORRENCIA_PADRAO;
+
+        try {
+            const resp = await fetch(API.fechamentoInfo + "?data=" + encodeURIComponent(getHojeKey()), {
+                headers: { "Accept": "application/json" }
+            });
+
+            const text = await resp.text();
+            let json = null;
+            try { json = JSON.parse(text); } catch (e) { }
+
+            if (!resp.ok || !json || json.ok !== true) {
+                const msg = (json && (json.error || json.message)) ? (json.error || json.message) : `Falha ao carregar fechamento (HTTP ${resp.status}).`;
+                throw new Error(msg);
+            }
+
+            const dados = json.dados || {};
+
+            if (campoQtd) {
+                campoQtd.value = (dados.qtd_refeicoes_servidas !== null && dados.qtd_refeicoes_servidas !== undefined)
+                    ? dados.qtd_refeicoes_servidas
+                    : "";
+            }
+
+            if (campoCardapio) {
+                campoCardapio.value = (dados.cardapio || "").trim();
+            }
+
+            if (campoOcorrencias) {
+                campoOcorrencias.value = (dados.ocorrencias || "").trim() || TEXTO_OCORRENCIA_PADRAO;
+            }
+        } catch (e) {
+            console.warn("Não foi possível carregar fechamento do banco.", e);
+        }
+    }
 
     /** Data do dia (YYYY-MM-DD) */
     function getHojeKey() {
@@ -806,6 +1058,7 @@
         const btnGerar = document.getElementById("btnGerarSenha");
         const btnGen = document.getElementById("btnSenhaGenerica");
         const status = document.getElementById("statusSenhas");
+        const btnInfoFechamento = document.getElementById("btnInfoFechamento");
 
         try {
             const total = await getTotalVendidasHojeBanco();
@@ -813,6 +1066,7 @@
 
             if (btnGerar) btnGerar.disabled = bloqueado;
             if (btnGen) btnGen.disabled = bloqueado;
+            if (btnInfoFechamento) btnInfoFechamento.style.display = bloqueado ? "block" : "none";
 
             if (status) {
                 status.textContent = bloqueado
@@ -820,12 +1074,23 @@
                     : `Senhas vendidas hoje: ${total}/${LIMITE_SENHAS_DIA}.`;
             }
 
+            if (!bloqueado) {
+                modalFechamentoJaExibido = false;
+            }
+
+            if (bloqueado && !modalFechamentoJaExibido) {
+                modalFechamentoJaExibido = true;
+                setTimeout(function () {
+                    abrirModalFechamentoLocal();
+                }, 200);
+            }
+
             return { bloqueado, total };
 
         } catch (e) {
-            // Se não conseguir consultar o banco, NÃO trava a listagem (só bloqueia os botões por segurança)
             if (btnGerar) btnGerar.disabled = true;
             if (btnGen) btnGen.disabled = true;
+            if (btnInfoFechamento) btnInfoFechamento.style.display = "none";
 
             if (status) status.textContent = `Erro ao consultar contagem no banco. Verifique a rota de contagem.`;
 
@@ -860,8 +1125,6 @@
     }
 
     async function imprimirSenhaGenerica(senha) {
-        // Senha genérica: imprime SEM dados de titular/dependentes, mas com o MESMO layout do ticket normal.
-        // Conta como 1 refeição (1 senha vendida) no dia.
         const qtdRefeicoes = 1;
 
         // === CONTROLE DIÁRIO (BANCO) ===
@@ -884,14 +1147,21 @@
             return;
         }
 
-        // Salva no banco ANTES de imprimir
+        // salva no banco ANTES de imprimir
         try {
-            const respSave = await salvarSenhasNoBanco({
+            await salvarSenhasNoBanco({
                 tipoSenha: "GENERICA",
-                status_cliente: "LIBERADO",
-                data_refeicao: getHojeKey(), // YYYY-MM-DD
+                data_refeicao: getHojeKey(),
                 itens: [
-                    { cliente: "SENHA GENÉRICA", cpf: "", idade: "", genero: "", deficiente: "", id_titular: null, id_dependente: null }
+                    {
+                        cliente: "SENHA GENÉRICA",
+                        cpf: "",
+                        idade: "",
+                        genero: "",
+                        deficiente: "",
+                        id_titular: null,
+                        id_dependente: null
+                    }
                 ]
             });
         } catch (e) {
@@ -923,10 +1193,12 @@
 <title>Ticket</title>
 
 <style>
-@page {
-    size: ${papel}mm 200mm;
-    margin: ${margem}mm;
-}
+@page { size: ${papel}mm 200mm; margin: ${margem}mm; }
+html, body { margin:0; padding:0; font-family: Arial, Helvetica, sans-serif; }
+.ticket { width:${largura}mm; margin:0 auto; text-align:center; }
+.brasao { width:18mm; margin-bottom:6px; }
+.senha { font-size:46px; font-weight:900; }
+.feed { height:${feed}mm; }
 </style>
 </head>
 
@@ -968,20 +1240,43 @@ ${TICKET_TEXT.rodapeLinha1}<br>
 </body>
 </html>`;
 
-        const win = window.open("", "PRINT", "height=650,width=400,top=100,left=100");
+        // fecha o modal de senha, se estiver aberto
+        const modalEl = document.getElementById("modalSenha");
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) modal.hide();
+
+        const win = window.open("", "_blank", "width=420,height=640");
+
         if (!win) {
             alert("Popup bloqueado. Permita popups para imprimir.");
             return;
         }
 
+        win.document.open();
         win.document.write(html);
         win.document.close();
-        win.focus();
 
-        setTimeout(() => {
-            win.print();
-            win.close();
-        }, 250);
+        win.onload = function () {
+            setTimeout(function () {
+                win.focus();
+
+                try {
+                    win.onafterprint = function () {
+                        try { win.close(); } catch (e) { }
+                    };
+                } catch (e) { }
+
+                try {
+                    win.print();
+                } catch (e) { }
+
+                // fallback
+                setTimeout(function () {
+                    try { win.close(); } catch (e) { }
+                }, 800);
+
+            }, 250);
+        };
     }
 
 
@@ -999,33 +1294,28 @@ ${TICKET_TEXT.rodapeLinha1}<br>
 
         const senha = document.getElementById("senhaGerada").value;
 
-        
-
-        // CPF do titular (somente dígitos) para validações e registro
         var cpfLimpo = String((titularSelecionado && titularSelecionado.cpf) ? titularSelecionado.cpf : "").replace(/\D/g, "");
-// Dependentes marcados para impressão
+
         const depsSelecionados = dependentesAtuais.filter((d, idx) => {
             const key = String((d.id !== undefined && d.id !== null) ? d.id : idx);
             return dependentesSelecionados.has(key);
         });
 
-        // ✅ Regra:
-        // - Pode incluir o TITULAR (checkbox).
-        // - Pode vender só dependentes.
-        // - Se o titular já comprou hoje, o sistema NÃO bloqueia os dependentes:
-        //   ele apenas avisa e desmarca o titular para esta impressão.
-        // cpfLimpo já calculado acima
         var chkIncluirTitular = document.getElementById("chk-incluir-titular");
         var incluirTitular = chkIncluirTitular ? chkIncluirTitular.checked : true;
 
-        // Mensagem na UI
         const msgTit = document.getElementById("msgTitularJaComprou");
-        if (msgTit) { msgTit.style.display = "none"; msgTit.textContent = ""; }
+        if (msgTit) {
+            msgTit.style.display = "none";
+            msgTit.textContent = "";
+        }
 
         let titularJaComprou = false;
+
         if (incluirTitular && cpfLimpo) {
             try {
-                titularJaComprou = await verificarTitularJaComprouHojeBanco(cpfLimpo);
+                const resultadoCompra = await verificarTitularJaComprouHojeBanco(cpfLimpo);
+                titularJaComprou = Boolean(resultadoCompra && resultadoCompra.ja_comprou === true);
             } catch (e) {
                 alert("Não foi possível verificar se o titular já comprou hoje.\n" + (e?.message || e));
                 return;
@@ -1033,6 +1323,7 @@ ${TICKET_TEXT.rodapeLinha1}<br>
 
             if (titularJaComprou) {
                 incluirTitular = false;
+
                 const chk = document.getElementById("chk-incluir-titular");
                 if (chk) chk.checked = false;
 
@@ -1057,12 +1348,9 @@ ${TICKET_TEXT.rodapeLinha1}<br>
         const margem = TICKET_CONFIG.margemMM;
         const feed = TICKET_CONFIG.feedFinalMM;
 
-        // Nome principal no ticket: sempre o titular (referência)
         const nomeImpresso = (titularSelecionado.nome || "").toUpperCase();
+        const cpfImpresso = mascararCPFPrivado(titularSelecionado.cpf || "");
 
-        const cpfImpresso = (titularSelecionado.cpf || "");
-
-        // Aviso quando o titular não foi incluído (já comprou ou usuário desmarcou)
         const linhaTitular =
             (!incluirTitular)
                 ? `<div style="margin-top:6px; font-size:12px; color:#b91c1c;"><b>AVISO</b><br>TITULAR NÃO INCLUÍDO (já possui senha hoje)</div>`
@@ -1071,9 +1359,9 @@ ${TICKET_TEXT.rodapeLinha1}<br>
         const depsHtml =
             depsSelecionados.length
                 ? `<div style="margin-top:8px; font-size:12px; text-align:left;">
-                        <b>DEPENDENTES SELECIONADOS</b><br>
-                        ${depsSelecionados.map(d => `• ${(d.nome || "").toUpperCase()}`).join("<br>")}
-                   </div>`
+                <b>DEPENDENTES SELECIONADOS</b><br>
+                ${depsSelecionados.map(d => `• ${(d.nome || "").toUpperCase()}`).join("<br>")}
+           </div>`
                 : "";
 
         const avisoTitularHtml =
@@ -1081,16 +1369,12 @@ ${TICKET_TEXT.rodapeLinha1}<br>
                 ? `<div style="margin-top:6px; font-size:12px; color:#b91c1c;"><b>OBS:</b> Titular já comprou hoje. Senhas liberadas apenas para dependentes.</div>`
                 : "";
 
-
-        // Quantidade de refeições liberadas:
-        // - inclui titular? soma 1
-        // - dependentes selecionados: soma N
         const qtdRefeicoes = (incluirTitular ? 1 : 0) + depsSelecionados.length;
 
         const refeicoesTexto =
             `${qtdRefeicoes} refeição${qtdRefeicoes > 1 ? "es" : ""} liberada${qtdRefeicoes > 1 ? "s" : ""}`;
 
-        // === CONTROLE DIÁRIO (BANCO) + SALVAR NO BANCO (com validação de duplicados no backend) ===
+        // valida limite e salva no banco antes de imprimir
         {
             let totalHoje = 0;
             try {
@@ -1113,12 +1397,8 @@ ${TICKET_TEXT.rodapeLinha1}<br>
                 return;
             }
 
-            // Monta itens para salvar:
-            // - se NÃO selecionou dependentes: 1 item do titular
-            // - se selecionou dependentes: N itens (um por dependente)
-const itens = [];
+            const itens = [];
 
-            // Monta itens para salvar (na ordem: TITULAR -> DEPENDENTES)
             if (incluirTitular) {
                 itens.push({
                     cliente: (titularSelecionado.nome || "").toUpperCase(),
@@ -1134,7 +1414,7 @@ const itens = [];
             depsSelecionados.forEach(d => {
                 itens.push({
                     cliente: (d.nome || "").toUpperCase(),
-                    cpf: cpfLimpo, // mantém CPF do titular como referência
+                    cpf: cpfLimpo,
                     idade: (d.idade || ""),
                     genero: (d.genero || ""),
                     deficiente: "",
@@ -1143,11 +1423,9 @@ const itens = [];
                 });
             });
 
-            // Salva no banco ANTES de imprimir (backend vai bloquear se alguém já comprou hoje)
             try {
                 await salvarSenhasNoBanco({
                     tipoSenha: "NORMAL",
-                    status_cliente: "LIBERADO",
                     data_refeicao: getHojeKey(),
                     itens
                 });
@@ -1196,6 +1474,8 @@ ${linhaTitular}
 
 ${depsHtml}
 
+${avisoTitularHtml}
+
 <hr>
 
 <div>${TICKET_TEXT.labelSuaSenha}</div>
@@ -1218,25 +1498,46 @@ ${TICKET_TEXT.rodapeLinha1}<br>
 </body>
 </html>`;
 
-        const win = window.open("", "PRINT", "height=650,width=400,top=100,left=100");
+        // fecha o modal antes de imprimir
+        const modalEl = document.getElementById("modalSenha");
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) modal.hide();
+
+        const win = window.open("", "_blank", "width=420,height=640");
+
         if (!win) {
             alert("Popup bloqueado. Permita popups para imprimir.");
             return;
         }
 
+        win.document.open();
         win.document.write(html);
         win.document.close();
-        win.focus();
 
-        setTimeout(() => {
-            win.print();
-            win.close();
-            // após imprimir, limpa a seleção
-            limparSelecaoDependentes();
-        }, 250);
+        win.onload = function () {
+            setTimeout(function () {
+                win.focus();
+
+                try {
+                    win.onafterprint = function () {
+                        try { win.close(); } catch (e) { }
+                        limparSelecaoDependentes();
+                    };
+                } catch (e) { }
+
+                try {
+                    win.print();
+                } catch (e) { }
+
+                // fallback caso o navegador não dispare onafterprint
+                setTimeout(function () {
+                    try { win.close(); } catch (e) { }
+                    limparSelecaoDependentes();
+                }, 800);
+
+            }, 250);
+        };
     }
-
-
     // Limpa seleção de dependentes após imprimir
 
 
@@ -1307,20 +1608,55 @@ ${TICKET_TEXT.rodapeLinha1}<br>
     }
 
 
+
     /* ===== ACESSIBILIDADE (FOCO DO MODAL) ===== */
     (function () {
         const modalSenhaEl = document.getElementById('modalSenha');
-        if (!modalSenhaEl || typeof bootstrap === 'undefined') return;
+        if (modalSenhaEl && typeof bootstrap !== 'undefined') {
+            modalSenhaEl.addEventListener('hide.bs.modal', function () {
+                document.activeElement?.blur();
+            });
 
-        // Antes de ocultar, remove o foco de qualquer elemento dentro do modal
-        modalSenhaEl.addEventListener('hide.bs.modal', function () {
-            document.activeElement?.blur();
-        });
+            modalSenhaEl.addEventListener('hidden.bs.modal', function () {
+                document.body.focus();
+            });
+        }
 
-        // Após ocultar, devolve o foco para o body
-        modalSenhaEl.addEventListener('hidden.bs.modal', function () {
-            document.body.focus();
-        });
+        const modalFechamentoEl = document.getElementById('modalFechamentoLocal');
+        if (modalFechamentoEl && typeof bootstrap !== 'undefined') {
+            modalFechamentoEl.addEventListener('show.bs.modal', function () {
+                carregarFechamentoBanco();
+            });
+
+            modalFechamentoEl.addEventListener('hide.bs.modal', function () {
+                document.activeElement?.blur();
+            });
+
+            modalFechamentoEl.addEventListener('hidden.bs.modal', function () {
+                document.body.focus();
+            });
+        }
     })();
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        document.addEventListener("hidden.bs.modal", function () {
+            setTimeout(function () {
+                document.querySelectorAll(".modal-backdrop").forEach(el => el.remove());
+                document.body.classList.remove("modal-open");
+                document.body.style.paddingRight = "";
+            }, 100);
+        });
+
+        document.addEventListener("click", function () {
+            const backdrops = document.querySelectorAll(".modal-backdrop");
+            if (backdrops.length > 1) {
+                backdrops.forEach(el => el.remove());
+            }
+        });
+
+    });
+
 
 </script>

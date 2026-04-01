@@ -18,6 +18,8 @@ $app->get('/', function () {
 	exit;
 });
 
+
+
 /*
 |--------------------------------------------------------------------------
 | DASHBOARD ADMIN (/admin)
@@ -204,7 +206,8 @@ $app->post('/admin/login', function () {
 			throw new Exception("Muitas tentativas inválidas. Aguarde um momento antes de tentar novamente.");
 		}
 
-		$funcionarios = Funcionarios::login($_POST["cpf"], $_POST["senha"]);
+		$cpf = preg_replace('/\D+/', '', $_POST["cpf"]);
+		$funcionarios = Funcionarios::login($cpf, $_POST["senha"]);
 		$_SESSION[Funcionarios::SESSION] = $funcionarios->getValues();
 
 		Funcionarios::clearError();

@@ -195,20 +195,22 @@ class Funcionarios extends Model
 	{
 		$sql = new Sql();
 
+		$cpf = preg_replace('/\D+/', '', $cpf);
+
 		$results = $sql->select("
-			SELECT
-				a.*,
-				a.ativo AS usuario_ativo,
-				b.id_pessoa,
-				b.nome_funcionario,
-				b.email,
-				b.nrphone,
-				b.dtregister AS funcionario_dtregister,
-				b.ativo AS funcionario_ativo
-			FROM tb_usuario a
-			INNER JOIN tb_funcionario b ON a.id_pessoa = b.id_pessoa
-			WHERE a.cpf = :CPF
-		", [
+		SELECT
+			a.*,
+			a.ativo AS usuario_ativo,
+			b.id_pessoa,
+			b.nome_funcionario,
+			b.email,
+			b.nrphone,
+			b.dtregister AS funcionario_dtregister,
+			b.ativo AS funcionario_ativo
+		FROM tb_usuario a
+		INNER JOIN tb_funcionario b ON a.id_pessoa = b.id_pessoa
+		WHERE REPLACE(REPLACE(REPLACE(a.cpf, '.', ''), '-', ''), '/', '') = :CPF
+	", [
 			":CPF" => $cpf
 		]);
 

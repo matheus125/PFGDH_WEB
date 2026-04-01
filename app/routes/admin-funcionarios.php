@@ -51,7 +51,7 @@ $app->post("/admin/funcionarios/:id_usuario/password", function ($id_usuario) {
 
 	$funcionarios->get((int)$id_usuario);
 
-	$funcionarios->setPassword(Funcionarios::getPasswordHash($_POST['senha']));
+	$funcionarios->setPassword($_POST['senha']);
 
 	Funcionarios::setSuccess("Senha alterada com sucesso.");
 
@@ -147,6 +147,8 @@ $app->post("/admin/funcionarios/create", function () {
 	$funcionarios = new Funcionarios();
 
 	$_POST["inadmin"] = (isset($_POST["inadmin"])) ? 1 : 0;
+	$_POST["cpf"] = preg_replace('/\D+/', '', $_POST["cpf"]);
+	$_POST["nrphone"] = preg_replace('/\D+/', '', $_POST["nrphone"]);
 
 	// Valida CPF
 	if (!Funcionarios::validaCPF($_POST["cpf"])) {
@@ -175,6 +177,7 @@ $app->post("/admin/funcionarios/create", function () {
 		echo "<script>alert('Telefone já cadastrado!'); window.history.back();</script>";
 		exit;
 	}
+
 	$funcionarios = new Funcionarios();
 	$funcionarios->setData($_POST);
 
@@ -187,6 +190,9 @@ $app->post("/admin/funcionarios/create", function () {
 $app->post("/admin/funcionarios/:id_usuario", function ($id_usuario) {
 
 	Funcionarios::checkPermission('FUNCIONARIOS_UPDATE');
+
+	$_POST["cpf"] = preg_replace('/\D+/', '', $_POST["cpf"]);
+	$_POST["nrphone"] = preg_replace('/\D+/', '', $_POST["nrphone"]);
 
 	$funcionarios = new Funcionarios();
 
@@ -235,4 +241,3 @@ $app->post('/admin/funcionarios/verificar-cpf', function () {
 
 	exit;
 });
-
