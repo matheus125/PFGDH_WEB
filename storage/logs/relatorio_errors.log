@@ -317,3 +317,293 @@
 [2026-03-31 19:54:44] Iniciando gerarRelatorioDia | data=2026-03-31
 [2026-03-31 19:54:44] UPSERT tb_relatorios executado | data=2026-03-31
 [2026-03-31 19:54:44] OK gerarRelatorioDia | data=2026-03-31 | coluna=data | total_encontrado=1
+[2026-03-31 20:52:49] Iniciando gerarRelatorioDia | data=2026-03-31
+[2026-03-31 20:52:49] UPSERT tb_relatorios executado | data=2026-03-31
+[2026-03-31 20:52:49] OK gerarRelatorioDia | data=2026-03-31 | coluna=data | total_encontrado=1
+[2026-03-31 20:52:49] Iniciando gerarRelatorioDia | data=2026-03-31
+[2026-03-31 20:52:49] UPSERT tb_relatorios executado | data=2026-03-31
+[2026-03-31 20:52:49] OK gerarRelatorioDia | data=2026-03-31 | coluna=data | total_encontrado=1
+[2026-03-31 21:03:57] Iniciando gerarRelatorioDia | data=2026-03-31
+[2026-03-31 21:03:57] UPSERT tb_relatorios executado | data=2026-03-31
+[2026-03-31 21:03:57] OK gerarRelatorioDia | data=2026-03-31 | coluna=data | total_encontrado=1
+[2026-03-31 21:03:58] Iniciando gerarRelatorioDia | data=2026-03-31
+[2026-03-31 21:03:58] UPSERT tb_relatorios executado | data=2026-03-31
+[2026-03-31 21:03:58] OK gerarRelatorioDia | data=2026-03-31 | coluna=data | total_encontrado=1
+[2026-03-31 21:04:01] Iniciando gerarRelatorioDia | data=2026-03-31
+[2026-03-31 21:04:01] UPSERT tb_relatorios executado | data=2026-03-31
+[2026-03-31 21:04:01] OK gerarRelatorioDia | data=2026-03-31 | coluna=data | total_encontrado=1
+[2026-03-31 21:04:01] Iniciando gerarRelatorioDia | data=2026-03-31
+[2026-03-31 21:04:01] UPSERT tb_relatorios executado | data=2026-03-31
+[2026-03-31 21:04:01] OK gerarRelatorioDia | data=2026-03-31 | coluna=data | total_encontrado=1
+[2026-03-31 21:04:05] Iniciando gerarRelatorioDia | data=2026-03-31
+[2026-03-31 21:04:05] UPSERT tb_relatorios executado | data=2026-03-31
+[2026-03-31 21:04:05] OK gerarRelatorioDia | data=2026-03-31 | coluna=data | total_encontrado=1
+[2026-04-01 09:43:56] Dia ainda aberto após venda | data=2026-04-01
+[2026-04-01 09:46:45] Dia ainda aberto após venda | data=2026-04-01
+[2026-04-01 09:46:47] Dia ainda aberto após venda | data=2026-04-01
+[2026-04-01 09:46:49] Dia ainda aberto após venda | data=2026-04-01
+[2026-04-01 09:46:51] Dia fechado após venda | data=2026-04-01 | total=5 | limite=5
+[2026-04-01 09:46:51] Iniciando gerarRelatorioDia | data=2026-04-01
+[2026-04-01 09:46:51] UPSERT tb_relatorios executado | data=2026-04-01
+[2026-04-01 09:46:51] OK gerarRelatorioDia | data=2026-04-01 | coluna=data | total_encontrado=1
+[2026-04-01 09:46:51] Iniciando gerarRelatorioDia | data=2026-04-01
+[2026-04-01 09:46:51] UPSERT tb_relatorios executado | data=2026-04-01
+[2026-04-01 09:46:51] OK gerarRelatorioDia | data=2026-04-01 | coluna=data | total_encontrado=1
+[2026-04-01 09:46:51] Iniciando gerarRelatorioDia | data=2026-04-01
+[2026-04-01 09:46:51] UPSERT tb_relatorios executado | data=2026-04-01
+[2026-04-01 09:46:51] OK gerarRelatorioDia | data=2026-04-01 | coluna=data | total_encontrado=1
+[2026-04-01 09:46:53] Iniciando gerarRelatorioDia | data=2026-04-01
+[2026-04-01 09:46:53] UPSERT tb_relatorios executado | data=2026-04-01
+[2026-04-01 09:46:53] OK gerarRelatorioDia | data=2026-04-01 | coluna=data | total_encontrado=1
+[2026-04-01 09:46:53] Iniciando gerarRelatorioDia | data=2026-04-01
+[2026-04-01 09:46:53] UPSERT tb_relatorios executado | data=2026-04-01
+[2026-04-01 09:46:53] OK gerarRelatorioDia | data=2026-04-01 | coluna=data | total_encontrado=1
+[2026-04-01 09:47:00] Iniciando gerarRelatorioDia | data=2026-04-01
+[2026-04-01 09:47:00] UPSERT tb_relatorios executado | data=2026-04-01
+[2026-04-01 09:47:00] OK gerarRelatorioDia | data=2026-04-01 | coluna=data | total_encontrado=1
+[2026-04-01 10:39:47] Iniciando gerarRelatorioDia | data=2026-04-01
+[2026-04-01 10:39:47] UPSERT tb_relatorios executado | data=2026-04-01
+[2026-04-01 10:39:47] OK gerarRelatorioDia | data=2026-04-01 | coluna=data | total_encontrado=1
+[2026-04-01 10:39:47] Iniciando gerarRelatorioDia | data=2026-04-01
+[2026-04-01 10:39:47] UPSERT tb_relatorios executado | data=2026-04-01
+[2026-04-01 10:39:47] OK gerarRelatorioDia | data=2026-04-01 | coluna=data | total_encontrado=1
+[2026-04-01 13:46:57] Iniciando gerarRelatorioDia | data=2026-04-01
+[2026-04-01 13:46:57] UPSERT tb_relatorios executado | data=2026-04-01
+[2026-04-01 13:46:57] OK gerarRelatorioDia | data=2026-04-01 | coluna=data | total_encontrado=1
+[2026-04-01 13:46:57] Iniciando gerarRelatorioDia | data=2026-04-01
+[2026-04-01 13:46:57] UPSERT tb_relatorios executado | data=2026-04-01
+[2026-04-01 13:46:57] OK gerarRelatorioDia | data=2026-04-01 | coluna=data | total_encontrado=1
+[2026-04-01 13:49:08] Iniciando gerarRelatorioDia | data=2026-04-01
+[2026-04-01 13:49:08] UPSERT tb_relatorios executado | data=2026-04-01
+[2026-04-01 13:49:08] OK gerarRelatorioDia | data=2026-04-01 | coluna=data | total_encontrado=1
+[2026-04-01 13:49:08] Iniciando gerarRelatorioDia | data=2026-04-01
+[2026-04-01 13:49:08] UPSERT tb_relatorios executado | data=2026-04-01
+[2026-04-01 13:49:08] OK gerarRelatorioDia | data=2026-04-01 | coluna=data | total_encontrado=1
+[2026-04-01 13:55:30] Iniciando gerarRelatorioDia | data=2026-04-01
+[2026-04-01 13:55:30] UPSERT tb_relatorios executado | data=2026-04-01
+[2026-04-01 13:55:30] OK gerarRelatorioDia | data=2026-04-01 | coluna=data | total_encontrado=1
+[2026-04-01 13:55:30] Iniciando gerarRelatorioDia | data=2026-04-01
+[2026-04-01 13:55:30] UPSERT tb_relatorios executado | data=2026-04-01
+[2026-04-01 13:55:30] OK gerarRelatorioDia | data=2026-04-01 | coluna=data | total_encontrado=1
+[2026-04-02 08:13:09] Dia ainda aberto após venda | data=2026-04-02
+[2026-04-04 13:49:04] Dia ainda aberto após venda | data=2026-04-04
+[2026-04-04 13:49:19] Dia ainda aberto após venda | data=2026-04-04
+[2026-04-04 13:49:27] Dia ainda aberto após venda | data=2026-04-04
+[2026-04-04 13:49:31] Dia ainda aberto após venda | data=2026-04-04
+[2026-04-04 13:49:45] Dia ainda aberto após venda | data=2026-04-04
+[2026-04-04 13:49:52] ERRO rota /admin/api/fechamento/manual | msg=SQLSTATE[42S22]: Column not found: 1054 Unknown column 'registration_date' in 'field list'
+[2026-04-04 13:59:27] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 13:59:27] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 13:59:27] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 14:13:12] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 14:13:13] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 14:13:13] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 14:13:13] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 14:13:13] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 14:13:13] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 14:13:22] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 14:13:22] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 14:13:22] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 14:18:23] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 14:18:23] ERRO ao atualizar tb_relatorios | data=2026-04-04 | msg=SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-04 14:18:23] ERRO rota /admin/api/relatorio/fechamento-info [GET] | data=2026-04-04 | msg=Falha ao atualizar tb_relatorios: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-04 14:18:23] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 14:18:23] ERRO ao atualizar tb_relatorios | data=2026-04-04 | msg=SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-04 14:18:23] ERRO rota /admin/api/relatorio/fechamento-info [GET] | data=2026-04-04 | msg=Falha ao atualizar tb_relatorios: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-04 14:26:25] Dia ainda aberto após venda | data=2026-04-04
+[2026-04-04 14:26:34] Dia ainda aberto após venda | data=2026-04-04
+[2026-04-04 14:26:37] Dia ainda aberto após venda | data=2026-04-04
+[2026-04-04 14:26:43] Dia ainda aberto após venda | data=2026-04-04
+[2026-04-04 14:26:46] Dia ainda aberto após venda | data=2026-04-04
+[2026-04-04 14:26:54] Dia ainda aberto após venda | data=2026-04-04
+[2026-04-04 14:27:03] Dia ainda aberto após venda | data=2026-04-04
+[2026-04-04 14:27:27] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 14:27:27] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 14:27:27] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 14:27:28] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 14:27:28] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 14:27:28] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 14:28:04] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 14:28:04] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 14:28:04] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 14:28:04] Fechamento manual concluído | data=2026-04-04 | total=15 | limite=600
+[2026-04-04 15:28:01] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 15:28:01] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 15:28:01] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 15:28:02] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 15:28:02] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 15:28:02] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 15:47:52] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 15:47:52] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 15:47:52] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 15:47:52] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 15:47:52] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 15:47:52] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 15:48:06] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 15:48:06] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 15:48:06] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 15:51:08] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 15:51:08] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 15:51:08] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 15:51:09] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 15:51:09] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 15:51:09] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 15:51:10] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 15:51:10] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 15:51:10] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 15:51:14] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 15:51:14] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 15:51:14] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 15:51:53] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 15:51:53] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 15:51:53] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 15:51:53] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 15:51:53] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 15:51:53] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 15:53:06] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 15:53:06] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 15:53:06] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 15:53:06] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 15:53:06] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 15:53:06] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 15:53:16] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 15:53:16] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 15:53:16] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 15:53:27] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 15:53:27] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 15:53:27] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:04:34] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:04:34] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:04:34] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:04:34] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:04:34] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:04:34] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:04:39] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:04:39] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:04:39] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:05:19] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:05:19] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:05:19] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:05:20] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:05:20] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:05:20] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:05:21] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:05:21] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:05:21] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:07:37] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:07:37] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:07:37] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:07:37] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:07:37] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:07:37] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:07:45] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:07:45] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:07:45] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:07:58] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:07:58] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:07:58] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:08:10] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:08:10] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:08:10] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:08:10] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:08:10] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:08:10] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:08:11] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:08:12] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:08:12] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:08:38] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:08:38] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:08:38] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:08:38] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:08:38] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:08:38] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:08:40] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:08:40] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:08:40] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:10:45] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:10:45] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:10:45] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:10:46] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:10:46] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:10:46] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:10:52] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:10:52] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:10:52] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:11:43] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:11:43] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:11:43] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:11:43] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:11:43] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:11:43] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 16:11:47] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 16:11:47] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 16:11:47] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 17:21:51] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 17:21:51] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 17:21:51] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 17:21:51] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 17:21:51] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 17:21:51] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 17:21:57] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 17:21:57] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 17:21:57] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 17:23:57] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 17:23:57] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 17:23:57] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 17:23:57] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 17:23:57] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 17:23:57] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 17:24:05] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 17:24:05] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 17:24:05] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 17:25:46] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 17:25:46] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 17:25:46] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 17:25:46] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 17:25:46] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 17:25:46] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 17:25:47] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 17:25:47] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 17:25:47] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 19:20:05] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 19:20:05] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 19:20:05] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 19:20:06] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 19:20:06] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 19:20:06] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-04 19:20:11] Iniciando gerarRelatorioDia | data=2026-04-04
+[2026-04-04 19:20:11] UPSERT tb_relatorios executado | data=2026-04-04
+[2026-04-04 19:20:11] OK gerarRelatorioDia | data=2026-04-04 | coluna=data | total_encontrado=1
+[2026-04-07 15:22:52] Iniciando gerarRelatorioDia | data=2026-04-07
+[2026-04-07 15:22:52] UPSERT tb_relatorios executado | data=2026-04-07
+[2026-04-07 15:22:52] OK gerarRelatorioDia | data=2026-04-07 | coluna=data | total_encontrado=1
+[2026-04-07 15:22:52] Iniciando gerarRelatorioDia | data=2026-04-07
+[2026-04-07 15:22:52] UPSERT tb_relatorios executado | data=2026-04-07
+[2026-04-07 15:22:52] OK gerarRelatorioDia | data=2026-04-07 | coluna=data | total_encontrado=1
+[2026-04-07 15:22:54] Iniciando gerarRelatorioDia | data=2026-04-07
+[2026-04-07 15:22:54] UPSERT tb_relatorios executado | data=2026-04-07
+[2026-04-07 15:22:54] OK gerarRelatorioDia | data=2026-04-07 | coluna=data | total_encontrado=1
+[2026-04-07 15:23:28] Dia ainda aberto após venda | data=2026-04-07
+[2026-04-07 15:23:39] Dia ainda aberto após venda | data=2026-04-07
+[2026-04-07 20:35:23] Dia ainda aberto após venda | data=2026-04-07
+[2026-04-07 20:35:27] Dia ainda aberto após venda | data=2026-04-07
+[2026-04-07 20:35:29] Dia ainda aberto após venda | data=2026-04-07
+[2026-04-07 20:35:32] Dia ainda aberto após venda | data=2026-04-07
+[2026-04-07 20:35:34] Iniciando gerarRelatorioDia | data=2026-04-07
+[2026-04-07 20:35:34] UPSERT tb_relatorios executado | data=2026-04-07
+[2026-04-07 20:35:34] OK gerarRelatorioDia | data=2026-04-07 | coluna=data | total_encontrado=1
+[2026-04-07 20:35:34] Iniciando gerarRelatorioDia | data=2026-04-07
+[2026-04-07 20:35:34] UPSERT tb_relatorios executado | data=2026-04-07
+[2026-04-07 20:35:34] OK gerarRelatorioDia | data=2026-04-07 | coluna=data | total_encontrado=1
+[2026-04-07 20:35:43] Iniciando gerarRelatorioDia | data=2026-04-07
+[2026-04-07 20:35:43] UPSERT tb_relatorios executado | data=2026-04-07
+[2026-04-07 20:35:43] OK gerarRelatorioDia | data=2026-04-07 | coluna=data | total_encontrado=1
+[2026-04-07 22:15:31] Iniciando gerarRelatorioDia | data=2026-04-07
+[2026-04-07 22:15:31] UPSERT tb_relatorios executado | data=2026-04-07
+[2026-04-07 22:15:31] OK gerarRelatorioDia | data=2026-04-07 | coluna=data | total_encontrado=1
+[2026-04-07 22:15:31] Iniciando gerarRelatorioDia | data=2026-04-07
+[2026-04-07 22:15:31] UPSERT tb_relatorios executado | data=2026-04-07
+[2026-04-07 22:15:31] OK gerarRelatorioDia | data=2026-04-07 | coluna=data | total_encontrado=1
+[2026-04-07 22:15:39] Iniciando gerarRelatorioDia | data=2026-04-07
+[2026-04-07 22:15:39] UPSERT tb_relatorios executado | data=2026-04-07
+[2026-04-07 22:15:39] OK gerarRelatorioDia | data=2026-04-07 | coluna=data | total_encontrado=1

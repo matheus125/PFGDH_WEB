@@ -68,7 +68,7 @@
             <a class="nav-link nav-icone-topo position-relative" data-bs-toggle="dropdown" href="#">
               <i class="bi bi-bell-fill"></i>
               <span id="badge-notificacoes" class="navbar-badge badge text-bg-warning"
-                style="{if='$total <= 0'}display:none;<?php  ?>">
+                style="{if='$total <= 0'}display:none;<?php ?>">
                 <?php echo htmlspecialchars( $total, ENT_COMPAT, 'UTF-8', FALSE ); ?>
 
               </span>
@@ -190,6 +190,7 @@
             <?php } ?>
 
 
+            
             <li class="nav-header titulo-menu">CADASTROS</li>
             <li class="nav-item menu-open">
               <a href="#" class="nav-link">

@@ -1,578 +1,1120 @@
 <?php if(!class_exists('Rain\Tpl')){exit;}?><style>
     :root {
-        --bg: #f6f8fb;
+        --bg: #f4f6fb;
         --surface: #ffffff;
-        --text: #0f172a;
-        --muted: #64748b;
-        --border: #e5e7eb;
-        --header: #f1f5f9;
-        --accent: #1f3a8a;
-        --accent-2: #0ea5e9;
-        --shadow: 0 10px 25px rgba(15, 23, 42, .08);
-        --success-bg: #dcfce7;
-        --success-text: #166534;
-        --warning-bg: #fef3c7;
-        --warning-text: #92400e;
-        --danger-bg: #fee2e2;
-        --danger-text: #991b1b;
-        --info-bg: #dbeafe;
-        --info-text: #1d4ed8;
+        --surface-2: #f8fafc;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --line: #e5e7eb;
+        --primary: #1f3b57;
+        --primary-2: #284d73;
+        --success: #198754;
+        --danger: #dc3545;
+        --warning: #f59e0b;
+        --info: #0ea5e9;
+        --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        --radius: 18px;
+        --radius-sm: 12px;
     }
 
-    body {
-        background: var(--bg);
+    .relatorio-historico-page {
+        background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+        min-height: calc(100vh - 80px);
+        padding: 22px;
         color: var(--text);
     }
 
-    .card {
-        border: 1px solid var(--border) !important;
-        border-radius: 16px !important;
+    .rh-shell {
+        max-width: 1440px;
+        margin: 0 auto;
+    }
+
+    .rh-hero {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+        color: #fff;
+        border-radius: 24px;
+        padding: 26px 28px;
         box-shadow: var(--shadow);
+        margin-bottom: 20px;
+    }
+
+    .rh-hero::after {
+        content: "";
+        position: absolute;
+        right: -80px;
+        top: -80px;
+        width: 260px;
+        height: 260px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+    }
+
+    .rh-hero::before {
+        content: "";
+        position: absolute;
+        right: 120px;
+        bottom: -70px;
+        width: 180px;
+        height: 180px;
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 50%;
+    }
+
+    .rh-hero-head {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        gap: 18px;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .rh-hero-title {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: .2px;
+    }
+
+    .rh-hero-subtitle {
+        margin: 6px 0 0;
+        color: rgba(255, 255, 255, .84);
+        font-size: 14px;
+    }
+
+    .rh-hero-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .rh-btn {
+        border: 0;
+        border-radius: 14px;
+        padding: 11px 16px;
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+        transition: .18s ease;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, .08);
+    }
+
+    .rh-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .rh-btn:disabled {
+        opacity: .55;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .rh-btn-primary {
+        background: #fff;
+        color: var(--primary);
+    }
+
+    .rh-btn-dark {
+        background: rgba(255, 255, 255, .14);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, .18);
+    }
+
+    .rh-grid-cards {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 18px;
+    }
+
+    .rh-card {
+        background: var(--surface);
+        border: 1px solid rgba(15, 23, 42, 0.04);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+    }
+
+    .rh-stat {
+        padding: 18px 18px 16px;
+        position: relative;
         overflow: hidden;
     }
 
-    .card-header {
-        background: #fff;
-        border-bottom: 1px solid var(--border);
+    .rh-stat::after {
+        content: "";
+        position: absolute;
+        right: -18px;
+        bottom: -18px;
+        width: 82px;
+        height: 82px;
+        border-radius: 50%;
+        background: rgba(31, 59, 87, 0.06);
     }
 
-    .top-bar {
-        background: var(--header);
-        border: 1px solid var(--border);
-        padding: 16px;
-        border-radius: 14px;
-        color: var(--text);
-    }
-
-    .top-bar label {
-        font-weight: 600;
+    .rh-stat-label {
         color: var(--muted);
-        font-size: .85rem;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .6px;
+        margin-bottom: 8px;
+    }
+
+    .rh-stat-value {
+        font-size: 30px;
+        line-height: 1;
+        font-weight: 800;
+        color: var(--text);
         margin-bottom: 6px;
     }
 
-    .form-control,
-    .form-select {
-        border-radius: 12px;
-        border: 1px solid var(--border);
+    .rh-stat-foot {
+        font-size: 12px;
+        color: var(--muted);
+    }
+
+    .rh-panel {
+        padding: 16px;
+    }
+
+    .rh-panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+    }
+
+    .rh-panel-title {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--text);
+    }
+
+    .rh-panel-subtitle {
+        margin: 3px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+    }
+
+    .rh-filters {
+        display: grid;
+        grid-template-columns: 1.2fr .9fr .9fr .9fr auto auto;
+        gap: 12px;
+        align-items: end;
+        margin-bottom: 16px;
+    }
+
+    .rh-field label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--muted);
+        margin-bottom: 7px;
+    }
+
+    .rh-input,
+    .rh-select {
+        width: 100%;
+        border: 1px solid var(--line);
         background: #fff;
-        min-height: 42px;
+        color: var(--text);
+        border-radius: 14px;
+        height: 46px;
+        padding: 0 14px;
+        outline: none;
+        transition: .18s ease;
+        box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.02);
     }
 
-    .form-control:focus,
-    .form-select:focus {
-        border-color: rgba(14, 165, 233, .65);
-        box-shadow: 0 0 0 4px rgba(14, 165, 233, .15);
+    .rh-input:focus,
+    .rh-select:focus {
+        border-color: rgba(31, 59, 87, .38);
+        box-shadow: 0 0 0 4px rgba(31, 59, 87, .08);
     }
 
-    .btn-primary {
-        background: var(--accent) !important;
-        border-color: var(--accent) !important;
-        border-radius: 12px !important;
-        font-weight: 600;
+    .rh-table-wrap {
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: #fff;
     }
 
-    .btn-light {
-        background: #fff !important;
-        border: 1px solid var(--border) !important;
-        border-radius: 12px !important;
-        font-weight: 600;
-        color: var(--text) !important;
+    .rh-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        min-width: 1180px;
     }
 
-    .btn-soft {
-        background: var(--accent) !important;
-        border: 1px solid var(--accent) !important;
-        color: #fff !important;
-        border-radius: 12px !important;
-        font-weight: 700;
-    }
-
-    .btn-soft:hover {
-        filter: brightness(1.05);
-    }
-
-    .btn-outline-soft {
-        background: #fff !important;
-        border: 1px solid var(--border) !important;
-        color: var(--text) !important;
-        border-radius: 12px !important;
-        font-weight: 700;
-    }
-
-    .btn-outline-soft:hover {
-        background: #f8fafc !important;
-    }
-
-    .box {
-        background: var(--surface);
-        border-radius: 16px;
-        border: 1px solid var(--border);
-        overflow: hidden;
-    }
-
-    .table-fixed {
-        max-height: 520px;
-        overflow-y: auto;
-    }
-
-    .table thead th {
+    .rh-table thead th {
         position: sticky;
         top: 0;
-        background: #ffffff;
-        z-index: 2;
-        border-bottom: 1px solid var(--border);
-        font-size: .78rem;
-        letter-spacing: .04em;
-        color: var(--muted);
+        z-index: 1;
+        background: #f8fafc;
+        color: #475569;
+        font-size: 12px;
         text-transform: uppercase;
+        letter-spacing: .5px;
+        padding: 14px 14px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
         white-space: nowrap;
     }
 
-    .table tbody td {
-        border-top: 1px solid #f1f5f9;
+    .rh-table tbody td {
+        padding: 14px;
+        border-bottom: 1px solid #edf2f7;
         vertical-align: middle;
+        font-size: 13px;
+        color: var(--text);
     }
 
-    .table tbody tr:hover {
-        background: #f8fafc;
+    .rh-table tbody tr:hover {
+        background: #fbfdff;
     }
 
-    .status-badge {
+    .rh-file {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .rh-file-name {
+        font-weight: 700;
+        color: var(--text);
+        word-break: break-word;
+    }
+
+    .rh-file-meta {
+        color: var(--muted);
+        font-size: 12px;
+    }
+
+    .rh-badge {
         display: inline-flex;
         align-items: center;
-        justify-content: center;
-        min-width: 88px;
-        padding: 6px 12px;
+        gap: 6px;
+        padding: 8px 12px;
         border-radius: 999px;
-        font-size: .78rem;
-        font-weight: 700;
-        letter-spacing: .02em;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: .2px;
+        white-space: nowrap;
     }
 
-    .status-sucesso {
-        background: var(--success-bg);
-        color: var(--success-text);
+    .rh-badge-success {
+        background: rgba(25, 135, 84, .12);
+        color: #157347;
     }
 
-    .status-erro {
-        background: var(--warning-bg);
-        color: var(--warning-text);
+    .rh-badge-danger {
+        background: rgba(220, 53, 69, .12);
+        color: #b02a37;
     }
 
-    .status-outro {
-        background: var(--info-bg);
-        color: var(--info-text);
+    .rh-badge-warning {
+        background: rgba(245, 158, 11, .14);
+        color: #a16207;
     }
 
-    .arquivo-nome {
-        font-weight: 700;
-        color: var(--text);
-        word-break: break-word;
+    .rh-badge-info {
+        background: rgba(14, 165, 233, .12);
+        color: #0369a1;
     }
 
-    .arquivo-meta,
-    .responsavel-meta {
-        display: block;
-        margin-top: 4px;
-        color: var(--muted);
-        font-size: .84rem;
-        word-break: break-word;
-    }
-
-    .historico-footer {
-        border-top: 1px solid var(--border);
-        padding: 14px 16px;
-        background: #fff;
-    }
-
-    .pagination-wrap {
+    .rh-remote-stack {
         display: flex;
-        flex-wrap: wrap;
+        flex-direction: column;
         gap: 8px;
-        justify-content: flex-end;
-        align-items: center;
     }
 
-    .pagination-btn {
-        min-width: 38px;
-        height: 38px;
-        border-radius: 10px;
-        border: 1px solid var(--border);
+    .rh-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .rh-link-btn {
+        appearance: none;
+        border: 1px solid var(--line);
         background: #fff;
         color: var(--text);
-        font-weight: 600;
+        padding: 9px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 700;
         cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
     }
 
-    .pagination-btn:hover:not(:disabled) {
-        background: #f8fafc;
+    .rh-link-btn:hover {
+        border-color: rgba(31, 59, 87, .25);
+        color: var(--primary);
+        text-decoration: none;
     }
 
-    .pagination-btn:disabled {
-        opacity: .5;
-        cursor: not-allowed;
+    .rh-link-btn.is-loading {
+        opacity: .7;
+        pointer-events: none;
     }
 
-    .pagination-btn.active {
-        background: var(--accent);
-        border-color: var(--accent);
-        color: #fff;
-    }
-
-    .empty-state {
-        padding: 32px 16px;
+    .rh-empty {
+        padding: 42px 18px;
         text-align: center;
         color: var(--muted);
     }
 
-    .toolbar-title {
-        font-weight: 700;
-        color: #0f172a;
+    .rh-empty-icon {
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        background: #f1f5f9;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        margin-bottom: 12px;
     }
 
-    .toolbar-subtitle {
-        font-size: .85rem;
-        color: #64748b;
-    }
-
-    .acoes-wrap {
+    .rh-footer {
         display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+    }
+
+    .rh-pagination {
+        display: flex;
+        align-items: center;
         gap: 8px;
         flex-wrap: wrap;
     }
 
-    .btn-acao {
-        border-radius: 10px !important;
-        font-weight: 700 !important;
-        padding: 6px 12px !important;
+    .rh-page-btn {
+        min-width: 40px;
+        height: 40px;
+        border: 1px solid var(--line);
+        background: #fff;
+        color: var(--text);
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        padding: 0 12px;
+    }
+
+    .rh-page-btn.active {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+    }
+
+    .rh-page-btn:disabled {
+        opacity: .45;
+        cursor: not-allowed;
+    }
+
+    .rh-summary-line {
+        color: var(--muted);
+        font-size: 13px;
+    }
+
+    .rh-toast-wrap {
+        position: fixed;
+        top: 18px;
+        right: 18px;
+        z-index: 4000;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .rh-toast {
+        min-width: 280px;
+        max-width: 420px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--info);
+        border-radius: 16px;
+        box-shadow: 0 18px 36px rgba(15, 23, 42, .12);
+        padding: 12px 14px;
+        font-size: 13px;
+        color: var(--text);
+    }
+
+    .rh-toast.success {
+        border-left-color: var(--success);
+    }
+
+    .rh-toast.error {
+        border-left-color: var(--danger);
+    }
+
+    .rh-toast.warning {
+        border-left-color: var(--warning);
+    }
+
+    .rh-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, .52);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 3000;
+        padding: 18px;
+    }
+
+    .rh-modal.show {
+        display: flex;
+    }
+
+    .rh-modal-card {
+        width: min(760px, 100%);
+        max-height: 90vh;
+        overflow: auto;
+        background: #fff;
+        border-radius: 22px;
+        box-shadow: 0 24px 60px rgba(15, 23, 42, .25);
+    }
+
+    .rh-modal-head {
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        background: #fff;
+        z-index: 1;
+    }
+
+    .rh-modal-title {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    .rh-modal-body {
+        padding: 18px 20px 20px;
+    }
+
+    .rh-detail-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 14px;
+    }
+
+    .rh-detail-item {
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+        border-radius: 14px;
+        padding: 12px 14px;
+    }
+
+    .rh-detail-label {
+        display: block;
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: uppercase;
+        font-weight: 800;
+        margin-bottom: 6px;
+    }
+
+    .rh-detail-value {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text);
+        word-break: break-word;
+    }
+
+    .rh-error-box {
+        border: 1px solid rgba(220, 53, 69, .18);
+        background: rgba(220, 53, 69, .06);
+        border-radius: 14px;
+        padding: 14px;
+        color: #7f1d1d;
+        font-size: 13px;
+        white-space: pre-wrap;
+    }
+
+    @media (max-width: 1200px) {
+        .rh-grid-cards {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .rh-filters {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
     }
 
     @media (max-width: 768px) {
-        .top-bar .row>div {
-            margin-bottom: 10px;
+        .relatorio-historico-page {
+            padding: 14px;
         }
 
-        .table-fixed {
-            max-height: 360px;
+        .rh-hero {
+            padding: 20px;
+            border-radius: 20px;
         }
 
-        .historico-footer {
-            display: block !important;
+        .rh-hero-title {
+            font-size: 22px;
         }
 
-        .pagination-wrap {
-            justify-content: flex-start;
-            margin-top: 12px;
+        .rh-grid-cards {
+            grid-template-columns: 1fr;
+        }
+
+        .rh-filters {
+            grid-template-columns: 1fr;
+        }
+
+        .rh-detail-grid {
+            grid-template-columns: 1fr;
         }
     }
 </style>
 
-<div class="card mb-4">
-    <div class="card-header d-flex justify-content-center align-items-center position-relative">
-        <h3 class="card-title mb-0">HISTÓRICO DE RELATÓRIOS PDF</h3>
-        <a href="/admin/relatorio/senhas" class="btn btn-light btn-sm position-absolute"
-            style="right:16px; top:50%; transform:translateY(-50%);">
-            Voltar
-        </a>
-    </div>
+<div class="relatorio-historico-page">
+    <div class="rh-shell">
+        <div class="rh-hero">
+            <div class="rh-hero-head">
+                <div>
+                    <h1 class="rh-hero-title">Histórico de relatórios PDF</h1>
+                    <p class="rh-hero-subtitle">
+                        Visualize uploads, acompanhe o status da nuvem e reenviar relatórios com um clique.
+                    </p>
+                </div>
+                <div class="rh-hero-actions">
+                    <button class="rh-btn rh-btn-dark" type="button" onclick="RH.limparFiltros()">Limpar
+                        filtros</button>
+                    <button class="rh-btn rh-btn-primary" type="button" onclick="RH.carregar(1)">Atualizar</button>
+                </div>
+            </div>
+        </div>
 
-    <div class="app-content">
-        <div class="container-fluid">
-            <div class="row">
+        <div class="rh-grid-cards">
+            <div class="rh-card rh-stat">
+                <div class="rh-stat-label">Total listado</div>
+                <div class="rh-stat-value" id="rhStatTotal">0</div>
+                <div class="rh-stat-foot">Quantidade retornada pela busca atual</div>
+            </div>
+            <div class="rh-card rh-stat">
+                <div class="rh-stat-label">Uploads com sucesso</div>
+                <div class="rh-stat-value" id="rhStatSucesso">0</div>
+                <div class="rh-stat-foot">Arquivos com status SUCESSO</div>
+            </div>
+            <div class="rh-card rh-stat">
+                <div class="rh-stat-label">Falhas</div>
+                <div class="rh-stat-value" id="rhStatErro">0</div>
+                <div class="rh-stat-foot">Arquivos com status ERRO</div>
+            </div>
+            <div class="rh-card rh-stat">
+                <div class="rh-stat-label">Nuvem indisponível</div>
+                <div class="rh-stat-value" id="rhStatRemotoPendente">0</div>
+                <div class="rh-stat-foot">Itens sem URL pública ou com falha de envio</div>
+            </div>
+        </div>
 
-                <div class="top-bar mb-3 w-100">
-                    <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap" style="gap:12px;">
-                        <div>
-                            <div class="toolbar-title">Relatórios gerados</div>
-                            <div class="toolbar-subtitle">Consulta de PDFs enviados, com status, responsável e link
-                                público</div>
-                        </div>
-                    </div>
+        <div class="rh-card rh-panel">
+            <div class="rh-panel-head">
+                <div>
+                    <h2 class="rh-panel-title">Consulta e acompanhamento</h2>
+                    <p class="rh-panel-subtitle">Use os filtros abaixo para localizar rapidamente um relatório.</p>
+                </div>
+            </div>
 
-                    <div class="row align-items-end">
-                        <div class="col-md-3">
-                            <label for="filtroData">Data</label>
-                            <input type="date" id="filtroData" class="form-control">
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="filtroStatus">Status</label>
-                            <select id="filtroStatus" class="form-control">
-                                <option value="">Todos</option>
-                                <option value="SUCESSO">SUCESSO</option>
-                                <option value="ERRO">ERRO</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label for="filtroPageSize">Itens por página</label>
-                            <select id="filtroPageSize" class="form-control">
-                                <option value="10">10</option>
-                                <option value="20" selected>20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-3">
-                            <button id="btnFiltrar" class="btn btn-soft w-100 mb-1" type="button">Filtrar</button>
-                            <button id="btnLimpar" class="btn btn-outline-soft w-100" type="button">Limpar</button>
-                        </div>
-                    </div>
+            <div class="rh-filters">
+                <div class="rh-field">
+                    <label for="rhBusca">Busca rápida</label>
+                    <input id="rhBusca" class="rh-input" type="text"
+                        placeholder="Arquivo, responsável, CPF ou mensagem de erro">
                 </div>
 
-                <div class="col-12">
-                    <div class="box">
-                        <div class="table-fixed">
-                            <table class="table table-striped table-sm mb-0" id="tabelaHistorico">
-                                <thead>
-                                    <tr>
-                                        <th style="width:70px;">ID</th>
-                                        <th style="width:130px;">Data Relatório</th>
-                                        <th>Arquivo</th>
-                                        <th style="width:240px;">Responsável</th>
-                                        <th style="width:120px;">Status</th>
-                                        <th style="width:150px;">Gerado em</th>
-                                        <th style="width:150px;">Upload em</th>
-                                        <th style="width:150px;">Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="8" class="text-center text-muted">Carregando...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="historico-footer d-flex justify-content-between align-items-center flex-wrap"
-                            style="gap:12px;">
-                            <div class="small text-muted" id="historicoInfo">-</div>
-                            <div class="pagination-wrap" id="historicoPaginacao"></div>
-                        </div>
-                    </div>
+                <div class="rh-field">
+                    <label for="rhData">Data do relatório</label>
+                    <input id="rhData" class="rh-input" type="date">
                 </div>
 
+                <div class="rh-field">
+                    <label for="rhStatus">Status do upload</label>
+                    <select id="rhStatus" class="rh-select">
+                        <option value="">Todos</option>
+                        <option value="SUCESSO">SUCESSO</option>
+                        <option value="ERRO">ERRO</option>
+                    </select>
+                </div>
+
+                <div class="rh-field">
+                    <label for="rhPageSize">Itens por página</label>
+                    <select id="rhPageSize" class="rh-select">
+                        <option value="10">10</option>
+                        <option value="20" selected>20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+
+                <button class="rh-btn rh-btn-primary" type="button" onclick="RH.carregar(1)">Filtrar</button>
+                <button class="rh-btn rh-btn-dark" type="button" onclick="RH.exportarTela()">Imprimir tela</button>
+            </div>
+
+            <div class="rh-table-wrap">
+                <table class="rh-table">
+                    <thead>
+                        <tr>
+                            <th style="width:90px">ID</th>
+                            <th>Arquivo</th>
+                            <th style="width:130px">Data relatório</th>
+                            <th style="width:130px">Upload</th>
+                            <th style="width:150px">Nuvem</th>
+                            <th style="width:170px">Responsável</th>
+                            <th style="width:190px">Gerado em</th>
+                            <th style="width:220px">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rhTabelaBody">
+                        <tr>
+                            <td colspan="8">
+                                <div class="rh-empty">
+                                    <div class="rh-empty-icon">📄</div>
+                                    <div>Carregando histórico...</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="rh-footer">
+                <div class="rh-summary-line" id="rhResumo">Nenhum dado carregado.</div>
+                <div class="rh-pagination" id="rhPaginacao"></div>
             </div>
         </div>
     </div>
 </div>
 
+<div class="rh-toast-wrap" id="rhToastWrap"></div>
+
+<div class="rh-modal" id="rhModal">
+    <div class="rh-modal-card">
+        <div class="rh-modal-head">
+            <div>
+                <h3 class="rh-modal-title">Detalhes do histórico</h3>
+            </div>
+            <button class="rh-btn rh-btn-dark" type="button" onclick="RH.fecharModal()">Fechar</button>
+        </div>
+        <div class="rh-modal-body" id="rhModalBody"></div>
+    </div>
+</div>
+
 <script>
     (function () {
-        const API_URL = "/admin/api/relatorio/pdf/historico";
-        let paginaAtual = 1;
+        const state = {
+            page: 1,
+            pages: 1,
+            total: 0,
+            pageSize: 20,
+            items: [],
+            filteredItems: [],
+            reenviando: {}
+        };
 
-        function escapeHtml(text) {
-            if (text === null || text === undefined) return "";
-            return String(text)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
+        const els = {
+            busca: document.getElementById('rhBusca'),
+            data: document.getElementById('rhData'),
+            status: document.getElementById('rhStatus'),
+            pageSize: document.getElementById('rhPageSize'),
+            tabelaBody: document.getElementById('rhTabelaBody'),
+            paginacao: document.getElementById('rhPaginacao'),
+            resumo: document.getElementById('rhResumo'),
+            statTotal: document.getElementById('rhStatTotal'),
+            statSucesso: document.getElementById('rhStatSucesso'),
+            statErro: document.getElementById('rhStatErro'),
+            statRemotoPendente: document.getElementById('rhStatRemotoPendente'),
+            modal: document.getElementById('rhModal'),
+            modalBody: document.getElementById('rhModalBody'),
+            toastWrap: document.getElementById('rhToastWrap')
+        };
+
+        function escapeHtml(str) {
+            return String(str == null ? '' : str)
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#039;');
         }
 
-        function escapeJsString(text) {
-            if (text === null || text === undefined) return "";
-            return String(text)
-                .replace(/\\/g, "\\\\")
-                .replace(/'/g, "\\'")
-                .replace(/\r/g, "\\r")
-                .replace(/\n/g, "\\n");
+        function formatDate(value) {
+            if (!value) return '-';
+            const text = String(value).trim();
+            if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+                const [y, m, d] = text.split('-');
+                return `${d}/${m}/${y}`;
+            }
+            const normalized = text.replace(' ', 'T');
+            const dt = new Date(normalized);
+            if (isNaN(dt.getTime())) return text;
+            return dt.toLocaleString('pt-BR');
         }
 
-        function formatarData(valor) {
-            if (!valor) return "-";
-            const partes = String(valor).split("-");
-            if (partes.length !== 3) return escapeHtml(valor);
-            return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        function normalizeStatus(status) {
+            return String(status || '').toUpperCase();
         }
 
-        function formatarDataHora(valor) {
-            if (!valor) return "-";
-            const texto = String(valor).replace(" ", "T");
-            const data = new Date(texto);
+        function hasRemote(item) {
+            return !!(item.url_publica && String(item.url_publica).trim() !== '');
+        }
 
-            if (isNaN(data.getTime())) {
-                return escapeHtml(valor);
+        function remoteStatus(item) {
+            const uploadOk = normalizeStatus(item.status_upload) === 'SUCESSO';
+            const remoteOk = hasRemote(item);
+
+            if (uploadOk && remoteOk) {
+                return { label: 'Nuvem OK', cls: 'rh-badge-success' };
             }
 
-            const dd = String(data.getDate()).padStart(2, "0");
-            const mm = String(data.getMonth() + 1).padStart(2, "0");
-            const yyyy = data.getFullYear();
-            const hh = String(data.getHours()).padStart(2, "0");
-            const mi = String(data.getMinutes()).padStart(2, "0");
+            if (!uploadOk && remoteOk) {
+                return { label: 'PDF público', cls: 'rh-badge-info' };
+            }
 
-            return `${dd}/${mm}/${yyyy} ${hh}:${mi}`;
+            if (!remoteOk && uploadOk) {
+                return { label: 'Sem URL pública', cls: 'rh-badge-warning' };
+            }
+
+            return { label: 'Falha na nuvem', cls: 'rh-badge-danger' };
         }
 
-        function badgeStatus(status) {
-            if (status === "SUCESSO") {
-                return '<span class="status-badge status-sucesso">SUCESSO</span>';
-            }
-            if (status === "ERRO") {
-                return '<span class="status-badge status-erro">ERRO</span>';
-            }
-            return `<span class="status-badge status-outro">${escapeHtml(status || "-")}</span>`;
+        function statusBadge(status) {
+            const s = normalizeStatus(status);
+            if (s === 'SUCESSO') return '<span class="rh-badge rh-badge-success">● SUCESSO</span>';
+            if (s === 'ERRO') return '<span class="rh-badge rh-badge-danger">● ERRO</span>';
+            return '<span class="rh-badge rh-badge-warning">● N/D</span>';
         }
 
-        function montarLinha(item) {
-            const abrirBtn = item.url_publica
-                ? `<a href="${escapeHtml(item.url_publica)}"
-                    target="_blank"
-                    class="btn btn-primary btn-xs btn-acao">Abrir</a>`
-                : "";
+        function remoteBadge(item) {
+            const rs = remoteStatus(item);
+            return `<span class="rh-badge ${rs.cls}">● ${escapeHtml(rs.label)}</span>`;
+        }
 
-            const erroBtn = item.mensagem_erro
-                ? `<button type="button"
-                       class="btn btn-warning btn-xs btn-acao"
-                       onclick="alert('${escapeJsString(item.mensagem_erro)}')">Erro</button>`
-                : "";
+        function toast(msg, type = 'success') {
+            const div = document.createElement('div');
+            div.className = `rh-toast ${type}`;
+            div.textContent = msg;
+            els.toastWrap.appendChild(div);
+            setTimeout(() => {
+                div.remove();
+            }, 4200);
+        }
 
-            return `
+        function montarQuery(page) {
+            const params = new URLSearchParams();
+            params.set('page', page || 1);
+            params.set('pageSize', els.pageSize.value || 20);
+
+            if (els.data.value) params.set('data', els.data.value);
+            if (els.status.value) params.set('status', els.status.value);
+
+            return params.toString();
+        }
+
+        function aplicarBuscaClientSide(items) {
+            const termo = (els.busca.value || '').trim().toLowerCase();
+            if (!termo) return items.slice();
+
+            return items.filter(item => {
+                const bag = [
+                    item.id,
+                    item.nome_arquivo,
+                    item.url_publica,
+                    item.caminho_remoto,
+                    item.status_upload,
+                    item.mensagem_erro,
+                    item.responsavel,
+                    item.cpf_responsavel,
+                    item.data_relatorio,
+                    item.data_geracao,
+                    item.data_upload
+                ].join(' ').toLowerCase();
+
+                return bag.includes(termo);
+            });
+        }
+
+        function renderTable() {
+            const items = state.filteredItems;
+
+            if (!items.length) {
+                els.tabelaBody.innerHTML = `
+                <tr>
+                    <td colspan="8">
+                        <div class="rh-empty">
+                            <div class="rh-empty-icon">📂</div>
+                            <div><strong>Nenhum registro encontrado.</strong></div>
+                            <div style="margin-top:6px;">Tente ajustar os filtros para localizar outros relatórios.</div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+                return;
+            }
+
+            els.tabelaBody.innerHTML = items.map(item => {
+                const reenviando = !!state.reenviando[item.id];
+                const podeReenviar = !!item.data_relatorio;
+                return `
             <tr>
-                <td>${item.id}</td>
-                <td>${formatarData(item.data_relatorio)}</td>
+                <td><strong>#${escapeHtml(item.id)}</strong></td>
                 <td>
-                    <span class="arquivo-nome">${escapeHtml(item.nome_arquivo || "-")}</span>
-                    <span class="arquivo-meta">${escapeHtml(item.caminho_remoto || "")}</span>
+                    <div class="rh-file">
+                        <div class="rh-file-name">${escapeHtml(item.nome_arquivo || '-')}</div>
+                        <div class="rh-file-meta">${escapeHtml(item.caminho_remoto || 'Sem caminho remoto')}</div>
+                    </div>
+                </td>
+                <td>${formatDate(item.data_relatorio)}</td>
+                <td>${statusBadge(item.status_upload)}</td>
+                <td>
+                    <div class="rh-remote-stack">
+                        ${remoteBadge(item)}
+                        <div class="rh-file-meta">${hasRemote(item) ? 'Arquivo publicado na nuvem' : 'Ainda sem URL pública salva'}</div>
+                    </div>
                 </td>
                 <td>
-                    <strong>${escapeHtml(item.responsavel || "-")}</strong>
-                    <span class="responsavel-meta">${escapeHtml(item.cpf_responsavel || "")}</span>
+                    <div class="rh-file">
+                        <div class="rh-file-name">${escapeHtml(item.responsavel || 'Não informado')}</div>
+                        <div class="rh-file-meta">${escapeHtml(item.cpf_responsavel || 'CPF não informado')}</div>
+                    </div>
                 </td>
-                <td>${badgeStatus(item.status_upload)}</td>
-                <td>${formatarDataHora(item.data_geracao)}</td>
-                <td>${formatarDataHora(item.data_upload)}</td>
+                <td>${formatDate(item.data_geracao)}</td>
                 <td>
-                    <div class="acoes-wrap">
-                        ${abrirBtn}
-                        ${erroBtn}
+                    <div class="rh-actions">
+                        ${item.url_publica ? `<a class="rh-link-btn" href="${escapeHtml(item.url_publica)}" target="_blank" rel="noopener">Abrir PDF</a>` : ''}
+                        <button class="rh-link-btn" type="button" onclick="RH.verDetalhes(${Number(item.id)})">Detalhes</button>
+                        ${(normalizeStatus(item.status_upload) === 'ERRO' || !hasRemote(item)) ? `<button class="rh-link-btn ${reenviando ? 'is-loading' : ''}" type="button" ${!podeReenviar || reenviando ? 'disabled' : ''} onclick="RH.reenviar(${Number(item.id)})">${reenviando ? 'Reenviando...' : 'Reenviar para nuvem'}</button>` : ''}
                     </div>
                 </td>
             </tr>
         `;
+            }).join('');
         }
 
-        function montarPaginacao(totalPaginas, paginaAtualLocal) {
-            const wrap = document.getElementById("historicoPaginacao");
-            wrap.innerHTML = "";
+        function renderStats() {
+            const total = state.total || 0;
+            const sucesso = state.items.filter(x => normalizeStatus(x.status_upload) === 'SUCESSO').length;
+            const erro = state.items.filter(x => normalizeStatus(x.status_upload) === 'ERRO').length;
+            const remotoPendente = state.items.filter(x => !hasRemote(x)).length;
 
-            if (!totalPaginas || totalPaginas <= 1) return;
+            els.statTotal.textContent = total;
+            els.statSucesso.textContent = sucesso;
+            els.statErro.textContent = erro;
+            els.statRemotoPendente.textContent = remotoPendente;
 
-            function criarBotao(label, pagina, disabled, active) {
-                const btn = document.createElement("button");
-                btn.type = "button";
-                btn.className = "pagination-btn" + (active ? " active" : "");
-                btn.textContent = label;
-                btn.disabled = !!disabled;
-
-                btn.addEventListener("click", function () {
-                    if (!disabled && !active) {
-                        carregarHistorico(pagina);
-                    }
-                });
-
-                wrap.appendChild(btn);
-            }
-
-            criarBotao("«", paginaAtualLocal - 1, paginaAtualLocal <= 1, false);
-
-            for (let i = 1; i <= totalPaginas; i++) {
-                criarBotao(String(i), i, false, i === paginaAtualLocal);
-            }
-
-            criarBotao("»", paginaAtualLocal + 1, paginaAtualLocal >= totalPaginas, false);
+            const inicio = total ? (((state.page - 1) * state.pageSize) + 1) : 0;
+            const fim = total ? Math.min(state.page * state.pageSize, total) : 0;
+            els.resumo.textContent = total
+                ? `Mostrando ${inicio} até ${fim} de ${total} registro(s).`
+                : 'Nenhum registro retornado para os filtros informados.';
         }
 
-        async function carregarHistorico(page = 1) {
-            paginaAtual = page;
+        function renderPagination() {
+            const pages = Math.max(1, Number(state.pages || 1));
+            const current = Math.max(1, Number(state.page || 1));
+            let start = Math.max(1, current - 2);
+            let end = Math.min(pages, current + 2);
 
-            const data = document.getElementById("filtroData").value;
-            const status = document.getElementById("filtroStatus").value;
-            const pageSize = document.getElementById("filtroPageSize").value;
+            if ((end - start) < 4) {
+                if (start === 1) {
+                    end = Math.min(pages, start + 4);
+                } else if (end === pages) {
+                    start = Math.max(1, pages - 4);
+                }
+            }
 
-            const params = new URLSearchParams();
-            params.set("page", page);
-            params.set("pageSize", pageSize);
+            const buttons = [];
+            buttons.push(`<button class="rh-page-btn" ${current <= 1 ? 'disabled' : ''} onclick="RH.carregar(${current - 1})">‹</button>`);
 
-            if (data) params.set("data", data);
-            if (status) params.set("status", status);
+            for (let i = start; i <= end; i++) {
+                buttons.push(`<button class="rh-page-btn ${i === current ? 'active' : ''}" onclick="RH.carregar(${i})">${i}</button>`);
+            }
 
-            const tbody = document.querySelector("#tabelaHistorico tbody");
-            tbody.innerHTML = `
+            buttons.push(`<button class="rh-page-btn" ${current >= pages ? 'disabled' : ''} onclick="RH.carregar(${current + 1})">›</button>`);
+            els.paginacao.innerHTML = buttons.join('');
+        }
+
+        async function carregar(page = 1) {
+            state.page = page;
+            state.pageSize = Number(els.pageSize.value || 20);
+
+            els.tabelaBody.innerHTML = `
             <tr>
-                <td colspan="8" class="text-center text-muted">Carregando...</td>
+                <td colspan="8">
+                    <div class="rh-empty">
+                        <div class="rh-empty-icon">⏳</div>
+                        <div>Carregando histórico...</div>
+                    </div>
+                </td>
             </tr>
         `;
 
             try {
-                const response = await fetch(API_URL + "?" + params.toString(), {
-                    headers: {
-                        "Accept": "application/json"
-                    }
+                const resp = await fetch('/admin/api/relatorio/pdf/historico?' + montarQuery(page), {
+                    credentials: 'same-origin'
                 });
 
-                const text = await response.text();
+                const data = await resp.json();
 
-                let json = null;
-                try {
-                    json = JSON.parse(text);
-                } catch (e) {
-                    console.error("Resposta inválida da API:", text);
-                    throw new Error("A API do histórico retornou uma resposta inválida.");
+                if (!resp.ok || !data.success) {
+                    throw new Error(data.message || data.error || 'Falha ao carregar o histórico.');
                 }
 
-                if (!response.ok || !json.success) {
-                    throw new Error(json.message || "Erro ao carregar histórico.");
-                }
+                state.page = Number(data.page || 1);
+                state.pages = Number(data.pages || 1);
+                state.total = Number(data.total || 0);
+                state.items = Array.isArray(data.items) ? data.items : [];
+                state.filteredItems = aplicarBuscaClientSide(state.items);
 
-                const items = Array.isArray(json.items) ? json.items : [];
-
-                if (!items.length) {
-                    tbody.innerHTML = `
-                    <tr>
-                        <td colspan="8" class="empty-state">Nenhum registro encontrado.</td>
-                    </tr>
-                `;
-                } else {
-                    tbody.innerHTML = items.map(montarLinha).join("");
-                }
-
-                document.getElementById("historicoInfo").innerHTML =
-                    `Total: <strong>${json.total}</strong> registro(s) | Página <strong>${json.page}</strong> de <strong>${json.pages || 1}</strong>`;
-
-                montarPaginacao(json.pages || 1, json.page || 1);
-
-            } catch (err) {
-                console.error("Erro ao carregar histórico:", err);
-                tbody.innerHTML = `
+                renderStats();
+                renderTable();
+                renderPagination();
+            } catch (error) {
+                els.tabelaBody.innerHTML = `
                 <tr>
-                    <td colspan="8" class="text-danger text-center">Erro ao carregar histórico.</td>
+                    <td colspan="8">
+                        <div class="rh-empty">
+                            <div class="rh-empty-icon">⚠️</div>
+                            <div><strong>Não foi possível carregar o histórico.</strong></div>
+                            <div style="margin-top:6px;">${escapeHtml(error.message || 'Erro inesperado.')}</div>
+                        </div>
+                    </td>
                 </tr>
             `;
-                document.getElementById("historicoInfo").textContent = "Erro ao carregar histórico.";
-                document.getElementById("historicoPaginacao").innerHTML = "";
+                els.resumo.textContent = 'Falha ao carregar dados.';
+                toast(error.message || 'Falha ao carregar histórico.', 'error');
             }
         }
 
-        document.getElementById("btnFiltrar").addEventListener("click", function () {
-            carregarHistorico(1);
+        function obterItem(id) {
+            return state.items.find(item => Number(item.id) === Number(id)) || null;
+        }
+
+        function abrirModal(html) {
+            els.modalBody.innerHTML = html;
+            els.modal.classList.add('show');
+        }
+
+        function fecharModal() {
+            els.modal.classList.remove('show');
+        }
+
+        function verDetalhes(id) {
+            const item = obterItem(id);
+            if (!item) return;
+
+            const rs = remoteStatus(item);
+
+            abrirModal(`
+            <div class="rh-detail-grid">
+                <div class="rh-detail-item"><span class="rh-detail-label">ID</span><div class="rh-detail-value">#${escapeHtml(item.id)}</div></div>
+                <div class="rh-detail-item"><span class="rh-detail-label">Status do upload</span><div class="rh-detail-value">${statusBadge(item.status_upload)}</div></div>
+                <div class="rh-detail-item"><span class="rh-detail-label">Status da nuvem</span><div class="rh-detail-value"><span class="rh-badge ${rs.cls}">● ${escapeHtml(rs.label)}</span></div></div>
+                <div class="rh-detail-item"><span class="rh-detail-label">Data do relatório</span><div class="rh-detail-value">${formatDate(item.data_relatorio)}</div></div>
+                <div class="rh-detail-item"><span class="rh-detail-label">Arquivo</span><div class="rh-detail-value">${escapeHtml(item.nome_arquivo || '-')}</div></div>
+                <div class="rh-detail-item"><span class="rh-detail-label">Responsável</span><div class="rh-detail-value">${escapeHtml(item.responsavel || 'Não informado')}</div></div>
+                <div class="rh-detail-item"><span class="rh-detail-label">CPF do responsável</span><div class="rh-detail-value">${escapeHtml(item.cpf_responsavel || 'Não informado')}</div></div>
+                <div class="rh-detail-item"><span class="rh-detail-label">Gerado em</span><div class="rh-detail-value">${formatDate(item.data_geracao)}</div></div>
+                <div class="rh-detail-item"><span class="rh-detail-label">Upload em</span><div class="rh-detail-value">${formatDate(item.data_upload)}</div></div>
+                <div class="rh-detail-item" style="grid-column:1 / -1"><span class="rh-detail-label">Caminho remoto</span><div class="rh-detail-value">${escapeHtml(item.caminho_remoto || 'Não informado')}</div></div>
+                <div class="rh-detail-item" style="grid-column:1 / -1"><span class="rh-detail-label">URL pública</span><div class="rh-detail-value">${item.url_publica ? `<a href="${escapeHtml(item.url_publica)}" target="_blank" rel="noopener">${escapeHtml(item.url_publica)}</a>` : 'Não disponível'}</div></div>
+            </div>
+            ${item.mensagem_erro ? `<div class="rh-error-box"><strong>Mensagem de erro:</strong>\n${escapeHtml(item.mensagem_erro)}</div>` : ''}
+        `);
+        }
+
+        async function reenviar(id) {
+            const item = obterItem(id);
+            if (!item || !item.data_relatorio) {
+                toast('Não foi possível identificar a data do relatório para reenviar.', 'warning');
+                return;
+            }
+
+            if (!confirm(`Deseja reenviar o relatório da data ${formatDate(item.data_relatorio)} para a nuvem?`)) {
+                return;
+            }
+
+            state.reenviando[id] = true;
+            renderTable();
+
+            try {
+                const url = `/admin/api/relatorio/pdf?data=${encodeURIComponent(item.data_relatorio)}&upload=1`;
+                const resp = await fetch(url, { credentials: 'same-origin' });
+                const data = await resp.json();
+
+                if (!resp.ok || !data.success) {
+                    throw new Error(data.message || data.error || 'Falha ao reenviar o relatório.');
+                }
+
+                toast('Relatório reenviado com sucesso para a nuvem.', 'success');
+                await carregar(state.page);
+            } catch (error) {
+                toast(error.message || 'Falha ao reenviar para a nuvem.', 'error');
+            } finally {
+                delete state.reenviando[id];
+                renderTable();
+            }
+        }
+
+        function limparFiltros() {
+            els.busca.value = '';
+            els.data.value = '';
+            els.status.value = '';
+            els.pageSize.value = '20';
+            carregar(1);
+        }
+
+        function exportarTela() {
+            window.print();
+        }
+
+        els.busca.addEventListener('input', function () {
+            state.filteredItems = aplicarBuscaClientSide(state.items);
+            renderTable();
         });
 
-        document.getElementById("btnLimpar").addEventListener("click", function () {
-            document.getElementById("filtroData").value = "";
-            document.getElementById("filtroStatus").value = "";
-            document.getElementById("filtroPageSize").value = "20";
-            carregarHistorico(1);
+        els.pageSize.addEventListener('change', function () {
+            carregar(1);
         });
 
-        document.getElementById("filtroPageSize").addEventListener("change", function () {
-            carregarHistorico(1);
+        els.modal.addEventListener('click', function (e) {
+            if (e.target === els.modal) {
+                fecharModal();
+            }
         });
 
-        carregarHistorico(1);
+        window.RH = {
+            carregar,
+            limparFiltros,
+            fecharModal,
+            verDetalhes,
+            reenviar,
+            exportarTela
+        };
+
+        carregar(1);
     })();
 </script>
