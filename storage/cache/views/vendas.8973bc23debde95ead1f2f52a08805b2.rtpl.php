@@ -446,7 +446,8 @@
         senhasContagem: "/admin/api/senhas/contagem",
         fechamentoInfo: "/admin/api/relatorio/fechamento-info",
         fechamentoManual: "/admin/api/fechamento/manual",
-        fecharRelatorio: "/admin/api/relatorio/fechar"
+        fecharRelatorio: "/admin/api/relatorio/fechar",
+        syncRemoto: "/admin/api/fechamento/sync-remoto"
     };
 
 
@@ -473,6 +474,43 @@
             throw new Error(
                 (json && (json.message || json.error)) ||
                 `Falha na requisição (HTTP ${resp.status}).`
+            );
+        }
+
+        return json;
+    }
+
+    async function sincronizarFechamentoRemoto(dataRef) {
+        const resp = await fetch(API.syncRemoto, {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: "data=" + encodeURIComponent(dataRef)
+        });
+
+        const text = await resp.text();
+
+        let json = null;
+        try {
+            json = JSON.parse(text);
+        } catch (e) {
+            throw new Error("Resposta inválida ao sincronizar com a nuvem.");
+        }
+
+        if (!resp.ok || !json || json.success !== true) {
+            throw new Error(json?.message || json?.error || "Falha ao sincronizar com a nuvem.");
+        }
+
+        if (!json.sync || json.sync.remoto_ok !== true) {
+            const errRel = json.sync?.erro_tb_relatorios || "";
+            const errFech = json.sync?.erro_tb_fechamento_dia || "";
+
+            throw new Error(
+                "Fechamento salvo localmente, mas a sincronização com a nuvem falhou."
+                + (errRel ? " tb_relatorios: " + errRel : "")
+                + (errFech ? " tb_fechamento_dia: " + errFech : "")
             );
         }
 
@@ -998,6 +1036,7 @@
         }
 
         try {
+            const dataRef = getHojeKey();
             const endpoint = modoFechamentoAtual === 'manual' ? API.fechamentoManual : API.fechamentoInfo;
 
             await apiFetch(endpoint, {
@@ -1006,7 +1045,7 @@
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    data: getHojeKey(),
+                    data: dataRef,
                     qtd_refeicoes_servidas: qtd,
                     cardapio: cardapio,
                     ocorrencias: ocorrencias
@@ -1019,9 +1058,15 @@
                 });
             }
 
+            if (btnSalvar) {
+                btnSalvar.textContent = "Enviando para nuvem...";
+            }
+
+            await sincronizarFechamentoRemoto(dataRef);
+
             alert(modoFechamentoAtual === 'manual'
-                ? "Informações salvas e dia encerrado com sucesso."
-                : "Informações salvas e dia fechado com sucesso.");
+                ? "Informações salvas, dia encerrado e nuvem sincronizada com sucesso."
+                : "Informações salvas, dia fechado e nuvem sincronizada com sucesso.");
 
             const el = document.getElementById("modalFechamentoLocal");
             const modal = bootstrap.Modal.getInstance(el);
@@ -1040,7 +1085,7 @@
 
             const status = document.getElementById("statusSenhas");
             if (status) {
-                status.textContent = "Fechamento realizado. O dia está encerrado.";
+                status.textContent = "Fechamento realizado e sincronizado com a nuvem.";
             }
 
         } catch (e) {

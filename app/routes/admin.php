@@ -1107,6 +1107,278 @@ if (!function_exists('uploadRelatorioRemoto')) {
     }
 }
 
+
+
+// ==========================================
+// 🔁 SINCRONIZAÇÃO REMOTA DE FECHAMENTO
+// tb_relatorios + tb_fechamento_dia
+// ==========================================
+
+if (!function_exists('sincronizarTbRelatoriosRemoto')) {
+    function sincronizarTbRelatoriosRemoto(PDO $pdo, array $dados)
+    {
+        $sql = "
+            INSERT INTO tb_relatorios (
+                Idade_3a17Masculino,
+                Idade_3a17Masculino_PCD,
+                Idade_3a17Feminino,
+                Idade_3a17Feminino_PCD,
+                Idade_18a59Masculino,
+                Idade_18a59Masculino_PCD,
+                Idade_17a59Feminino,
+                Idade_17a59Feminino_PCD,
+                Idade_60Masculino,
+                Idade_60Masculino_PCD,
+                Idade_60Feminino,
+                Idade_60Feminino_PCD,
+                Situacao_risco_masculino,
+                Situacao_risco_Feminino,
+                Deficientes,
+                senhas_genericas,
+                Total_pessoas_atendidas,
+                qtd_refeicoes_servidas,
+                ocorrencias,
+                cardapio,
+                nome_banco,
+                refeicoes_ofertadas,
+                sobra_refeicoes,
+                sobra_senhas,
+                data,
+                fechado
+            ) VALUES (
+                :Idade_3a17Masculino,
+                :Idade_3a17Masculino_PCD,
+                :Idade_3a17Feminino,
+                :Idade_3a17Feminino_PCD,
+                :Idade_18a59Masculino,
+                :Idade_18a59Masculino_PCD,
+                :Idade_17a59Feminino,
+                :Idade_17a59Feminino_PCD,
+                :Idade_60Masculino,
+                :Idade_60Masculino_PCD,
+                :Idade_60Feminino,
+                :Idade_60Feminino_PCD,
+                :Situacao_risco_masculino,
+                :Situacao_risco_Feminino,
+                :Deficientes,
+                :senhas_genericas,
+                :Total_pessoas_atendidas,
+                :qtd_refeicoes_servidas,
+                :ocorrencias,
+                :cardapio,
+                :nome_banco,
+                :refeicoes_ofertadas,
+                :sobra_refeicoes,
+                :sobra_senhas,
+                :data,
+                :fechado
+            )
+            ON DUPLICATE KEY UPDATE
+                Idade_3a17Masculino = VALUES(Idade_3a17Masculino),
+                Idade_3a17Masculino_PCD = VALUES(Idade_3a17Masculino_PCD),
+                Idade_3a17Feminino = VALUES(Idade_3a17Feminino),
+                Idade_3a17Feminino_PCD = VALUES(Idade_3a17Feminino_PCD),
+                Idade_18a59Masculino = VALUES(Idade_18a59Masculino),
+                Idade_18a59Masculino_PCD = VALUES(Idade_18a59Masculino_PCD),
+                Idade_17a59Feminino = VALUES(Idade_17a59Feminino),
+                Idade_17a59Feminino_PCD = VALUES(Idade_17a59Feminino_PCD),
+                Idade_60Masculino = VALUES(Idade_60Masculino),
+                Idade_60Masculino_PCD = VALUES(Idade_60Masculino_PCD),
+                Idade_60Feminino = VALUES(Idade_60Feminino),
+                Idade_60Feminino_PCD = VALUES(Idade_60Feminino_PCD),
+                Situacao_risco_masculino = VALUES(Situacao_risco_masculino),
+                Situacao_risco_Feminino = VALUES(Situacao_risco_Feminino),
+                Deficientes = VALUES(Deficientes),
+                senhas_genericas = VALUES(senhas_genericas),
+                Total_pessoas_atendidas = VALUES(Total_pessoas_atendidas),
+                qtd_refeicoes_servidas = VALUES(qtd_refeicoes_servidas),
+                ocorrencias = VALUES(ocorrencias),
+                cardapio = VALUES(cardapio),
+                nome_banco = VALUES(nome_banco),
+                refeicoes_ofertadas = VALUES(refeicoes_ofertadas),
+                sobra_refeicoes = VALUES(sobra_refeicoes),
+                sobra_senhas = VALUES(sobra_senhas),
+                fechado = VALUES(fechado)
+        ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(
+            ':Idade_3a17Masculino' => isset($dados['Idade_3a17Masculino']) ? (int)$dados['Idade_3a17Masculino'] : 0,
+            ':Idade_3a17Masculino_PCD' => isset($dados['Idade_3a17Masculino_PCD']) ? (int)$dados['Idade_3a17Masculino_PCD'] : 0,
+            ':Idade_3a17Feminino' => isset($dados['Idade_3a17Feminino']) ? (int)$dados['Idade_3a17Feminino'] : 0,
+            ':Idade_3a17Feminino_PCD' => isset($dados['Idade_3a17Feminino_PCD']) ? (int)$dados['Idade_3a17Feminino_PCD'] : 0,
+            ':Idade_18a59Masculino' => isset($dados['Idade_18a59Masculino']) ? (int)$dados['Idade_18a59Masculino'] : 0,
+            ':Idade_18a59Masculino_PCD' => isset($dados['Idade_18a59Masculino_PCD']) ? (int)$dados['Idade_18a59Masculino_PCD'] : 0,
+            ':Idade_17a59Feminino' => isset($dados['Idade_17a59Feminino']) ? (int)$dados['Idade_17a59Feminino'] : 0,
+            ':Idade_17a59Feminino_PCD' => isset($dados['Idade_17a59Feminino_PCD']) ? (int)$dados['Idade_17a59Feminino_PCD'] : 0,
+            ':Idade_60Masculino' => isset($dados['Idade_60Masculino']) ? (int)$dados['Idade_60Masculino'] : 0,
+            ':Idade_60Masculino_PCD' => isset($dados['Idade_60Masculino_PCD']) ? (int)$dados['Idade_60Masculino_PCD'] : 0,
+            ':Idade_60Feminino' => isset($dados['Idade_60Feminino']) ? (int)$dados['Idade_60Feminino'] : 0,
+            ':Idade_60Feminino_PCD' => isset($dados['Idade_60Feminino_PCD']) ? (int)$dados['Idade_60Feminino_PCD'] : 0,
+            ':Situacao_risco_masculino' => isset($dados['Situacao_risco_masculino']) ? (int)$dados['Situacao_risco_masculino'] : 0,
+            ':Situacao_risco_Feminino' => isset($dados['Situacao_risco_Feminino']) ? (int)$dados['Situacao_risco_Feminino'] : 0,
+            ':Deficientes' => isset($dados['Deficientes']) ? (int)$dados['Deficientes'] : 0,
+            ':senhas_genericas' => isset($dados['senhas_genericas']) ? (int)$dados['senhas_genericas'] : 0,
+            ':Total_pessoas_atendidas' => isset($dados['Total_pessoas_atendidas']) ? (int)$dados['Total_pessoas_atendidas'] : 0,
+            ':qtd_refeicoes_servidas' => isset($dados['qtd_refeicoes_servidas']) ? (int)$dados['qtd_refeicoes_servidas'] : 0,
+            ':ocorrencias' => isset($dados['ocorrencias']) ? $dados['ocorrencias'] : '',
+            ':cardapio' => isset($dados['cardapio']) ? $dados['cardapio'] : '',
+            ':nome_banco' => isset($dados['nome_banco']) ? $dados['nome_banco'] : '',
+            ':refeicoes_ofertadas' => isset($dados['refeicoes_ofertadas']) ? (int)$dados['refeicoes_ofertadas'] : 0,
+            ':sobra_refeicoes' => isset($dados['sobra_refeicoes']) ? (int)$dados['sobra_refeicoes'] : 0,
+            ':sobra_senhas' => isset($dados['sobra_senhas']) ? (int)$dados['sobra_senhas'] : 0,
+            ':data' => $dados['data'],
+            ':fechado' => isset($dados['fechado']) ? (int)$dados['fechado'] : 0
+        ));
+
+        return true;
+    }
+}
+
+if (!function_exists('sincronizarTbFechamentoDiaRemoto')) {
+    function sincronizarTbFechamentoDiaRemoto(PDO $pdo, array $dados)
+    {
+        $sql = "
+            INSERT INTO tb_fechamento_dia (
+                data_refeicao,
+                limite,
+                total,
+                fechado,
+                fechado_em,
+                atualizado_em
+            ) VALUES (
+                :data_refeicao,
+                :limite,
+                :total,
+                :fechado,
+                :fechado_em,
+                :atualizado_em
+            )
+            ON DUPLICATE KEY UPDATE
+                limite = VALUES(limite),
+                total = VALUES(total),
+                fechado = VALUES(fechado),
+                fechado_em = VALUES(fechado_em),
+                atualizado_em = VALUES(atualizado_em)
+        ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(
+            ':data_refeicao' => $dados['data_refeicao'],
+            ':limite' => isset($dados['limite']) ? (int)$dados['limite'] : 0,
+            ':total' => isset($dados['total']) ? (int)$dados['total'] : 0,
+            ':fechado' => isset($dados['fechado']) ? (int)$dados['fechado'] : 0,
+            ':fechado_em' => isset($dados['fechado_em']) ? $dados['fechado_em'] : null,
+            ':atualizado_em' => isset($dados['atualizado_em']) ? $dados['atualizado_em'] : null
+        ));
+
+        return true;
+    }
+}
+
+if (!function_exists('sincronizarFechamentoRemotoCompleto')) {
+    function sincronizarFechamentoRemotoCompleto(Sql $sql, $dataRef, array $configUpload = array())
+    {
+        $resultado = array(
+            'tb_relatorios_ok' => false,
+            'tb_fechamento_dia_ok' => false,
+            'remoto_ok' => false,
+            'erro_tb_relatorios' => null,
+            'erro_tb_fechamento_dia' => null
+        );
+
+        try {
+            $pdoRemoto = getPdoRelatorioRemoto();
+
+            if (!($pdoRemoto instanceof PDO)) {
+                throw new Exception('PDO remoto inválido.');
+            }
+
+            $dadosRel = $sql->select("
+                SELECT *
+                FROM tb_relatorios
+                WHERE data = :data
+                LIMIT 1
+            ", array(
+                ':data' => $dataRef
+            ));
+
+            $dadosFech = $sql->select("
+                SELECT *
+                FROM tb_fechamento_dia
+                WHERE data_refeicao = :data
+                LIMIT 1
+            ", array(
+                ':data' => $dataRef
+            ));
+
+            if (!isset($dadosRel[0])) {
+                throw new Exception('tb_relatorios não encontrado.');
+            }
+
+            if (!isset($dadosFech[0])) {
+                throw new Exception('tb_fechamento_dia não encontrado.');
+            }
+
+            $rel = $dadosRel[0];
+            $fech = $dadosFech[0];
+
+            try {
+                sincronizarTbRelatoriosRemoto($pdoRemoto, $rel);
+                $resultado['tb_relatorios_ok'] = true;
+            } catch (Exception $e) {
+                $resultado['erro_tb_relatorios'] = $e->getMessage();
+                if (!empty($configUpload)) {
+                    escreverLogRelatorio($configUpload, 'ERRO tb_relatorios remoto: ' . $e->getMessage());
+                }
+            }
+
+            try {
+                sincronizarTbFechamentoDiaRemoto($pdoRemoto, $fech);
+                $resultado['tb_fechamento_dia_ok'] = true;
+            } catch (Exception $e) {
+                $resultado['erro_tb_fechamento_dia'] = $e->getMessage();
+                if (!empty($configUpload)) {
+                    escreverLogRelatorio($configUpload, 'ERRO tb_fechamento_dia remoto: ' . $e->getMessage());
+                }
+            }
+
+            $resultado['remoto_ok'] = $resultado['tb_relatorios_ok'] && $resultado['tb_fechamento_dia_ok'];
+
+            return $resultado;
+        } catch (Exception $e) {
+            $resultado['erro_tb_relatorios'] = $e->getMessage();
+            $resultado['erro_tb_fechamento_dia'] = $e->getMessage();
+
+            if (!empty($configUpload)) {
+                escreverLogRelatorio($configUpload, 'ERRO geral sync remoto: ' . $e->getMessage());
+            }
+
+            return $resultado;
+        }
+    }
+}
+
+$app->map('/admin/api/fechamento/sync-remoto', function () {
+
+    $sql = new Sql();
+
+    $data = isset($_REQUEST['data']) ? $_REQUEST['data'] : date('Y-m-d');
+
+    $configUpload = getRelatorioUploadConfig();
+
+    $sync = sincronizarFechamentoRemotoCompleto($sql, $data, $configUpload);
+
+    header('Content-Type: application/json');
+    echo json_encode([
+        'success' => true,
+        'data' => $data,
+        'sync' => $sync
+    ]);
+    exit;
+})->via('GET', 'POST');
+
+
 $app->get('/admin/api/relatorio/pdf', function () {
 
     $sql = new Sql();
@@ -1781,7 +2053,36 @@ $app->get('/admin/api/relatorio/pdf', function () {
     $dompdf->render();
 
     $pdfOutput = $dompdf->output();
-    $nomeArquivo = 'relatorio_fechamento_' . str_replace('/', '-', $dataSql) . '_' . date('H-i-s') . '.pdf';
+    // ===============================
+    // 🔥 NOME DO ARQUIVO PERSONALIZADO
+    // ===============================
+    $nomeBaseArquivo = trim((string)$nomeBanco);
+
+    if ($nomeBaseArquivo === '') {
+        $nomeBaseArquivo = 'relatorio';
+    }
+
+    // deixa minúsculo
+    $nomeBaseArquivo = strtolower($nomeBaseArquivo);
+
+    // remove acentos
+    $nomeBaseArquivo = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $nomeBaseArquivo);
+
+    // mantém só letras, números, _ e -
+    $nomeBaseArquivo = preg_replace('/[^a-z0-9_-]+/i', '_', $nomeBaseArquivo);
+
+    // remove duplicações
+    $nomeBaseArquivo = preg_replace('/_+/', '_', $nomeBaseArquivo);
+
+    // limpa bordas
+    $nomeBaseArquivo = trim($nomeBaseArquivo, '_-');
+
+    if ($nomeBaseArquivo === '') {
+        $nomeBaseArquivo = 'relatorio';
+    }
+
+    // nome final
+    $nomeArquivo = $nomeBaseArquivo . '_' . $dataSql . '_' . date('H-i-s') . '.pdf';
 
     if ($upload === 1) {
         $dirTemp = getRelatorioTempDir($config);
@@ -1905,237 +2206,6 @@ $app->get('/admin/api/relatorio/pdf', function () {
     exit;
 });
 
-
-/*
-|--------------------------------------------------------------------------
-| DASHBOARD GERAL + BACKUP COM ENVIO
-|--------------------------------------------------------------------------
-*/
-
-if (!function_exists('backupExecutarComEnvio')) {
-    function backupExecutarComEnvio($force = false)
-    {
-        $resultado = array(
-            'success' => false,
-            'message' => '',
-            'backup_file' => null,
-            'upload' => null
-        );
-
-        try {
-            if (!function_exists('backupAutomatico')) {
-                throw new Exception('backupAutomatico() não está disponível.');
-            }
-
-            backupAutomatico($force ? true : false, 0, 'backup_manual_envio');
-
-            $arquivoZip = null;
-
-            if (defined('BACKUP_DIR') && is_dir(BACKUP_DIR)) {
-                $arquivos = glob(rtrim(BACKUP_DIR, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '*.zip');
-                if ($arquivos) {
-                    usort($arquivos, function ($a, $b) {
-                        return filemtime($b) <=> filemtime($a);
-                    });
-                    $arquivoZip = $arquivos[0];
-                }
-            }
-
-            if (!$arquivoZip || !file_exists($arquivoZip)) {
-                throw new Exception('Backup executado, mas o arquivo ZIP não foi localizado.');
-            }
-
-            $resultado['backup_file'] = $arquivoZip;
-
-            if (!function_exists('getRelatorioUploadConfig') || !function_exists('uploadRelatorioRemoto')) {
-                throw new Exception('Funções de upload remoto não estão disponíveis.');
-            }
-
-            $config = getRelatorioUploadConfig();
-            $nomeArquivo = basename($arquivoZip);
-
-            $upload = uploadRelatorioRemoto($config, $arquivoZip, $nomeArquivo);
-            $resultado['upload'] = $upload;
-            $resultado['success'] = true;
-            $resultado['message'] = 'Backup executado e enviado com sucesso.';
-
-            if (function_exists('escreverLogRelatorio')) {
-                escreverLogRelatorio($config, 'SUCESSO envio de backup: ' . $nomeArquivo . ' | URL: ' . $upload['url_publica']);
-            }
-
-            return $resultado;
-        } catch (Exception $e) {
-            $resultado['message'] = $e->getMessage();
-
-            if (function_exists('getRelatorioUploadConfig') && function_exists('escreverLogRelatorio')) {
-                try {
-                    $config = getRelatorioUploadConfig();
-                    escreverLogRelatorio($config, 'ERRO backup+envio: ' . $e->getMessage());
-                } catch (Exception $ignored) {
-                }
-            }
-
-            return $resultado;
-        }
-    }
-}
-
-$app->get('/admin/dashboard/geral', function () {
-
-    Funcionarios::checkPermission('DASHBOARD_VIEW');
-
-    $page = new PageAdmin();
-    $page->setTpl('admin/dashboard-geral');
-});
-
-$app->get('/admin/api/dashboard/geral', function () {
-
-    header('Content-Type: application/json; charset=utf-8');
-
-    try {
-        Funcionarios::checkPermission('DASHBOARD_VIEW');
-
-        $sql = new Sql();
-
-        $titulares = $sql->select("SELECT COUNT(*) AS total FROM tb_titular");
-        $dependentes = $sql->select("SELECT COUNT(*) AS total FROM tb_dependentes");
-        $pdfs = $sql->select("SELECT COUNT(*) AS total FROM tb_relatorios_pdf");
-        $pdfsStatus = $sql->select("
-            SELECT status_upload, COUNT(*) AS total
-            FROM tb_relatorios_pdf
-            GROUP BY status_upload
-        ");
-
-        $hoje = date('Y-m-d');
-
-        $relHoje = $sql->select("
-            SELECT 
-                COALESCE(Total_pessoas_atendidas,0) AS atendimentos_hoje,
-                COALESCE(qtd_refeicoes_servidas,0) AS refeicoes_hoje
-            FROM tb_relatorios
-            WHERE data = :data
-            LIMIT 1
-        ", array(':data' => $hoje));
-
-        $ultimoBackup = function_exists('getUltimoBackup') ? getUltimoBackup() : null;
-
-        $logsBackup = array();
-        if (function_exists('getBackupNotifications')) {
-            $logsBackup = getBackupNotifications(10);
-        }
-
-        $remoteDbOk = false;
-        $remoteDbMessage = 'Banco remoto não testado.';
-        if (function_exists('getPdoRelatorioRemoto')) {
-            try {
-                $pdo = getPdoRelatorioRemoto();
-                if ($pdo instanceof PDO) {
-                    $pdo->query('SELECT 1');
-                    $remoteDbOk = true;
-                    $remoteDbMessage = 'Conexão remota validada com sucesso.';
-                } else {
-                    $remoteDbMessage = 'Banco remoto desativado na configuração.';
-                }
-            } catch (Exception $e) {
-                $remoteDbMessage = $e->getMessage();
-            }
-        }
-
-        $uploadsOk = 0;
-        $uploadsErro = 0;
-        foreach ($pdfsStatus as $row) {
-            if (strtoupper((string)$row['status_upload']) === 'SUCESSO') {
-                $uploadsOk = (int)$row['total'];
-            }
-            if (strtoupper((string)$row['status_upload']) === 'ERRO') {
-                $uploadsErro = (int)$row['total'];
-            }
-        }
-
-        $recentesPdfs = $sql->select("
-            SELECT id, nome_arquivo, status_upload, responsavel, data_geracao
-            FROM tb_relatorios_pdf
-            ORDER BY id DESC
-            LIMIT 5
-        ");
-
-        $recentesBackups = array();
-        $backupsEnvio = 0;
-        $backupsErro = 0;
-
-        foreach ($logsBackup as $item) {
-            $mensagem = isset($item['mensagem']) ? (string)$item['mensagem'] : '';
-            $status = stripos($mensagem, 'erro') !== false ? 'ERRO' : 'SUCESSO';
-
-            if (stripos($mensagem, 'envio') !== false || stripos($mensagem, 'upload') !== false) {
-                $backupsEnvio++;
-            }
-            if ($status === 'ERRO') {
-                $backupsErro++;
-            }
-
-            $recentesBackups[] = array(
-                'contexto' => isset($item['contexto']) ? $item['contexto'] : 'backup',
-                'status' => $status,
-                'data_execucao' => isset($item['data']) ? $item['data'] : null,
-                'mensagem' => $mensagem
-            );
-        }
-
-        echo json_encode(array(
-            'success' => true,
-            'total_titulares' => isset($titulares[0]['total']) ? (int)$titulares[0]['total'] : 0,
-            'total_dependentes' => isset($dependentes[0]['total']) ? (int)$dependentes[0]['total'] : 0,
-            'total_pdfs' => isset($pdfs[0]['total']) ? (int)$pdfs[0]['total'] : 0,
-            'atendimentos_hoje' => isset($relHoje[0]['atendimentos_hoje']) ? (int)$relHoje[0]['atendimentos_hoje'] : 0,
-            'refeicoes_hoje' => isset($relHoje[0]['refeicoes_hoje']) ? (int)$relHoje[0]['refeicoes_hoje'] : 0,
-            'uploads_ok' => $uploadsOk,
-            'uploads_erro' => $uploadsErro,
-            'ultimo_backup' => $ultimoBackup,
-            'recentes_pdfs' => $recentesPdfs,
-            'recentes_backups' => $recentesBackups,
-            'remote_db_ok' => $remoteDbOk,
-            'remote_db_message' => $remoteDbMessage,
-            'backup_send_enabled' => true,
-            'backups_envio' => $backupsEnvio,
-            'backups_erro' => $backupsErro
-        ));
-        exit;
-    } catch (Exception $e) {
-        http_response_code(500);
-        echo json_encode(array(
-            'success' => false,
-            'error' => $e->getMessage()
-        ));
-        exit;
-    }
-});
-
-$app->post('/admin/api/backup/run-and-send', function () {
-
-    header('Content-Type: application/json; charset=utf-8');
-
-    try {
-        Funcionarios::checkPermission('BACKUP_RUN');
-
-        $resultado = backupExecutarComEnvio(true);
-
-        echo json_encode(array(
-            'success' => !empty($resultado['success']),
-            'message' => isset($resultado['message']) ? $resultado['message'] : 'Backup executado.',
-            'data' => $resultado
-        ));
-        exit;
-    } catch (Exception $e) {
-        http_response_code(500);
-        echo json_encode(array(
-            'success' => false,
-            'error' => $e->getMessage(),
-            'message' => $e->getMessage()
-        ));
-        exit;
-    }
-});
 
 /*
 |--------------------------------------------------------------------------

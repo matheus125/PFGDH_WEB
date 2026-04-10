@@ -45,3 +45,12 @@
 [2026-04-07 22:16:12] SUCESSO upload PDF: relatorio_fechamento_2026-04-07_22-16-09.pdf | URL: https://ms-tecnologia.app.br/prato/relatorios/relatorio_fechamento_2026-04-07_22-16-09.pdf
 [2026-04-07 22:19:14] ERRO backup+envio: Backup executado, mas o arquivo ZIP não foi localizado.
 [2026-04-07 22:31:40] ERRO backup+envio: Backup executado, mas o arquivo ZIP não foi localizado.
+[2026-04-10 10:01:34] ERRO geral sync remoto: tb_relatorios não encontrado.
+[2026-04-10 10:04:06] ERRO geral sync remoto: tb_fechamento_dia não encontrado.
+[2026-04-10 10:05:30] ERRO geral sync remoto: tb_fechamento_dia não encontrado.
+[2026-04-10 10:07:57] ERRO tb_fechamento_dia remoto: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'mat06153_portal_relatorios.tb_fechamento_dia' doesn't exist
+[2026-04-10 10:08:02] ERRO tb_fechamento_dia remoto: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'mat06153_portal_relatorios.tb_fechamento_dia' doesn't exist
+[2026-04-10 10:09:43] ERRO tb_fechamento_dia remoto: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'mat06153_portal_relatorios.tb_fechamento_dia' doesn't exist
+[2026-04-10 10:16:23] SUCESSO upload PDF: relatorio_fechamento_2026-04-10_10-16-22.pdf | URL: https://ms-tecnologia.app.br/prato/relatorios/relatorio_fechamento_2026-04-10_10-16-22.pdf
+[2026-04-10 10:37:02] SUCESSO upload PDF: relatorio_fechamento_2026-04-10_10-37-01.pdf | URL: https://ms-tecnologia.app.br/prato/relatorios/relatorio_fechamento_2026-04-10_10-37-01.pdf
+[2026-04-10 10:57:40] SUCESSO upload PDF: prato_cheio_2026-04-10_10-57-39.pdf | URL: https://ms-tecnologia.app.br/prato/relatorios/prato_cheio_2026-04-10_10-57-39.pdf
