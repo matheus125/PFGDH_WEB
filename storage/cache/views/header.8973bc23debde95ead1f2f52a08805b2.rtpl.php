@@ -1,7 +1,8 @@
 <?php if(!class_exists('Rain\Tpl')){exit;}?><!doctype html>
 <html lang="pt-br">
 
-<head charset="UTF-8">
+<head>
+  <meta charset="UTF-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>PRATO CHEIO</title>
 
@@ -40,7 +41,7 @@
       z-index: 1050 !important;
     }
   </style>
-  
+
 </head>
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -190,7 +191,7 @@
             <?php } ?>
 
 
-            
+
             <li class="nav-header titulo-menu">CADASTROS</li>
             <li class="nav-item menu-open">
               <a href="#" class="nav-link">

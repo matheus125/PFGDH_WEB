@@ -380,7 +380,7 @@ class Funcionarios extends Model
 				:perfil
 			)",
 			[
-				":nome_funcionario" => utf8_decode($this->getnome_funcionario()),
+				":nome_funcionario" => $this->getnome_funcionario(),
 				":email"            => $this->getemail(),
 				":nrphone"          => $this->getnrphone(),
 				":cpf"              => $this->getcpf(),

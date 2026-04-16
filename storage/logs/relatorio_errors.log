@@ -655,3 +655,94 @@
 [2026-04-10 10:35:33] Iniciando gerarRelatorioDia | data=2026-04-10
 [2026-04-10 10:35:33] UPSERT tb_relatorios executado | data=2026-04-10
 [2026-04-10 10:35:33] OK gerarRelatorioDia | data=2026-04-10 | coluna=data | total_encontrado=1
+[2026-04-10 12:59:58] Iniciando gerarRelatorioDia | data=2026-04-10
+[2026-04-10 12:59:58] UPSERT tb_relatorios executado | data=2026-04-10
+[2026-04-10 12:59:58] OK gerarRelatorioDia | data=2026-04-10 | coluna=data | total_encontrado=1
+[2026-04-10 12:59:58] Iniciando gerarRelatorioDia | data=2026-04-10
+[2026-04-10 12:59:59] UPSERT tb_relatorios executado | data=2026-04-10
+[2026-04-10 12:59:59] OK gerarRelatorioDia | data=2026-04-10 | coluna=data | total_encontrado=1
+[2026-04-13 11:15:23] Dia ainda aberto após venda | data=2026-04-13
+[2026-04-13 11:16:21] Dia ainda aberto após venda | data=2026-04-13
+[2026-04-13 11:18:26] Iniciando gerarRelatorioDia | data=2026-04-13
+[2026-04-13 11:18:27] UPSERT tb_relatorios executado | data=2026-04-13
+[2026-04-13 11:18:27] OK gerarRelatorioDia | data=2026-04-13 | coluna=data | total_encontrado=1
+[2026-04-13 11:18:27] Iniciando gerarRelatorioDia | data=2026-04-13
+[2026-04-13 11:18:27] UPSERT tb_relatorios executado | data=2026-04-13
+[2026-04-13 11:18:27] OK gerarRelatorioDia | data=2026-04-13 | coluna=data | total_encontrado=1
+[2026-04-13 15:41:53] Iniciando gerarRelatorioDia | data=2026-04-13
+[2026-04-13 15:41:53] UPSERT tb_relatorios executado | data=2026-04-13
+[2026-04-13 15:41:53] OK gerarRelatorioDia | data=2026-04-13 | coluna=data | total_encontrado=1
+[2026-04-13 15:41:53] Iniciando gerarRelatorioDia | data=2026-04-13
+[2026-04-13 15:41:53] UPSERT tb_relatorios executado | data=2026-04-13
+[2026-04-13 15:41:53] OK gerarRelatorioDia | data=2026-04-13 | coluna=data | total_encontrado=1
+[2026-04-13 15:41:58] Iniciando gerarRelatorioDia | data=2026-04-13
+[2026-04-13 15:41:58] UPSERT tb_relatorios executado | data=2026-04-13
+[2026-04-13 15:41:58] OK gerarRelatorioDia | data=2026-04-13 | coluna=data | total_encontrado=1
+[2026-04-13 15:42:45] Iniciando gerarRelatorioDia | data=2026-04-13
+[2026-04-13 15:42:45] UPSERT tb_relatorios executado | data=2026-04-13
+[2026-04-13 15:42:45] OK gerarRelatorioDia | data=2026-04-13 | coluna=data | total_encontrado=1
+[2026-04-13 15:42:46] Iniciando gerarRelatorioDia | data=2026-04-13
+[2026-04-13 15:42:46] UPSERT tb_relatorios executado | data=2026-04-13
+[2026-04-13 15:42:46] OK gerarRelatorioDia | data=2026-04-13 | coluna=data | total_encontrado=1
+[2026-04-13 15:43:19] Iniciando gerarRelatorioDia | data=2026-04-13
+[2026-04-13 15:43:19] UPSERT tb_relatorios executado | data=2026-04-13
+[2026-04-13 15:43:19] OK gerarRelatorioDia | data=2026-04-13 | coluna=data | total_encontrado=1
+[2026-04-14 09:15:15] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 09:15:15] ERRO ao atualizar tb_relatorios | data=2026-04-14 | msg=SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 09:15:15] ERRO rota /admin/api/relatorio/fechamento-info [GET] | data=2026-04-14 | msg=Falha ao atualizar tb_relatorios: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 09:15:15] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 09:15:15] ERRO ao atualizar tb_relatorios | data=2026-04-14 | msg=SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 09:15:15] ERRO rota /admin/api/relatorio/fechamento-info [GET] | data=2026-04-14 | msg=Falha ao atualizar tb_relatorios: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 09:58:42] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 09:58:42] ERRO ao atualizar tb_relatorios | data=2026-04-14 | msg=SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 09:58:42] ERRO rota /admin/api/relatorio/fechamento-info [GET] | data=2026-04-14 | msg=Falha ao atualizar tb_relatorios: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 09:58:42] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 09:58:42] ERRO ao atualizar tb_relatorios | data=2026-04-14 | msg=SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 09:58:42] ERRO rota /admin/api/relatorio/fechamento-info [GET] | data=2026-04-14 | msg=Falha ao atualizar tb_relatorios: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 09:59:36] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 09:59:36] ERRO ao atualizar tb_relatorios | data=2026-04-14 | msg=SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 10:00:47] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 10:00:47] ERRO ao atualizar tb_relatorios | data=2026-04-14 | msg=SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 10:00:47] ERRO rota /admin/api/relatorio/fechamento-info [GET] | data=2026-04-14 | msg=Falha ao atualizar tb_relatorios: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 10:00:47] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 10:00:47] ERRO ao atualizar tb_relatorios | data=2026-04-14 | msg=SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 10:00:47] ERRO rota /admin/api/relatorio/fechamento-info [GET] | data=2026-04-14 | msg=Falha ao atualizar tb_relatorios: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 10:22:22] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 10:22:22] ERRO ao atualizar tb_relatorios | data=2026-04-14 | msg=SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 10:22:22] ERRO rota /admin/api/relatorio/fechamento-info [GET] | data=2026-04-14 | msg=Falha ao atualizar tb_relatorios: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 10:22:22] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 10:22:22] ERRO ao atualizar tb_relatorios | data=2026-04-14 | msg=SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 10:22:22] ERRO rota /admin/api/relatorio/fechamento-info [GET] | data=2026-04-14 | msg=Falha ao atualizar tb_relatorios: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 10:22:35] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 10:22:35] ERRO ao atualizar tb_relatorios | data=2026-04-14 | msg=SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'Idade_3a17Masculino' cannot be null
+[2026-04-14 10:23:12] Dia ainda aberto após venda | data=2026-04-14
+[2026-04-14 10:23:16] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 10:23:16] UPSERT tb_relatorios executado | data=2026-04-14
+[2026-04-14 10:23:16] OK gerarRelatorioDia | data=2026-04-14 | coluna=data | total_encontrado=1
+[2026-04-14 10:23:16] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 10:23:16] UPSERT tb_relatorios executado | data=2026-04-14
+[2026-04-14 10:23:16] OK gerarRelatorioDia | data=2026-04-14 | coluna=data | total_encontrado=1
+[2026-04-14 10:23:20] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 10:23:20] UPSERT tb_relatorios executado | data=2026-04-14
+[2026-04-14 10:23:20] OK gerarRelatorioDia | data=2026-04-14 | coluna=data | total_encontrado=1
+[2026-04-14 10:24:42] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 10:24:42] UPSERT tb_relatorios executado | data=2026-04-14
+[2026-04-14 10:24:42] OK gerarRelatorioDia | data=2026-04-14 | coluna=data | total_encontrado=1
+[2026-04-14 10:24:42] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 10:24:42] UPSERT tb_relatorios executado | data=2026-04-14
+[2026-04-14 10:24:42] OK gerarRelatorioDia | data=2026-04-14 | coluna=data | total_encontrado=1
+[2026-04-14 10:25:01] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 10:25:01] UPSERT tb_relatorios executado | data=2026-04-14
+[2026-04-14 10:25:01] OK gerarRelatorioDia | data=2026-04-14 | coluna=data | total_encontrado=1
+[2026-04-14 10:50:25] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 10:50:25] UPSERT tb_relatorios executado | data=2026-04-14
+[2026-04-14 10:50:25] OK gerarRelatorioDia | data=2026-04-14 | coluna=data | total_encontrado=1
+[2026-04-14 10:50:25] Iniciando gerarRelatorioDia | data=2026-04-14
+[2026-04-14 10:50:25] UPSERT tb_relatorios executado | data=2026-04-14
+[2026-04-14 10:50:25] OK gerarRelatorioDia | data=2026-04-14 | coluna=data | total_encontrado=1
+[2026-04-14 15:23:36] Dia ainda aberto após venda | data=2026-04-14
+[2026-04-14 15:23:41] Dia ainda aberto após venda | data=2026-04-14
+[2026-04-14 15:23:47] Dia ainda aberto após venda | data=2026-04-14
+[2026-04-14 16:08:13] Dia ainda aberto após venda | data=2026-04-14
+[2026-04-14 16:13:56] Dia ainda aberto após venda | data=2026-04-14
+[2026-04-14 16:16:58] Dia ainda aberto após venda | data=2026-04-14

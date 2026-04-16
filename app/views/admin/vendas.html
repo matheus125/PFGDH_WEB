@@ -197,6 +197,64 @@
         flex-wrap: wrap;
     }
 
+    .modal-fechamento-premium .modal-title {
+        font-weight: 800;
+        color: var(--text);
+        margin: 0;
+    }
+
+    .modal-fechamento-premium .modal-subtitle {
+        font-size: .86rem;
+        color: var(--muted);
+        margin-top: 4px;
+    }
+
+    .campo-obrigatorio {
+        color: #dc2626;
+        font-weight: 800;
+        margin-left: 3px;
+    }
+
+    .fechamento-feedback {
+        border: 1px solid #fecaca;
+        background: linear-gradient(180deg, #fff1f2 0%, #ffffff 100%);
+        color: #991b1b;
+        border-radius: 14px;
+        padding: 12px 14px;
+        margin-bottom: 14px;
+        font-weight: 700;
+        box-shadow: 0 8px 18px rgba(220, 38, 38, .08);
+    }
+
+    .campo-erro {
+        display: none;
+        color: #b91c1c;
+        font-size: .84rem;
+        font-weight: 600;
+        margin-top: 7px;
+    }
+
+    #modalFechamentoLocal .form-control.is-invalid-premium {
+        border-color: #dc2626 !important;
+        background: #fff7f7;
+        box-shadow: 0 0 0 4px rgba(220, 38, 38, .10);
+    }
+
+    #modalFechamentoLocal .form-control.is-valid-premium {
+        border-color: #16a34a !important;
+        box-shadow: 0 0 0 4px rgba(22, 163, 74, .10);
+    }
+
+    #modalFechamentoLocal textarea.form-control {
+        min-height: 112px;
+        resize: vertical;
+    }
+
+    #btnSalvarFechamento.is-loading {
+        pointer-events: none;
+        opacity: .92;
+    }
+
     @media (max-width: 768px) {
         .top-bar .row>div {
             margin-bottom: 10px;
@@ -368,31 +426,51 @@
                 </div>
 
                 <!-- MODAL FECHAMENTO LOCAL -->
-                <div class="modal fade" id="modalFechamentoLocal" tabindex="-1">
+                <div class="modal fade" id="modalFechamentoLocal" tabindex="-1"
+                    aria-labelledby="modalFechamentoLocalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
+                        <div class="modal-content modal-fechamento-premium">
                             <div class="modal-header">
-                                <h5 class="modal-title">Fechamento do limite diário</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <div>
+                                    <h5 class="modal-title" id="modalFechamentoLocalLabel">Fechamento do limite diário
+                                    </h5>
+                                    <div class="modal-subtitle">Preencha todos os campos obrigatórios antes de salvar.
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Fechar"></button>
                             </div>
                             <div class="modal-body">
+                                <div id="fechamentoFeedback" class="fechamento-feedback" style="display:none;"></div>
+
                                 <div class="mb-3">
-                                    <label for="qtdRefeicoesServidas" class="form-label">Quantidade de Refeições
-                                        Servidas</label>
+                                    <label for="qtdRefeicoesServidas" class="form-label">
+                                        Quantidade de Refeições Servidas
+                                        <span class="campo-obrigatorio">*</span>
+                                    </label>
                                     <input type="number" min="0" id="qtdRefeicoesServidas" class="form-control"
                                         placeholder="Digite a quantidade">
+                                    <div class="campo-erro" id="erroQtdRefeicoesServidas"></div>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="cardapioFechamento" class="form-label">Cardápio</label>
+                                    <label for="cardapioFechamento" class="form-label">
+                                        Cardápio
+                                        <span class="campo-obrigatorio">*</span>
+                                    </label>
                                     <textarea id="cardapioFechamento" class="form-control" rows="3"
                                         placeholder="Descreva o cardápio do dia..."></textarea>
+                                    <div class="campo-erro" id="erroCardapioFechamento"></div>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="ocorrenciasFechamento" class="form-label">Ocorrências</label>
+                                    <label for="ocorrenciasFechamento" class="form-label">
+                                        Ocorrências
+                                        <span class="campo-obrigatorio">*</span>
+                                    </label>
                                     <textarea id="ocorrenciasFechamento" class="form-control" rows="4"
                                         placeholder="Descreva as ocorrências..."></textarea>
+                                    <div class="campo-erro" id="erroOcorrenciasFechamento"></div>
                                 </div>
 
                                 <div class="small text-muted">
@@ -401,7 +479,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
-                                <button type="button" class="btn btn-primary" onclick="salvarFechamentoLocal()">Salvar
+                                <button type="button" class="btn btn-primary" id="btnSalvarFechamento">Salvar
                                     informações</button>
                             </div>
                         </div>
@@ -993,7 +1071,9 @@
         if (!el) return;
 
         const titulo = el.querySelector('.modal-title');
-        const btnSalvar = document.querySelector('#modalFechamentoLocal .btn.btn-primary');
+        limparFeedbackFechamento();
+
+        const btnSalvar = document.getElementById("btnSalvarFechamento");
 
         if (titulo) {
             titulo.textContent = modo === 'manual'
@@ -1010,29 +1090,182 @@
 
     let salvandoFechamento = false;
 
+    function getCamposFechamento() {
+        return {
+            qtd: document.getElementById("qtdRefeicoesServidas"),
+            cardapio: document.getElementById("cardapioFechamento"),
+            ocorrencias: document.getElementById("ocorrenciasFechamento"),
+            feedback: document.getElementById("fechamentoFeedback")
+        };
+    }
+
+    function limparFeedbackFechamento() {
+        const { qtd, cardapio, ocorrencias, feedback } = getCamposFechamento();
+
+        [qtd, cardapio, ocorrencias].forEach((campo) => {
+            if (!campo) return;
+            campo.classList.remove("is-invalid-premium", "is-valid-premium");
+        });
+
+        [
+            "erroQtdRefeicoesServidas",
+            "erroCardapioFechamento",
+            "erroOcorrenciasFechamento"
+        ].forEach((id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.style.display = "none";
+            el.textContent = "";
+        });
+
+        if (feedback) {
+            feedback.style.display = "none";
+            feedback.textContent = "";
+        }
+    }
+
+    function setErroCampoFechamento(campo, erroId, mensagem) {
+        if (campo) {
+            campo.classList.remove("is-valid-premium");
+            campo.classList.add("is-invalid-premium");
+        }
+
+        const erro = document.getElementById(erroId);
+        if (erro) {
+            erro.textContent = mensagem;
+            erro.style.display = "block";
+        }
+    }
+
+    function setSucessoCampoFechamento(campo, erroId) {
+        if (campo) {
+            campo.classList.remove("is-invalid-premium");
+            campo.classList.add("is-valid-premium");
+        }
+
+        const erro = document.getElementById(erroId);
+        if (erro) {
+            erro.textContent = "";
+            erro.style.display = "none";
+        }
+    }
+
+    function mostrarFeedbackFechamento(mensagem) {
+        const { feedback } = getCamposFechamento();
+        if (!feedback) return;
+
+        feedback.textContent = mensagem;
+        feedback.style.display = "block";
+    }
+
+    function validarCampoFechamento(campoId) {
+        const { qtd, cardapio, ocorrencias } = getCamposFechamento();
+
+        if (campoId === "qtdRefeicoesServidas") {
+            const valor = String(qtd?.value || "").trim();
+
+            if (valor === "") {
+                setErroCampoFechamento(qtd, "erroQtdRefeicoesServidas", "Informe o campo Quantidade de Refeições Servidas.");
+                return {
+                    ok: false,
+                    nome: "Quantidade de Refeições Servidas",
+                    campo: qtd
+                };
+            }
+
+            const numero = parseInt(valor, 10);
+            if (isNaN(numero) || numero < 0) {
+                setErroCampoFechamento(qtd, "erroQtdRefeicoesServidas", "Informe uma quantidade válida para Quantidade de Refeições Servidas.");
+                return {
+                    ok: false,
+                    nome: "Quantidade de Refeições Servidas",
+                    campo: qtd
+                };
+            }
+
+            setSucessoCampoFechamento(qtd, "erroQtdRefeicoesServidas");
+            return { ok: true };
+        }
+
+        if (campoId === "cardapioFechamento") {
+            const valor = String(cardapio?.value || "").trim();
+
+            if (valor === "") {
+                setErroCampoFechamento(cardapio, "erroCardapioFechamento", "Informe o campo Cardápio.");
+                return {
+                    ok: false,
+                    nome: "Cardápio",
+                    campo: cardapio
+                };
+            }
+
+            setSucessoCampoFechamento(cardapio, "erroCardapioFechamento");
+            return { ok: true };
+        }
+
+        if (campoId === "ocorrenciasFechamento") {
+            const valor = String(ocorrencias?.value || "").trim();
+
+            if (valor === "") {
+                setErroCampoFechamento(ocorrencias, "erroOcorrenciasFechamento", "Informe o campo Ocorrências.");
+                return {
+                    ok: false,
+                    nome: "Ocorrências",
+                    campo: ocorrencias
+                };
+            }
+
+            setSucessoCampoFechamento(ocorrencias, "erroOcorrenciasFechamento");
+            return { ok: true };
+        }
+
+        return { ok: true };
+    }
+
+    function validarFechamentoPremium() {
+        limparFeedbackFechamento();
+
+        const validacoes = [
+            validarCampoFechamento("qtdRefeicoesServidas"),
+            validarCampoFechamento("cardapioFechamento"),
+            validarCampoFechamento("ocorrenciasFechamento")
+        ];
+
+        const primeiraInvalida = validacoes.find((v) => !v.ok);
+
+        if (primeiraInvalida) {
+            mostrarFeedbackFechamento("Preencha o campo obrigatório: " + primeiraInvalida.nome + ".");
+            if (primeiraInvalida.campo) {
+                primeiraInvalida.campo.focus();
+                if (typeof primeiraInvalida.campo.scrollIntoView === "function") {
+                    primeiraInvalida.campo.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            }
+            return false;
+        }
+
+        return true;
+    }
+
     async function salvarFechamentoLocal() {
         if (salvandoFechamento) return;
+        if (!validarFechamentoPremium()) return;
 
         const campoQtd = document.getElementById("qtdRefeicoesServidas");
         const campoCardapio = document.getElementById("cardapioFechamento");
         const campoOcorrencias = document.getElementById("ocorrenciasFechamento");
 
-        let qtd = parseInt(campoQtd?.value || "0", 10);
-        if (isNaN(qtd) || qtd < 0) qtd = 0;
-
+        const qtd = parseInt(campoQtd?.value || "0", 10);
         const cardapio = (campoCardapio?.value || "").trim();
-        let ocorrencias = (campoOcorrencias?.value || "").trim();
-
-        if (!ocorrencias) {
-            ocorrencias = TEXTO_OCORRENCIA_PADRAO;
-        }
+        const ocorrencias = (campoOcorrencias?.value || "").trim();
 
         salvandoFechamento = true;
 
-        const btnSalvar = document.querySelector('#modalFechamentoLocal .btn.btn-primary');
+        const btnSalvar = document.getElementById("btnSalvarFechamento");
         if (btnSalvar) {
             btnSalvar.disabled = true;
-            btnSalvar.textContent = "Salvando...";
+            btnSalvar.classList.add("is-loading");
+            btnSalvar.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Salvando...';
         }
 
         try {
@@ -1059,7 +1292,7 @@
             }
 
             if (btnSalvar) {
-                btnSalvar.textContent = "Enviando para nuvem...";
+                btnSalvar.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Enviando para nuvem...';
             }
 
             await sincronizarFechamentoRemoto(dataRef);
@@ -1090,12 +1323,13 @@
 
         } catch (e) {
             console.error(e);
-            alert(e?.message || "Não foi possível salvar as informações do fechamento.");
+            mostrarFeedbackFechamento(e?.message || "Não foi possível salvar as informações do fechamento.");
         } finally {
             salvandoFechamento = false;
 
             if (btnSalvar) {
                 btnSalvar.disabled = false;
+                btnSalvar.classList.remove("is-loading");
                 btnSalvar.textContent = modoFechamentoAtual === "manual" ? "Salvar e encerrar dia" : "Salvar informações";
             }
         }
@@ -1743,6 +1977,39 @@ ${titularJaComprou && depsSelecionados.length ? `<div class="aviso">APENAS DEPEN
             if (backdrops.length > 1) {
                 backdrops.forEach(el => el.remove());
             }
+        });
+
+        document.getElementById("btnSalvarFechamento")?.addEventListener("click", salvarFechamentoLocal);
+
+        document.getElementById("qtdRefeicoesServidas")?.addEventListener("input", function () {
+            if (String(this.value || "").trim() !== "") {
+                const feedback = document.getElementById("fechamentoFeedback");
+                if (feedback) {
+                    feedback.style.display = "none";
+                    feedback.textContent = "";
+                }
+            }
+            validarCampoFechamento("qtdRefeicoesServidas");
+        });
+
+        document.getElementById("cardapioFechamento")?.addEventListener("input", function () {
+            validarCampoFechamento("cardapioFechamento");
+        });
+
+        document.getElementById("ocorrenciasFechamento")?.addEventListener("input", function () {
+            validarCampoFechamento("ocorrenciasFechamento");
+        });
+
+        document.getElementById("qtdRefeicoesServidas")?.addEventListener("blur", function () {
+            validarCampoFechamento("qtdRefeicoesServidas");
+        });
+
+        document.getElementById("cardapioFechamento")?.addEventListener("blur", function () {
+            validarCampoFechamento("cardapioFechamento");
+        });
+
+        document.getElementById("ocorrenciasFechamento")?.addEventListener("blur", function () {
+            validarCampoFechamento("ocorrenciasFechamento");
         });
 
     });

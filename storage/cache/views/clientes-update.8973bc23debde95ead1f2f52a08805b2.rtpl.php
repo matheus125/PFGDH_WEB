@@ -56,7 +56,7 @@
                         <option value="">Selecione</option>
                         <option value="M" {if="$clientes.genero_cliente=='M'" }selected<?php  ?>>Masculino</option>
                         <option value="F" {if="$clientes.genero_cliente=='F'" }selected<?php  ?>>Feminino</option>
-                        <option value="Outro" {if="$clientes.genero_cliente=='Outro'" }selected<?php  ?>>Outro</option>
+                        <option value="Outro" {if="$clientes.genero_cliente=='Outro'" }selected<?php ?>>Outro</option>
                     </select>
                 </div>
 
