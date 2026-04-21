@@ -1,79 +1,32 @@
 <?php
 
-function getConnectionHostgator()
+function gerarNomePdfRelatorio($data)
 {
-    $config = require __DIR__ . '/../config/db_hostgator.php';
-
-    try {
-        $pdo = new PDO(
-            "mysql:host={$config['host']};dbname={$config['dbname']};charset={$config['charset']}",
-            $config['user'],
-            $config['pass'],
-            array(
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-            )
-        );
-
-        return $pdo;
-    } catch (Exception $e) {
-        error_log("Erro conexão HostGator: " . $e->getMessage());
-        return null;
-    }
+    // Nome fixo por data (NÃO MUDA MAIS)
+    return "centro_" . $data . ".pdf";
 }
 
-function registrarHistoricoRelatorioHostgator(array $dados)
+function uploadPdfHostgator($localFile, $remoteFile)
 {
-    try {
-        $pdo = getConnectionHostgator();
+    $config = require __DIR__ . '/../config/relatorio_hostgator.php';
 
-        if (!$pdo) {
-            throw new Exception("Sem conexão com HostGator");
-        }
-
-        $sql = "
-            INSERT INTO tb_relatorios_pdf (
-                data_relatorio,
-                nome_arquivo,
-                url_publica,
-                caminho_remoto,
-                status_upload,
-                mensagem_erro,
-                responsavel,
-                cpf_responsavel,
-                data_geracao,
-                data_upload
-            ) VALUES (
-                :data_relatorio,
-                :nome_arquivo,
-                :url_publica,
-                :caminho_remoto,
-                :status_upload,
-                :mensagem_erro,
-                :responsavel,
-                :cpf_responsavel,
-                :data_geracao,
-                :data_upload
-            )
-        ";
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(
-            ':data_relatorio'   => $dados['data_relatorio'],
-            ':nome_arquivo'     => $dados['nome_arquivo'],
-            ':url_publica'      => $dados['url_publica'] ?? null,
-            ':caminho_remoto'   => $dados['caminho_remoto'] ?? null,
-            ':status_upload'    => $dados['status_upload'] ?? 'SUCESSO',
-            ':mensagem_erro'    => $dados['mensagem_erro'] ?? null,
-            ':responsavel'      => $dados['responsavel'] ?? null,
-            ':cpf_responsavel'  => $dados['cpf_responsavel'] ?? null,
-            ':data_geracao'     => $dados['data_geracao'],
-            ':data_upload'      => $dados['data_upload'] ?? null
-        ));
-
-        return true;
-    } catch (Exception $e) {
-        error_log("Erro ao salvar histórico remoto: " . $e->getMessage());
-        return false;
+    $conn = ftp_connect($config['host'], $config['port']);
+    if (!$conn) {
+        throw new Exception("Erro ao conectar no FTP");
     }
+
+    if (!ftp_login($conn, $config['user'], $config['pass'])) {
+        throw new Exception("Erro ao autenticar no FTP");
+    }
+
+    ftp_pasv($conn, true);
+
+    // 🔥 AQUI É O SEGREDO → SOBRESCREVE
+    if (!ftp_put($conn, $remoteFile, $localFile, FTP_BINARY)) {
+        throw new Exception("Erro ao enviar arquivo para FTP");
+    }
+
+    ftp_close($conn);
+
+    return true;
 }

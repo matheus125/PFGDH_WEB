@@ -1,7 +1,7 @@
 <?php if(!class_exists('Rain\Tpl')){exit;}?><footer class="app-footer saas-footer">
   <strong>
     Copyright &copy; 2024 - <span id="current-year"></span>&nbsp;
-    <a href="" class="text-decoration-none">MS-SOLUÇÕES EM TECNOLOGIA</a>.
+    <a href="https://ms-tecnologia.app.br/" class="text-decoration-none">MS-SOLUÇÕES EM TECNOLOGIA</a>.
   </strong>
   All rights reserved.
 

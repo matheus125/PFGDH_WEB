@@ -887,9 +887,62 @@ if (!function_exists('escreverLogRelatorio')) {
     }
 }
 
+if (!function_exists('buscarHistoricoRelatorioExistente')) {
+    function buscarHistoricoRelatorioExistente(Sql $sql, array $dados)
+    {
+        $res = $sql->select("
+            SELECT id
+            FROM tb_relatorios_pdf
+            WHERE DATE(data_relatorio) = :data_relatorio
+              AND nome_arquivo = :nome_arquivo
+              AND caminho_remoto = :caminho_remoto
+            ORDER BY id DESC
+            LIMIT 1
+        ", array(
+            ':data_relatorio' => $dados['data_relatorio'],
+            ':nome_arquivo' => $dados['nome_arquivo'],
+            ':caminho_remoto' => $dados['caminho_remoto']
+        ));
+
+        return isset($res[0]['id']) ? (int)$res[0]['id'] : 0;
+    }
+}
+
 if (!function_exists('registrarHistoricoRelatorio')) {
     function registrarHistoricoRelatorio(Sql $sql, array $dados)
     {
+        $idExistente = buscarHistoricoRelatorioExistente($sql, $dados);
+
+        if ($idExistente > 0) {
+            $sql->query("
+                UPDATE tb_relatorios_pdf
+                SET
+                    data_relatorio = :data_relatorio,
+                    nome_arquivo = :nome_arquivo,
+                    url_publica = :url_publica,
+                    caminho_remoto = :caminho_remoto,
+                    status_upload = :status_upload,
+                    mensagem_erro = :mensagem_erro,
+                    responsavel = :responsavel,
+                    cpf_responsavel = :cpf_responsavel,
+                    data_geracao = NOW(),
+                    data_upload = " . ($dados['status_upload'] === 'SUCESSO' ? 'NOW()' : 'NULL') . "
+                WHERE id = :id
+            ", array(
+                ':data_relatorio' => $dados['data_relatorio'],
+                ':nome_arquivo' => $dados['nome_arquivo'],
+                ':url_publica' => $dados['url_publica'],
+                ':caminho_remoto' => $dados['caminho_remoto'],
+                ':status_upload' => $dados['status_upload'],
+                ':mensagem_erro' => ($dados['status_upload'] === 'SUCESSO' ? null : $dados['mensagem_erro']),
+                ':responsavel' => $dados['responsavel'],
+                ':cpf_responsavel' => $dados['cpf_responsavel'],
+                ':id' => $idExistente
+            ));
+
+            return (int)$idExistente;
+        }
+
         $sql->query("
             INSERT INTO tb_relatorios_pdf (
                 data_relatorio,
@@ -920,7 +973,7 @@ if (!function_exists('registrarHistoricoRelatorio')) {
             ':url_publica' => $dados['url_publica'],
             ':caminho_remoto' => $dados['caminho_remoto'],
             ':status_upload' => $dados['status_upload'],
-            ':mensagem_erro' => $dados['mensagem_erro'],
+            ':mensagem_erro' => ($dados['status_upload'] === 'SUCESSO' ? null : $dados['mensagem_erro']),
             ':responsavel' => $dados['responsavel'],
             ':cpf_responsavel' => $dados['cpf_responsavel']
         ));
@@ -930,9 +983,67 @@ if (!function_exists('registrarHistoricoRelatorio')) {
     }
 }
 
+if (!function_exists('buscarHistoricoRelatorioExistenteRemoto')) {
+    function buscarHistoricoRelatorioExistenteRemoto(PDO $pdo, array $dados)
+    {
+        $stmt = $pdo->prepare("
+            SELECT id
+            FROM tb_relatorios_pdf
+            WHERE DATE(data_relatorio) = :data_relatorio
+              AND nome_arquivo = :nome_arquivo
+              AND caminho_remoto = :caminho_remoto
+            ORDER BY id DESC
+            LIMIT 1
+        ");
+        $stmt->execute(array(
+            ':data_relatorio' => $dados['data_relatorio'],
+            ':nome_arquivo' => $dados['nome_arquivo'],
+            ':caminho_remoto' => $dados['caminho_remoto']
+        ));
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return isset($row['id']) ? (int)$row['id'] : 0;
+    }
+}
+
 if (!function_exists('registrarHistoricoRelatorioRemoto')) {
     function registrarHistoricoRelatorioRemoto(PDO $pdo, array $dados)
     {
+        $idExistente = buscarHistoricoRelatorioExistenteRemoto($pdo, $dados);
+
+        if ($idExistente > 0) {
+            $sql = "
+                UPDATE tb_relatorios_pdf
+                SET
+                    data_relatorio = :data_relatorio,
+                    nome_arquivo = :nome_arquivo,
+                    url_publica = :url_publica,
+                    caminho_remoto = :caminho_remoto,
+                    status_upload = :status_upload,
+                    mensagem_erro = :mensagem_erro,
+                    responsavel = :responsavel,
+                    cpf_responsavel = :cpf_responsavel,
+                    data_geracao = NOW(),
+                    data_upload = " . ($dados['status_upload'] === 'SUCESSO' ? 'NOW()' : 'NULL') . "
+                WHERE id = :id
+            ";
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array(
+                ':data_relatorio' => $dados['data_relatorio'],
+                ':nome_arquivo' => $dados['nome_arquivo'],
+                ':url_publica' => $dados['url_publica'],
+                ':caminho_remoto' => $dados['caminho_remoto'],
+                ':status_upload' => $dados['status_upload'],
+                ':mensagem_erro' => ($dados['status_upload'] === 'SUCESSO' ? null : $dados['mensagem_erro']),
+                ':responsavel' => $dados['responsavel'],
+                ':cpf_responsavel' => $dados['cpf_responsavel'],
+                ':id' => $idExistente
+            ));
+
+            return (int)$idExistente;
+        }
+
         $sql = "
             INSERT INTO tb_relatorios_pdf (
                 data_relatorio,
@@ -966,7 +1077,7 @@ if (!function_exists('registrarHistoricoRelatorioRemoto')) {
             ':url_publica' => $dados['url_publica'],
             ':caminho_remoto' => $dados['caminho_remoto'],
             ':status_upload' => $dados['status_upload'],
-            ':mensagem_erro' => $dados['mensagem_erro'],
+            ':mensagem_erro' => ($dados['status_upload'] === 'SUCESSO' ? null : $dados['mensagem_erro']),
             ':responsavel' => $dados['responsavel'],
             ':cpf_responsavel' => $dados['cpf_responsavel']
         ));
@@ -2082,7 +2193,7 @@ $app->get('/admin/api/relatorio/pdf', function () {
     }
 
     // nome final
-    $nomeArquivo = $nomeBaseArquivo . '_' . $dataSql . '_' . date('H-i-s') . '.pdf';
+    $nomeArquivo = $nomeBaseArquivo . '_' . $dataSql . '.pdf';
 
     if ($upload === 1) {
         $dirTemp = getRelatorioTempDir($config);
